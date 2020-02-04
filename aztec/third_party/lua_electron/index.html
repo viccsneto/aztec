@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    const {remote} = require("electron");
+    var mainWindow = remote.getGlobal("mainWindow")
+    var app = remote.getGlobal("app")
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function executeLua()
+    {
+      mainWindow.Execute(document.getElementById("script").value)
+    }
+  </script>
+</head>
+<body>
+<input type="text" id="script" value="print('hello,  world!')">
+<button onclick="executeLua()">Execute</button>
+</body>
+</html>

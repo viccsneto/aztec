@@ -1,0 +1,1213 @@
+$#include "LuaBinded.h"
+$#include "Config.h"
+$#include "Vector2.h"
+$#include "Transform.h"
+$#include "GameEngine.h"
+$#include "Camera.h"
+$#include "GameObject.h"
+$#include "GameStateController.h"
+$#include "Keyboard.h"
+$#include "Mouse.h"
+$#include "Music.h"
+$#include "Sound.h"
+$#include "Frame.h"
+$#include "Animation.h"
+$#include "Sensor.h"
+$#include "AutoSensor.h"
+$#include "Shader.h"
+$#include "Sprite.h"
+$#include "SpriteSensor.h"
+$#include "Text.h"
+$#include "EventTypes.h"
+$#include "Bitwise.h"
+$#include "Texture.h"
+$#include "VertexBufferObject.h"
+$#include "VertexArrayObject.h"
+$#include "Shape.h"
+$#include "Plane.h"
+$#include "WebBrowser.h"
+$#include "PointList2D.h"
+$#include "PropertyList.h"
+$#include "Aztec_Lua_Bind.h" 
+
+/***********************************/
+class LuaBinded
+	{
+	public:
+		long EventFlags;
+		void resetEventFlags();
+    const char *getClassName();
+	};
+
+/***********************************/
+class Vector2
+{
+public:	
+	static const Vector2 ZERO;
+	float x;
+	float y;
+	Vector2 *assign(Vector2 &other);
+  bool equals(Vector2 &other);
+	void set(float x, float y);	
+	void add(float x, float y);	
+	void sub(float x, float y);	
+	Vector2(void);
+  Vector2(float x, float y);      
+	~Vector2(void);
+};
+
+/***********************************/
+class Transform
+{
+public:
+  Transform();
+  ~Transform();
+	Vector2 position;
+	Vector2 scale;
+	float rotation;
+	float zorder;
+};
+
+
+/***********************************/
+class Music:public LuaBinded
+{
+public:
+	Music(const char *path);
+	void Play();
+	void Stop();
+	void Pause();
+	void Resume();
+  bool Seek(double time);
+  bool setVolume(double volume);
+	bool Repeat;
+	bool isPlaying();
+
+	~Music(void);
+};
+/***********************************/
+class Sound:public LuaBinded
+{
+public:
+	Sound(const char *path);
+	void Play();
+	~Sound(void);
+};
+
+/***********************************/
+class Mouse
+{
+public:
+
+	static bool hasClick;
+	static bool hasMovement;
+
+	int getPosX();
+
+	int getPosY();
+
+	bool isLeftButtonPressed();
+
+	bool isMiddleButtonPressed();
+
+	bool isRightButtonPressed();
+
+	void hideCursor();
+	void showCursor();
+
+
+};
+/***********************************/
+class Keyboard
+{
+public:
+	static const int UP_KEY;
+	static const int DOWN_KEY;
+	static const int RIGHT_KEY;
+	static const int LEFT_KEY;
+	static const int ESCAPE_KEY;
+	static const int SPACE_KEY;
+	static const int ENTER_KEY;
+	static const int zero;
+	static const int one;
+	static const int two;
+	static const int three;
+	static const int four;
+	static const int five;
+	static const int six;
+	static const int seven;
+	static const int eight;
+	static const int nine;
+
+	static const int KEY_UNKNOWN;
+	static const int KEY_FIND;
+	static const int KEY_BACKSPACE;
+	static const int KEY_TAB;
+	static const int KEY_CLEAR;
+	static const int KEY_RETURN;
+	static const int KEY_PAUSE;
+	static const int KEY_ESCAPE;
+	static const int KEY_SPACE;
+	static const int KEY_EXCLAIM;
+	static const int KEY_QUOTEDBL;
+	static const int KEY_HASH;
+	static const int KEY_DOLLAR;
+	static const int KEY_AMPERSAND;
+	static const int KEY_QUOTE;
+	static const int KEY_LEFTPAREN;
+	static const int KEY_RIGHTPAREN;
+	static const int KEY_ASTERISK;
+	static const int KEY_PLUS;
+	static const int KEY_COMMA;
+	static const int KEY_MINUS;
+	static const int KEY_PERIOD;
+	static const int KEY_SLASH;
+	static const int KEY_0;
+	static const int KEY_1;
+	static const int KEY_2;
+	static const int KEY_3;
+	static const int KEY_4;
+	static const int KEY_5;
+	static const int KEY_6;
+	static const int KEY_7;
+	static const int KEY_8;
+	static const int KEY_9;
+	static const int KEY_COLON;
+	static const int KEY_SEMICOLON;
+	static const int KEY_LESS;
+	static const int KEY_EQUALS;
+	static const int KEY_GREATER;
+	static const int KEY_QUESTION;
+	static const int KEY_AT;
+	static const int KEY_LEFTBRACKET;
+	static const int KEY_BACKSLASH;
+	static const int KEY_RIGHTBRACKET;
+	static const int KEY_CARET;
+	static const int KEY_UNDERSCORE;
+	static const int KEY_BACKQUOTE;
+	static const int KEY_a;
+	static const int KEY_b;
+	static const int KEY_c;
+	static const int KEY_d;
+	static const int KEY_e;
+	static const int KEY_f;
+	static const int KEY_g;
+	static const int KEY_h;
+	static const int KEY_i;
+	static const int KEY_j;
+	static const int KEY_k;
+	static const int KEY_l;
+	static const int KEY_m;
+	static const int KEY_n;
+	static const int KEY_o;
+	static const int KEY_p;
+	static const int KEY_q;
+	static const int KEY_r;
+	static const int KEY_s;
+	static const int KEY_t;
+	static const int KEY_u;
+	static const int KEY_v;
+	static const int KEY_w;
+	static const int KEY_x;
+	static const int KEY_y;
+	static const int KEY_z;
+	static const int KEY_DELETE;
+	
+	static const int KEY_KP0;
+	static const int KEY_KP1;
+	static const int KEY_KP2;
+	static const int KEY_KP3;
+	static const int KEY_KP4;
+	static const int KEY_KP5;
+	static const int KEY_KP6;
+	static const int KEY_KP7;
+	static const int KEY_KP8;
+	static const int KEY_KP9;
+	static const int KEY_KP_PERIOD;
+	static const int KEY_KP_DIVIDE;
+	static const int KEY_KP_MULTIPLY;
+	static const int KEY_KP_MINUS;
+	static const int KEY_KP_PLUS;
+	static const int KEY_KP_ENTER;
+	static const int KEY_KP_EQUALS;
+	static const int KEY_UP;
+	static const int KEY_DOWN;
+	static const int KEY_RIGHT;
+	static const int KEY_LEFT;
+	static const int KEY_INSERT;
+	static const int KEY_HOME;
+	static const int KEY_END;
+  static const int KEY_ENTER;
+  static const int KEY_PAGEUP;
+	static const int KEY_PAGEDOWN;
+	static const int KEY_F1;
+	static const int KEY_F2;
+	static const int KEY_F3;
+	static const int KEY_F4;
+	static const int KEY_F5;
+	static const int KEY_F6;
+	static const int KEY_F7;
+	static const int KEY_F8;
+	static const int KEY_F9;
+	static const int KEY_F10;
+	static const int KEY_F11;
+	static const int KEY_F12;
+	static const int KEY_F13;
+	static const int KEY_F14;
+	static const int KEY_F15;
+	static const int KEY_NUMLOCK;
+	static const int KEY_CAPSLOCK;
+	static const int KEY_SCROLLLOCK;
+	static const int KEY_RSHIFT;
+	static const int KEY_LSHIFT;
+	static const int KEY_RCTRL;
+	static const int KEY_LCTRL;
+	static const int KEY_RALT;
+	static const int KEY_LALT;
+	
+	static const int KEY_MODE;
+
+	static const int KEY_HELP;
+	static const int KEY_PRINT;
+	static const int KEY_SYSREQ;
+
+	static const int KEY_MENU;
+	static const int KEY_POWER;
+
+	static const int KEY_UNDO;
+
+
+	bool keyIsDown( int keyCode );
+	bool keyIsUp( int keyCode );
+	int bufferLength();
+	int readBuffer();
+	void cleanBuffer();
+  void cleanPressed();
+  void reset();
+};
+
+class GameObject:public LuaBinded
+{
+public:   
+
+	GameObject();
+
+	Transform Transform;
+  int getZOrder();
+  int setZOrder(int zorder);
+	Transform getGlobalTransform();
+	GameObject *getParent();
+	GameObject *addGameObject(GameObject *object);
+	GameObject *removeGameObject(GameObject *object);
+	bool Visible;
+	bool Enabled;
+	void setPivot(float x,float y);
+	Vector2 getPivot();
+	void destroy();
+	void setClipRect(float x,float y, float w, float h);
+  unsigned int getLayerID();
+  GameObject *getLayer();
+  bool isLayer();
+  const char *setProperty(const char *property);
+  const char *setProperty(const char *property, const char *value);
+  const char *getProperty(const char *property);
+  void removeProperty(const char *property);
+  void clearProperties();
+  const char *propertyAt(unsigned int index);
+  const char *getPropertyName(unsigned int index);
+  bool hasProperty(const char *property);
+  
+  unsigned int getPropertyCount();
+  GameStateController *getGameState();
+};
+
+/***********************************/
+class Text : public GameObject
+{
+public:
+	Text();
+
+	Text( int r, int g, int b, char* fontPath, int fontSize );
+
+	void setText(char *text );
+	char *getText();
+
+	void setColor( int r, int g, int b );
+	void setDimension(float w, float h);
+	void selectByClick(float x, float y);
+
+	void setCursorPosition(int i);
+	int getCursorPosition();
+
+	float getHeight();
+    
+};
+
+/***********************************/
+
+class Frame:public LuaBinded
+{
+	public:
+		Frame(float x, float y, double interval);
+		Frame(float x, float y, double interval, bool flipped);
+		Frame(float x, float y, double interval, bool flipped,float rotation);
+};
+
+/***********************************/
+class Animation:public LuaBinded
+{
+public:
+	bool Loop;
+  bool Finished;
+  bool Started;
+	char *getName();
+	Frame *setFrame(int framenumber);
+	Frame *getCurrentFrame();
+	Frame *addFrame(float x, float y, double interval);
+	Frame *addFrame(float x, float y, double interval, bool flipped);
+	Frame *addFrame(float x, float y, double interval, bool flipped,float rotation);
+	Frame *addFrame(Frame *frame);	
+	void addHorizontalSequence(float x, float y, int qtd,double duration);
+	void addVerticalSequence(float x, float y, int qtd,double duration);
+	void deleteAllFrames();
+	void setFrameInterval(double interval);
+};
+/***********************************/
+class Sensor:public GameObject
+	{	
+	public:			
+		GameObject *getTarget();	
+		Sensor(float x,float y, float w,float h);	
+		Sensor(float w,float h);		
+		Sensor(float x,float y, float radius);					
+		Sensor(float radius);
+    Sensor(PointList2D point_list);
+    void createFixture(float radius);
+    void createFixture(float w, float h);
+    void createFixture(PointList2D point_list);
+		~Sensor(void);
+	};
+
+/***********************************/
+class PropertyList :public LuaBinded
+  {
+  public:
+    void clear();
+    const char *add(const char *property, const char *value);
+    const char *get(const char *property);
+    const char *at(unsigned int index);
+    const char *getName(unsigned int index);
+    int getIndex(const char *property);
+    int getValueIndex(const char *value);
+    int getValueIndex(const char *value, unsigned int n);
+    int getSize();
+    const char *set(const char *property, const char *value);
+    void remove(const char *property);
+    bool has(const char *property);
+    bool hasValue(const char *value);
+
+    PropertyList();
+    ~PropertyList();
+};
+/***********************************/
+class AutoSensor:public Sensor
+	{	
+	public:				
+		AutoSensor(float x,float y, float w,float h);	
+		AutoSensor(float w,float h);		
+		AutoSensor(float x,float y, float radius);					
+		AutoSensor(float radius);					
+		~AutoSensor(void);
+	};
+/***********************************/
+class Shader:public LuaBinded
+	{	
+	public:
+    
+		void SetUniform( char* name, float x);
+		void SetUniform( char* name, float x, float y);
+		void SetUniform( char* name, float x, float y, float z);
+		void SetUniform( char* name, float x, float y, float z, float w);
+		void SetUniformI( char* name, int x);
+		void SetUniformI( char* name, int x, int y);
+		void SetUniformI( char* name, int x, int y, int z);
+		void SetUniformI( char* name, int x, int y, int z, int w);
+		void SetUniformMatrix( char* name, int row, int col, int count, float* v);
+
+		static Shader *createFromFiles( char *vextexSourceFile,  char *fragmentSourceFile);
+		static Shader *createFromSource( char *vextexSourceCode,  char *fragmentSourceCode);				
+    static Shader *createDefaultShader();
+		~Shader();
+};
+/***********************************/
+class Sprite:public GameObject
+{
+public:
+
+	Sprite( char* filename);
+	Sprite( char* filename, bool centerPivot);
+	Sprite( char* filename, int animFrameCount, float animFrameWidth,	float animFrameHeight );
+	Sprite( char* filename, int animFrameCount, float animFrameWidth,	float animFrameHeight );
+	Sprite( char* filename, int animFrameCount, float animFrameWidth,	float animFrameHeight, bool centerPivot );
+	Sprite( char* filename, float animFrameWidth,	float animFrameHeight);
+	Sprite( char* filename, float animFrameWidth,	float animFrameHeight, bool centerPivot );
+	
+	void setFlipped(bool flipped);
+	void setVerticalFlipped(bool verticalFlipped);
+	bool getFlipped();
+	bool getVerticalFlipped();
+
+	void setFrameInterval(long interval);
+	long getFrameInterval();
+	void pivotOnCenter();
+	Animation *newAnimation(char *name);
+	void removeAnimation(char *name);
+	Animation *setAnimation(char *name);
+	Animation *setAnimation(Animation *animation);
+	Animation *getCurrentAnimation();
+
+	Shader *setShader(Shader *shader);
+	Shader *getShader();
+  Plane *getPlane();
+	void createSensor();
+	void createCircleSensor(float radius);
+	void destroySensor();
+
+};
+/***********************************/
+class SpriteSensor::public Sprite
+{
+	SpriteSensor( char* filename);
+	SpriteSensor( char* filename, bool centerPivot);
+	SpriteSensor( char* filename, int animFrameCount, float animFrameWidth,float animFrameHeight );
+	SpriteSensor( char* filename, int animFrameCount, float animFrameWidth,float animFrameHeight, bool centerPivot );	
+	SpriteSensor( char* filename, float animFrameWidth,float animFrameHeight);
+	SpriteSensor( char* filename, float animFrameWidth,float animFrameHeight, bool centerPivot );		
+};
+/***********************************/
+
+class GameStateController:public LuaBinded
+{
+public:
+
+  GameStateController(const char *tmx_path);
+	GameStateController();
+	~GameStateController();
+
+	void load();
+
+  GameObjectList *queryProperty(const char *property);
+  GameObjectList *queryProperty(const char *property, const char *value);
+
+	Camera *getActiveCamera();
+	GameObject *addOverlay(GameObject *object);
+	GameObject *removeOverlay(GameObject *object);
+
+	GameObject *addBackDrops(GameObject *object);
+	GameObject *removeBackDrops(GameObject *object);
+
+	GameObject *addTile(GameObject *object);
+	GameObject *removeTile(GameObject *object);
+
+  GameObject *add(GameObject *object);
+  GameObject *add(GameObject *object, unsigned int layer_id);
+  GameObject *remove(GameObject *object, unsigned int layer_id);
+
+  GameObject *getLayer(unsigned int layer_id);
+
+  const char *setProperty(const char *property, const char *value);
+  const char *getProperty(const char *property);
+  void removeProperty(const char *property);
+  void clearProperties();
+  const char *propertyAt(unsigned int index);
+  const char *getPropertyName(unsigned int index);
+  bool hasProperty(const char *property);
+  unsigned int getPropertyCount();
+};
+/***********************************/
+
+class GameObjectList :public LuaBinded
+ {
+ public:
+   void clear();
+   GameObject *add(GameObject *object);
+   GameObject *get(unsigned int index);
+   GameObject *at(unsigned int index);
+   unsigned int getSize();
+   void remove(GameObject *object);
+   bool has(GameObject *object);
+   bool setPosition(unsigned int pos);
+   bool hasNext();
+   GameObject *next();
+   GameObjectList();
+   ~GameObjectList();
+
+};
+/***********************************/
+class Config
+{
+public:
+	static char TITLE[255];	
+	static int SCREEN_WIDTH;
+	static int SCREEN_HEIGHT;
+	static bool FULLSCREEN;	
+	static bool DEBUG_DRAW;	
+	static int SOUND_CHANNELS;
+	static int SOUND_FREQUENCY;
+	static int SOUND_BUFFER_SIZE;
+	static float PHYSICS_PIXELS_METERS_RATIO;
+};
+/***********************************/
+
+class Camera:public GameObject
+{
+public:
+	Camera(void);
+	void activate();
+	void deactivate();
+	void centerOnScreen();
+  void setColorBalance (float r, float g, float b, float a);
+};
+/***********************************/
+class GameEngine
+{
+public:
+  PropertyList *Arguments;
+	static GameEngine* getInstance();
+	static void freeInstance();
+	void requestShutdown();
+	GameStateController *getCurrentGameState();
+	void run(GameStateController* gs);
+	void run();
+	Keyboard* getKeyboard();
+	Mouse* getMouse();
+
+	double getElapsedTime();
+  double getTrueElapsedTime();
+	double getCurrentTime();
+  double getTrueCurrentTime();
+};
+
+/***********************************/
+class EventTypes
+{
+public:
+	const static int NONE                ;
+	const static int OnUpdate            ;
+	const static int OnClick             ;
+	const static int OnMouseMove         ;
+  const static int OnMouseDown         ;
+  const static int OnMouseUp           ;
+	const static int OnKeyDown           ;
+	const static int OnKeyUp             ;
+	const static int OnBeginContact      ;
+	const static int OnEndContact        ;
+	const static int OnMusicStarted      ;
+	const static int OnMusicFinished     ;
+	const static int OnAnimationStarted  ;
+	const static int OnAnimationFinished ;
+	const static int OnBeforeDraw;
+	const static int OnAfterDraw;
+	const static int ALL                 ;
+
+};
+
+/***********************************/
+class Bitwise
+{
+public:		
+	static long XOR(long a, long b);		
+	static long AND(long a, long b);		
+	static long OR(long a, long b);	
+	static long NOT(long a);	
+};
+
+/***********************************/
+
+ class Texture :public LuaBinded
+  {  
+  public:
+    static const unsigned int DIFFUSE;
+    static const unsigned int NORMAL;
+    static const unsigned int TEXTURE0;
+    static const unsigned int TEXTURE1;
+    static const unsigned int TEXTURE2;
+    static const unsigned int TEXTURE3;
+    static const unsigned int TEXTURE4;
+    static const unsigned int TEXTURE5;
+    static const unsigned int TEXTURE6;
+    static const unsigned int TEXTURE7;
+    static const unsigned int TEXTURE8;
+    Texture(const char *path,int width, int height);
+    const int getWidth();
+    const int getHeight();
+    const int getOriginalWidth();
+    const int getOriginalHeight();
+    const char *getPath();
+    const unsigned int getTextureID();
+    ~Texture();
+  };
+  /***********************************/
+  class Shape
+  {
+  public:
+  
+    static const int DRAW_QUADS;
+    static const int DRAW_TRIANGLES;
+    static const int DRAW_TRIANGLE_FAN;
+    static const int DRAW_LINES;
+    static const int DRAW_POINTS;
+    void setDrawMode(unsigned int mode, unsigned int first, unsigned int count);
+    void setFillMode(bool active);
+    void setColorBalance (float r, float g, float b, float a);
+    Shape(Shader *shader);
+
+    Shape();
+    Shader *setShader(Shader *shader);
+
+    Shader *getShader();
+
+    VertexArrayObject *getVAO();
+
+    VertexArrayObject *setVAO(VertexArrayObject *VAO);
+    void setTranslation(float x, float y, float z);
+    void setPivot(float x, float y, float z);
+    void setRotation(float x, float y, float z);
+    void setPostRotation(float x, float y, float z);
+
+    void setScale(float x, float y, float z);
+
+    void setScale(float s);
+
+    Texture *getTexture(unsigned int idx);
+    Texture *setTexture(unsigned int idx, Texture *texture);  
+    virtual ~Shape();
+    virtual void Draw();
+  };
+/***********************************/
+  class Plane :public Shape
+  {
+  public:
+    Plane(Shader *shader, int width, int height, Texture *texture);
+    Plane(Texture *texture);
+
+    virtual ~Plane();    
+  };
+/***********************************/
+class VertexBufferObject
+  {
+  public:
+    VertexBufferObject(unsigned int size, unsigned int count, float data[count]);
+    ~VertexBufferObject(void);
+    unsigned int getCount();
+    unsigned int getVBO();
+    unsigned int getBufferSize();
+    unsigned int getElementSize();
+    void bindBuffer(unsigned int usage);
+    void bindBuffer();
+    void updateBuffer(unsigned int count,float data[count]);
+  };
+/***********************************/
+  class VertexArrayObject :public LuaBinded
+  {
+  public:
+    VertexArrayObject();
+    ~VertexArrayObject();
+    bool addVBO(VertexBufferObject *vbo);
+    VertexBufferObject *getVBO(int idx);
+    unsigned int generate();
+    unsigned int getId();
+  };
+/***********************************/
+class WebBrowser :public GameObject
+{
+  public:
+    WebBrowser(const char *url, int width, int height);
+    WebBrowser(const char *url, int width, int height, bool transparent);
+    void Navigate(const char *url);
+    void GoBack();
+    void GoForward();
+    void Stop();
+    bool isLoading();
+    void Refresh();
+    void setAlwaysFocused(bool always_focused);
+    bool getAlwaysFocused();
+    Shader *setShader(Shader *shader);
+	  Shader *getShader();
+    Plane *getPlane();
+    void ExecuteScript(const char *script);
+};
+/***********************************/
+ class PointList2D :public LuaBinded
+  {
+  public:
+    void clear();
+    void clear();
+    Vector2 add(float x, float y);
+    Vector2 add(Vector2 v);
+    Vector2 get(int idx);
+    Vector2 set(int idx, float x, float y);
+    Vector2 set(int idx, Vector2 v);
+    Vector2 remove(int idx);
+    PointList2D();
+    ~PointList2D();
+};
+
+$[
+-----------------------------------------------------------------------------
+-- This version of JSON4Lua was slightly modified to accept userdata
+-- serialization through a object:toJSON() method call.
+-- 
+-- Other modifications were made to enclose a single value "x" into an object 
+-- with the following format {"value":x}
+
+-- Author: vneto
+-----------------------------------------------------------------------------
+-- JSON4Lua: JSON encoding / decoding support for the Lua language.
+-- json Module.
+-- Author: Craig Mason-Jones
+-- Homepage: http://github.com/craigmj/json4lua/
+-- Version: 1.0.0
+-- This module is released under the MIT License (MIT).
+-- Please see LICENCE.txt for details.
+--
+-- USAGE:
+-- This module exposes two functions:
+--   json.encode(o)
+--     Returns the table / string / boolean / number / nil / json.null value as a JSON-encoded string.
+--   json.decode(json_string)
+--     Returns a Lua object populated with the data encoded in the JSON string json_string.
+--
+-- REQUIREMENTS:
+--   compat-5.1 if using Lua 5.0
+--
+-- CHANGELOG
+--   0.9.20 Introduction of local Lua functions for private functions (removed _ function prefix). 
+--          Fixed Lua 5.1 compatibility issues.
+--   		Introduced json.null to have null values in associative arrays.
+--          json.encode() performance improvement (more than 50%) through table.concat rather than ..
+--          Introduced decode ability to ignore /**/ comments in the JSON string.
+--   0.9.10 Fix to array encoding / decoding to correctly manage nil/null values in arrays.
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+-- Imports and dependencies
+-----------------------------------------------------------------------------
+local math = require('math')
+local string = require("string")
+local table = require("table")
+
+-----------------------------------------------------------------------------
+-- Module declaration
+-----------------------------------------------------------------------------
+json = {}             -- Public namespace
+local json_private = {}     -- Private namespace
+
+-- Public functions
+
+-- Private functions
+local decode_scanArray
+local decode_scanComment
+local decode_scanConstant
+local decode_scanNumber
+local decode_scanObject
+local decode_scanString
+local decode_scanWhitespace
+local encodeString
+local isArray
+local isEncodable
+
+-----------------------------------------------------------------------------
+-- PUBLIC FUNCTIONS
+-----------------------------------------------------------------------------
+--- Encodes an arbitrary Lua object / variable.
+-- @param v The Lua object / variable to be JSON encoded.
+-- @return String containing the JSON encoding in internal Lua string format (i.e. not unicode)
+function json.encode (v, plain_object)
+  -- Handle nil values
+  if v==nil then
+    return "null"
+  end
+  
+  local vtype = type(v)
+
+  -- Handle strings
+  if vtype=='string' then
+    return  plain_object and '"'..json_private.encodeString(v)..'"' or '{"value":"'..json_private.encodeString(v)..'"}'
+  end
+  
+  -- Handle booleans
+  if vtype=='boolean' then
+    return plain_object and tostring(v) or '{"value":'..tostring(v)..'}'
+  end
+
+  -- Handle numbers
+  if vtype=='number' then
+    return plain_object and string.format("%f", v) or '{"value":'..string.format("%f", v)..'}'
+  end
+
+  -- Handle userdata
+  if vtype == 'userdata' and v.toJSON ~= nil then
+    return v:toJSON()
+  end
+  
+  -- Handle tables
+  if vtype=='table' then
+    local rval = {}
+    -- Consider arrays separately
+    local bArray, maxCount = isArray(v)
+    if bArray then
+      for i = 1,maxCount do
+        table.insert(rval, json.encode(v[i], plain_object))
+      end
+    else	-- An object, not an array
+      for i,j in pairs(v) do
+        if isEncodable(i) and isEncodable(j) then
+          table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. json.encode(j, plain_object))
+        end
+      end
+    end
+    if bArray then
+      return '[' .. table.concat(rval,',') ..']'
+    else
+      return '{' .. table.concat(rval,',') .. '}'
+    end
+  end
+  
+  -- Handle null values
+  if vtype=='function' and v==null then
+    return 'null'
+  end
+  
+  assert(false,'encode attempt to encode unsupported type ' .. vtype .. ':' .. tostring(v))
+end
+
+--- Decodes a JSON string and returns the decoded value as a Lua data structure / value.
+-- @param s The string to scan.
+-- @param [startPos] Optional starting position where the JSON string is located. Defaults to 1.
+-- @param Lua object, number The object that was scanned, as a Lua table / string / number / boolean or nil,
+-- and the position of the first character after
+-- the scanned JSON object.
+function json.decode(s, startPos)
+  startPos = startPos and startPos or 1
+  startPos = decode_scanWhitespace(s,startPos)
+  assert(startPos<=string.len(s), 'Unterminated JSON encoded object found at position in [' .. s .. ']')
+  local curChar = string.sub(s,startPos,startPos)
+  -- Object
+  if curChar=='{' then
+    return decode_scanObject(s,startPos)
+  end
+  -- Array
+  if curChar=='[' then
+    return decode_scanArray(s,startPos)
+  end
+  -- Number
+  if string.find("+-0123456789.e", curChar, 1, true) then
+    return decode_scanNumber(s,startPos)
+  end
+  -- String
+  if curChar==[["]] or curChar==[[']] then
+    return decode_scanString(s,startPos)
+  end
+  if string.sub(s,startPos,startPos+1)=='/*' then
+    return decode(s, decode_scanComment(s,startPos))
+  end
+  -- Otherwise, it must be a constant
+  return decode_scanConstant(s,startPos)
+end
+
+--- The null function allows one to specify a null value in an associative array (which is otherwise
+-- discarded if you set the value with 'nil' in Lua. Simply set t = { first=json.null }
+function null()
+  return null -- so json.null() will also return null ;-)
+end
+-----------------------------------------------------------------------------
+-- Internal, PRIVATE functions.
+-- Following a Python-like convention, I have prefixed all these 'PRIVATE'
+-- functions with an underscore.
+-----------------------------------------------------------------------------
+
+--- Scans an array from JSON into a Lua object
+-- startPos begins at the start of the array.
+-- Returns the array and the next starting position
+-- @param s The string being scanned.
+-- @param startPos The starting position for the scan.
+-- @return table, int The scanned array as a table, and the position of the next character to scan.
+function decode_scanArray(s,startPos)
+  local array = {}	-- The return value
+  local stringLen = string.len(s)
+  assert(string.sub(s,startPos,startPos)=='[','decode_scanArray called but array does not start at position ' .. startPos .. ' in string:\n'..s )
+  startPos = startPos + 1
+  -- Infinite loop for array elements
+  repeat
+    startPos = decode_scanWhitespace(s,startPos)
+    assert(startPos<=stringLen,'JSON String ended unexpectedly scanning array.')
+    local curChar = string.sub(s,startPos,startPos)
+    if (curChar==']') then
+      return array, startPos+1
+    end
+    if (curChar==',') then
+      startPos = decode_scanWhitespace(s,startPos+1)
+    end
+    assert(startPos<=stringLen, 'JSON String ended unexpectedly scanning array.')
+    object, startPos = json.decode(s,startPos)
+    table.insert(array,object)
+  until false
+end
+
+--- Scans a comment and discards the comment.
+-- Returns the position of the next character following the comment.
+-- @param string s The JSON string to scan.
+-- @param int startPos The starting position of the comment
+function decode_scanComment(s, startPos)
+  assert( string.sub(s,startPos,startPos+1)=='/*', "decode_scanComment called but comment does not start at position " .. startPos)
+  local endPos = string.find(s,'*/',startPos+2)
+  assert(endPos~=nil, "Unterminated comment in string at " .. startPos)
+  return endPos+2  
+end
+
+--- Scans for given constants: true, false or null
+-- Returns the appropriate Lua type, and the position of the next character to read.
+-- @param s The string being scanned.
+-- @param startPos The position in the string at which to start scanning.
+-- @return object, int The object (true, false or nil) and the position at which the next character should be 
+-- scanned.
+function decode_scanConstant(s, startPos)
+  local consts = { ["true"] = true, ["false"] = false, ["null"] = nil }
+  local constNames = {"true","false","null"}
+
+  for i,k in pairs(constNames) do
+    if string.sub(s,startPos, startPos + string.len(k) -1 )==k then
+      return consts[k], startPos + string.len(k)
+    end
+  end
+  assert(nil, 'Failed to scan constant from string ' .. s .. ' at starting position ' .. startPos)
+end
+
+--- Scans a number from the JSON encoded string.
+-- (in fact, also is able to scan numeric +- eqns, which is not
+-- in the JSON spec.)
+-- Returns the number, and the position of the next character
+-- after the number.
+-- @param s The string being scanned.
+-- @param startPos The position at which to start scanning.
+-- @return number, int The extracted number and the position of the next character to scan.
+function decode_scanNumber(s,startPos)
+  local endPos = startPos+1
+  local stringLen = string.len(s)
+  local acceptableChars = "+-0123456789.e"
+  while (string.find(acceptableChars, string.sub(s,endPos,endPos), 1, true)
+	and endPos<=stringLen
+	) do
+    endPos = endPos + 1
+  end
+  local stringValue = 'return ' .. string.sub(s,startPos, endPos-1)
+  local stringEval = loadstring(stringValue)
+  assert(stringEval, 'Failed to scan number [ ' .. stringValue .. '] in JSON string at position ' .. startPos .. ' : ' .. endPos)
+  return stringEval(), endPos
+end
+
+--- Scans a JSON object into a Lua object.
+-- startPos begins at the start of the object.
+-- Returns the object and the next starting position.
+-- @param s The string being scanned.
+-- @param startPos The starting position of the scan.
+-- @return table, int The scanned object as a table and the position of the next character to scan.
+function decode_scanObject(s,startPos)
+  local object = {}
+  local stringLen = string.len(s)
+  local key, value
+  assert(string.sub(s,startPos,startPos)=='{','decode_scanObject called but object does not start at position ' .. startPos .. ' in string:\n' .. s)
+  startPos = startPos + 1
+  repeat
+    startPos = decode_scanWhitespace(s,startPos)
+    assert(startPos<=stringLen, 'JSON string ended unexpectedly while scanning object.')
+    local curChar = string.sub(s,startPos,startPos)
+    if (curChar=='}') then
+      return object,startPos+1
+    end
+    if (curChar==',') then
+      startPos = decode_scanWhitespace(s,startPos+1)
+    end
+    assert(startPos<=stringLen, 'JSON string ended unexpectedly scanning object.')
+    -- Scan the key
+    key, startPos = json.decode(s,startPos)
+    assert(startPos<=stringLen, 'JSON string ended unexpectedly searching for value of key ' .. key)
+    startPos = decode_scanWhitespace(s,startPos)
+    assert(startPos<=stringLen, 'JSON string ended unexpectedly searching for value of key ' .. key)
+    assert(string.sub(s,startPos,startPos)==':','JSON object key-value assignment mal-formed at ' .. startPos)
+    startPos = decode_scanWhitespace(s,startPos+1)
+    assert(startPos<=stringLen, 'JSON string ended unexpectedly searching for value of key ' .. key)
+    value, startPos = json.decode(s,startPos)
+    object[key]=value
+  until false	-- infinite loop while key-value pairs are found
+end
+
+-- START SoniEx2
+-- Initialize some things used by decode_scanString
+-- You know, for efficiency
+local escapeSequences = {
+  ["\\t"] = "\t",
+  ["\\f"] = "\f",
+  ["\\r"] = "\r",
+  ["\\n"] = "\n",
+  ["\\b"] = "\b"
+}
+setmetatable(escapeSequences, {__index = function(t,k)
+  -- skip "\" aka strip escape
+  return string.sub(k,2)
+end})
+-- END SoniEx2
+
+--- Scans a JSON string from the opening inverted comma or single quote to the
+-- end of the string.
+-- Returns the string extracted as a Lua string,
+-- and the position of the next non-string character
+-- (after the closing inverted comma or single quote).
+-- @param s The string being scanned.
+-- @param startPos The starting position of the scan.
+-- @return string, int The extracted string as a Lua string, and the next character to parse.
+function decode_scanString(s,startPos)
+  assert(startPos, 'decode_scanString(..) called without start position')
+  local startChar = string.sub(s,startPos,startPos)
+  -- START SoniEx2
+  -- PS: I don't think single quotes are valid JSON
+  assert(startChar == [["]] or startChar == [[']],'decode_scanString called for a non-string')
+  --assert(startPos, "String decoding failed: missing closing " .. startChar .. " for string at position " .. oldStart)
+  local t = {}
+  local i,j = startPos,startPos
+  while string.find(s, startChar, j+1) ~= j+1 do
+    local oldj = j
+    i,j = string.find(s, "\\.", j+1)
+    local x,y = string.find(s, startChar, oldj+1)
+    if not i or x < i then
+      i,j = x,y-1
+    end
+    table.insert(t, string.sub(s, oldj+1, i-1))
+    if string.sub(s, i, j) == "\\u" then
+      local a = string.sub(s,j+1,j+4)
+      j = j + 4
+      local n = tonumber(a, 16)
+      assert(n, "String decoding failed: bad Unicode escape " .. a .. " at position " .. i .. " : " .. j)
+      -- math.floor(x/2^y) == lazy right shift
+      -- a % 2^b == bitwise_and(a, (2^b)-1)
+      -- 64 = 2^6
+      -- 4096 = 2^12 (or 2^6 * 2^6)
+      local x
+      if n < 0x80 then
+        x = string.char(n % 0x80)
+      elseif n < 0x800 then
+        -- [110x xxxx] [10xx xxxx]
+        x = string.char(0xC0 + (math.floor(n/64) % 0x20), 0x80 + (n % 0x40))
+      else
+        -- [1110 xxxx] [10xx xxxx] [10xx xxxx]
+        x = string.char(0xE0 + (math.floor(n/4096) % 0x10), 0x80 + (math.floor(n/64) % 0x40), 0x80 + (n % 0x40))
+      end
+      table.insert(t, x)
+    else
+      table.insert(t, escapeSequences[string.sub(s, i, j)])
+    end
+  end
+  table.insert(t,string.sub(j, j+1))
+  assert(string.find(s, startChar, j+1), "String decoding failed: missing closing " .. startChar .. " at position " .. j .. "(for string at position " .. startPos .. ")")
+  return table.concat(t,""), j+2
+  -- END SoniEx2
+end
+
+--- Scans a JSON string skipping all whitespace from the current start position.
+-- Returns the position of the first non-whitespace character, or nil if the whole end of string is reached.
+-- @param s The string being scanned
+-- @param startPos The starting position where we should begin removing whitespace.
+-- @return int The first position where non-whitespace was encountered, or string.len(s)+1 if the end of string
+-- was reached.
+function decode_scanWhitespace(s,startPos)
+  local whitespace=" \n\r\t"
+  local stringLen = string.len(s)
+  while ( string.find(whitespace, string.sub(s,startPos,startPos), 1, true)  and startPos <= stringLen) do
+    startPos = startPos + 1
+  end
+  return startPos
+end
+
+--- Encodes a string to be JSON-compatible.
+-- This just involves back-quoting inverted commas, back-quotes and newlines, I think ;-)
+-- @param s The string to return as a JSON encoded (i.e. backquoted string)
+-- @return The string appropriately escaped.
+
+local escapeList = {
+    ['"']  = '\\"',
+    ['\\'] = '\\\\',
+    ['/']  = '\\/', 
+    ['\b'] = '\\b',
+    ['\f'] = '\\f',
+    ['\n'] = '\\n',
+    ['\r'] = '\\r',
+    ['\t'] = '\\t'
+}
+
+function json_private.encodeString(s)
+ local s = tostring(s)
+ return s:gsub(".", function(c) return escapeList[c] end) -- SoniEx2: 5.0 compat
+end
+
+-- Determines whether the given Lua type is an array or a table / dictionary.
+-- We consider any table an array if it has indexes 1..n for its n items, and no
+-- other data in the table.
+-- I think this method is currently a little 'flaky', but can't think of a good way around it yet...
+-- @param t The table to evaluate as an array
+-- @return boolean, number True if the table can be represented as an array, false otherwise. If true,
+-- the second returned value is the maximum
+-- number of indexed elements in the array. 
+function isArray(t)
+  -- Next we count all the elements, ensuring that any non-indexed elements are not-encodable 
+  -- (with the possible exception of 'n')
+  local maxIndex = 0
+  for k,v in pairs(t) do
+    if (type(k)=='number' and math.floor(k)==k and 1<=k) then	-- k,v is an indexed pair
+      if (not isEncodable(v)) then return false end	-- All array elements must be encodable
+      maxIndex = math.max(maxIndex,k)
+    else
+      if (k=='n') then
+        if v ~= table.getn(t) then return false end  -- False if n does not hold the number of elements
+      else -- Else of (k=='n')
+        if isEncodable(v) then return false end
+      end  -- End of (k~='n')
+    end -- End of k,v not an indexed pair
+  end  -- End of loop across all pairs
+  return true, maxIndex
+end
+
+--- Determines whether the given Lua object / table / variable can be JSON encoded. The only
+-- types that are JSON encodable are: string, boolean, number, nil, table and json.null.
+-- In this implementation, all other types are ignored.
+-- @param o The object to examine.
+-- @return boolean True if the object should be JSON encoded, false if it should be ignored.
+function isEncodable(o)
+  local t = type(o)
+  return (t=='string' or t=='boolean' or t=='number' or t=='nil' or t=='table' or t=='userdata') or (t=='function' and o==null) 
+end
+
+--- Executes a statement returning the serialized result 
+function json.execute(statement)
+  local returned_object = loadstring("return ("..statement..")")()
+  return json.encode(returned_object)  
+end
+
+-- Web utility functions
+web = {}
+function web:escape (s)
+  s = string.gsub(s, "([&=+%c])", function (c)
+        return string.format("%%%02X", string.byte(c))
+      end)
+  s = string.gsub(s, " ", "+")
+  return s
+end
+    
+function web:unescape (s)
+  s = string.gsub(s, "+", " ")
+  s = string.gsub(s, "%%(%x%x)", function (h)
+        return string.char(tonumber(h, 16))
+      end)
+  return s
+end
+$]

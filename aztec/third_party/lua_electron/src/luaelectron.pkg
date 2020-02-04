@@ -1,0 +1,20 @@
+$#include "luaelectron_browser.h"
+
+class ElectronBrowser : public ElectronWindow
+{
+public:  
+  ElectronBrowser(const char *command_line_args = NULL);
+  ~ElectronBrowser();
+  void Execute(const char *script);
+};
+
+
+
+$[
+EventDispatcher = {}
+
+function EventDispatcher.Execute(sender, script)
+  script_function = load("return function(sender, script) "..script.." end")  
+  xpcall(function() script_function()(sender, script) end, debug.traceback);  
+end
+$]
