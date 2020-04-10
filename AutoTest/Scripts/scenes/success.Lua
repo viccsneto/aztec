@@ -10,7 +10,7 @@ function successScene:OnLoad(state)
 	mouse:showCursor()
 	state.Music = Music:new("Assets/Music/success.ogg")
 	state.Music.Repeat = false
-	state.Music:setVolume(2.5)
+	state.Music:setVolume(0.0)
 	
 	state.background = state:addTile(Sprite:new("Assets/Image/success.png"))
       
@@ -20,9 +20,12 @@ function successScene:OnLoad(state)
 		end
 	end
   
-  state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=sdduPpnqre4^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  
   --state.browser:getPlane():setColorBalance(1,1,1,0.9)
-  state.browser.speed = 30
+  state.browser.speed = 5
   state.browser.x_dir = 1
   state.browser.y_dir = 1
   
@@ -32,6 +35,7 @@ function successScene:OnLoad(state)
   state.browser.x_max = 1024 - 800
   state.browser.y_max = 768 - 600
   
+  ---[[
   function state.browser:OnUpdate(sender)    
 		self.Transform.position.x = self.Transform.position.x + self.x_dir * self.speed * engine:getElapsedTime()
     self.Transform.position.y = self.Transform.position.y + self.y_dir * self.speed * engine:getElapsedTime()
@@ -51,7 +55,9 @@ function successScene:OnLoad(state)
       self.y_dir = -1
     end
 	end
+  --]]
   
+  --[[
 	state.label = state:addOverlay(Text:new(255,255,0,"",26))
 	state.label.Transform.position:set(220,300)
 	state.label:setText("Test completed successfully!!! :)")
@@ -59,7 +65,7 @@ function successScene:OnLoad(state)
 	state.infoPanel = state:addOverlay(dofile("scripts/tools/infoPanel.Lua"))
 	state.infoPanel.Transform.position:set(530,20)
 	state.infoPanel.Transform.scale:set(0.8,0.8)
-	
+	--]]
   
   state.warrior = self:addOverlay(dofile("scripts/entities/Warrior.Lua"))
   state.warrior.destiny = {x=250,y=360}
