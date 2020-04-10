@@ -43,11 +43,17 @@ unsigned long ElectronOSUtils::GetPID()
   return _getpid();
 }
 
+bool ElectronOSUtils::KillProcess(unsigned long pid)
+{
+  HANDLE process_handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, true, pid);
+  return TerminateProcess(process_handle, 0);
+}
+
 bool ElectronOSUtils::FileExists(std::string &looking_path)
 {
   struct stat looking_stat;
   if (stat(looking_path.c_str(), &looking_stat) == 0) {
-    return looking_stat.st_mode & _S_IFREG == _S_IFREG;
+    return (looking_stat.st_mode & _S_IFREG) == _S_IFREG;
   }
 
   return false;
@@ -57,7 +63,7 @@ bool ElectronOSUtils::DirectoryExists(std::string &looking_path)
 {
   struct stat looking_stat;
   if (stat(looking_path.c_str(), &looking_stat) == 0) {
-    return looking_stat.st_mode & _S_IFDIR == _S_IFDIR;
+    return (looking_stat.st_mode & _S_IFDIR) == _S_IFDIR;
   }
 
   return false;
@@ -70,10 +76,25 @@ std::string ElectronOSUtils::GetTemporaryFolder()
   return temp;
 }
 
+std::string ElectronOSUtils::RelativeToFullPath(std::string path)
+{
+  char full[_MAX_PATH];
+  if (_fullpath(full, path.c_str(), _MAX_PATH) != nullptr) {
+    return std::string(full);
+  }
+
+  return path;
+}
+
 #else
 std::string ElectronOSUtils::GetTemporaryFolder()
 {
   return "/var/tmp/";
+}
+
+std::string ElectronOSUtils::RelativeToFullPath(std::string path)
+{
+  throw std::logic_error("The method or operation is not implemented.");
 }
 
 unsigned long ElectronOSUtils::GetPID()
@@ -94,6 +115,12 @@ unsigned long ElectronOSUtils::CreateSystemProcess(const char *command)
 {
   //TODO - Implement Posix mechanism
   return 0;
+}
+
+bool ElectronOSUtils::KillProcess(unsigned long pid)
+{
+  //TODO - Implement Posix mechanism
+  return false;
 }
 
 #endif

@@ -1,6 +1,0 @@
-[ERROR] 03/02/2020 23:22:34:LUA: scripts/shields/eletricShield.Lua:5: error in function 'set'.
-     argument #3 is '[no object]'; 'number' expected.
- - <C:\Users\vicente\Desktop\Projects\aztec_nogit\aztec\src\GameStateController.cpp [559]>
-[ERROR] 03/02/2020 23:22:52:LUA: invalid type in variable assignment.
-     value is 'number'; 'Vector2' expected.
- - <C:\Users\vicente\Desktop\Projects\aztec_nogit\aztec\src\GameStateController.cpp [559]>

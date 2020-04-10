@@ -3,7 +3,7 @@ firstScene = dofile("scripts/scenes/first_stage.Lua")
 failScene    = dofile("scripts/scenes/fail.Lua")
 successScene = dofile("scripts/scenes/Success.Lua")
 
-engine:run(firstScene)
+engine:run(successScene)
 shaderCarrousel:release()
 
 

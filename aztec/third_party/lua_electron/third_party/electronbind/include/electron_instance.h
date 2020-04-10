@@ -19,6 +19,10 @@ public:
 private:
   std::shared_ptr<Petunia::Petunia> m_petunia;
   std::string m_instance_id;  
+public:
+  void SetPID(unsigned long electron_pid);
+private:
+  unsigned long m_pid;
 };
 
 

@@ -83,14 +83,14 @@ bool ElectronBind::FindElectron()
   std::vector<std::string> *path_entries = SplitPath(path.c_str());
 
   for (std::vector<std::string>::iterator it = path_entries->begin(); it != path_entries->end(); ++it) {
-    std::string looking_path = *it + m_electron_name;
+    std::string looking_path = ElectronOSUtils::RelativeToFullPath(*it + m_electron_name);
     if (ElectronOSUtils::FileExists(looking_path)) {        
-      m_electron_path = *it;
-      break;
+      m_electron_path = ElectronOSUtils::RelativeToFullPath(*it);
+      return true;
     }
   }
 
-  return true;
+  return false;
 }
 
 std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char *command_line_args)
@@ -105,7 +105,7 @@ std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char
 
   std::string additional_args  = command_line_args ? " " + std::string(command_line_args) : "";
   additional_args              = (additional_args.length() > 1) ? additional_args : "";
-  std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" \"" + m_electron_path + ".\" --channel \"" + instance->GetChannel() + "\" " + additional_args;
+  std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" \"" + m_electron_path + ".\" ---inspect-brk --channel \"" + instance->GetChannel() + "\" " + additional_args;
 
   std::cout << electron_command << std::endl;
   unsigned long electron_pid = ElectronOSUtils::CreateSystemProcess(electron_command.c_str());
@@ -115,7 +115,8 @@ std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char
   else {
     throw(new ElectronBind::Exception(std::string("Electron launch command failed: " + electron_command).c_str()));
   }
-    
+
+  instance->SetPID(electron_pid);
   return instance;
 }
 

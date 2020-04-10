@@ -926,7 +926,9 @@ int CppSQLite3Statement::execDML()
   else {
     nRet    = sqlite3_reset(mpVM);
     szError = sqlite3_errmsg(mpDB);
-    throw CppSQLite3Exception(nRet, (char *)szError, DONT_DELETE_MSG);
+    if (strcmp(szError, "not an error") != 0) {
+      throw CppSQLite3Exception(nRet, (char *)szError, DONT_DELETE_MSG);
+    }
   }
 }
 

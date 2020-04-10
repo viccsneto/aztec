@@ -30,7 +30,7 @@ namespace Aztec
     RESTexture *texture = ResourceManager::createTexture(width, height, NULL);
     m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
     m_plane = new Plane(Shader::getDefaultShader(), width, height, m_texture);
-    m_browser = new ElectronBrowser((std::string("--url ") + url).c_str());
+    m_browser = new ElectronBrowser((std::string("--url \"") + url +"\"").c_str());
     m_browser->RemoveListener("execute");
 
     m_browser->AddListener("execute", [&](std::shared_ptr<Petunia::Message> message) {
@@ -270,7 +270,9 @@ namespace Aztec
     }
     drawChildren();
     endClipRect();
-    m_browser->SendMessage(std::make_shared<Petunia::Message>("ready", "ready"));
+    auto message = std::make_shared<Petunia::Message>("ready", "ready");
+    //message->SetOverwriteMode(true);
+    m_browser->SendMessage(message);
   }
 
   void WebBrowser::setAlwaysFocused(bool value)

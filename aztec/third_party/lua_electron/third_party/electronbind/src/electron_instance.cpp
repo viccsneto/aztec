@@ -1,7 +1,7 @@
 #include "electron_instance.h"
 #include "electron_message.h"
 #include "electron_osutils.h"
-#include <petunia/ipc_medium_default.h>
+#include <petunia/ipc_medium_nanomsg.h>
 #include <list>
 #include <iostream>
 #include <assert.h>
@@ -9,18 +9,19 @@
 
 ElectronInstance::ElectronInstance(std::string instance_id)
   :m_instance_id(instance_id)
+  ,m_pid(0)
 {
   Connect();
 }
 
 void ElectronInstance::Connect()
 {  
-  m_petunia = std::make_shared<Petunia::Petunia>(new Petunia::IPCMediumDefault(m_instance_id, Petunia::ConnectionRole::Client));
+  m_petunia = std::make_shared<Petunia::Petunia>(new Petunia::IPCMediumNanomsg(m_instance_id, Petunia::ConnectionRole::Client));
 }
 
 ElectronInstance::~ElectronInstance()
 {
-  
+  ElectronOSUtils::KillProcess(m_pid);
 }
 
 std::string ElectronInstance::GetID()
@@ -46,5 +47,10 @@ void ElectronInstance::AddListener(std::string name, std::function<void(std::sha
 bool ElectronInstance::RemoveListeners(std::string listener_name) const
 {
   return m_petunia->RemoveListeners(listener_name);
+}
+
+void ElectronInstance::SetPID(unsigned long electron_pid)
+{
+  m_pid = electron_pid;
 }
 

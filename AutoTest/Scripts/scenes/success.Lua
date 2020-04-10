@@ -10,14 +10,46 @@ function successScene:OnLoad(state)
 	mouse:showCursor()
 	state.Music = Music:new("Assets/Music/success.ogg")
 	state.Music.Repeat = false
-	state.Music:setVolume(10)
+	state.Music:setVolume(2.5)
 	
 	state.background = state:addTile(Sprite:new("Assets/Image/success.png"))
-    
+      
 	function state.background:OnUpdate(sender)
 		if(keyboard:keyIsDown(Keyboard.KEY_ESCAPE)) then
 			engine:requestShutdown()
 		end
+	end
+  
+  state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  --state.browser:getPlane():setColorBalance(1,1,1,0.9)
+  state.browser.speed = 30
+  state.browser.x_dir = 1
+  state.browser.y_dir = 1
+  
+  state.browser.x_min = 0
+  state.browser.y_min = 0
+  
+  state.browser.x_max = 1024 - 800
+  state.browser.y_max = 768 - 600
+  
+  function state.browser:OnUpdate(sender)    
+		self.Transform.position.x = self.Transform.position.x + self.x_dir * self.speed * engine:getElapsedTime()
+    self.Transform.position.y = self.Transform.position.y + self.y_dir * self.speed * engine:getElapsedTime()
+    if (self.Transform.position.x < self.x_min) then
+      self.Transform.position.x = self.x_min
+      self.x_dir = 1
+    elseif (self.Transform.position.x > self.x_max) then
+      self.Transform.position.x = self.x_max
+      self.x_dir = -1
+    end
+    
+    if (self.Transform.position.y < self.y_min) then
+      self.Transform.position.y = self.y_min
+      self.y_dir = 1
+    elseif (self.Transform.position.y > self.y_max) then
+      self.Transform.position.y = self.y_max
+      self.y_dir = -1
+    end
 	end
   
 	state.label = state:addOverlay(Text:new(255,255,0,"",26))
