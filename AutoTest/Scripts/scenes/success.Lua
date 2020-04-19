@@ -76,7 +76,7 @@ function successScene:OnLoad(state)
       sender.Transform.position:set(mouse:getPosX(),mouse:getPosY())
     end
     if (mouse:isLeftButtonPressed()) then
-      sender:fire1()
+      --sender:fire1()
     end
   end
 	
