@@ -146,24 +146,27 @@ namespace Aztec {
   int Keyboard::getModifiers(bool &extended)
   {
     int modifiers = 0;
-#if 0
 
-    if (keyIsDown(KEY_LSHIFT))
-    { modifiers |= EVENTFLAG_SHIFT_DOWN | EVENTFLAG_IS_LEFT; }
-    if (keyIsDown(KEY_LCTRL))
-    { modifiers |= EVENTFLAG_CONTROL_DOWN | EVENTFLAG_IS_LEFT; }
-    if (keyIsDown(KEY_LALT))
-    { modifiers |= EVENTFLAG_ALT_DOWN | EVENTFLAG_IS_LEFT; }
+    if (keyIsDown(KEY_LSHIFT)) { 
+      modifiers |= KEY_LSHIFT; 
+    }
+    if (keyIsDown(KEY_LCTRL)) { 
+      modifiers |= KEY_LCTRL;
+    }
+    if (keyIsDown(KEY_LALT)) {
+      modifiers |= KEY_LALT; 
+    }
 
-    if (keyIsDown(KEY_RSHIFT))
-    { modifiers |= EVENTFLAG_SHIFT_DOWN | EVENTFLAG_IS_RIGHT; }
-    if (keyIsDown(KEY_RCTRL))
-    { modifiers |= EVENTFLAG_CONTROL_DOWN | EVENTFLAG_IS_RIGHT; }
-    if (keyIsDown(KEY_RALT))
-    { modifiers |= EVENTFLAG_ALT_DOWN | EVENTFLAG_IS_RIGHT; }
+    if (keyIsDown(KEY_RSHIFT)) {
+      modifiers |= KEY_RSHIFT;
+    }
+    if (keyIsDown(KEY_RCTRL)) {
+      modifiers |= KEY_RCTRL;
+    }
+    if (keyIsDown(KEY_RALT)) {
+      modifiers |= KEY_RALT;
+    }
 
-    extended = extended || ((modifiers & EVENTFLAG_CONTROL_DOWN) == EVENTFLAG_CONTROL_DOWN);
-#endif
     return modifiers;
   }
 
@@ -174,6 +177,7 @@ namespace Aztec {
     if (_keyBuffer.size() > 0) {
       key = _keyBuffer.back();
       _keyBuffer.pop_back();
+#if 0
       if (!key.is_character) {
         switch (key.code) {
           case Keyboard::KEY_LEFT:
@@ -220,6 +224,7 @@ namespace Aztec {
             break;
         }
       }
+#endif
     }
     return key;
   }

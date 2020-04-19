@@ -60,6 +60,7 @@ set(AZTEC_SOURCE
   "src/VertexArrayObject.cpp"
   "src/VertexBufferObject.cpp"
   "src/WebBrowser.cpp"
+  "src/json.hpp"
 )
 
 set(AZTEC_INCLUDE

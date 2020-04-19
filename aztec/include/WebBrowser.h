@@ -142,7 +142,7 @@ namespace Aztec {
     *
     * Redirects user input(focus, mouse and keyboard) to the browser instance
     */
-    void step();
+    void step();    
 
     /**
     * Draw
@@ -175,12 +175,22 @@ namespace Aztec {
     */
     Plane *getPlane();
 
-
-    
-
   private:
     void UpdateTexture();
-    void     Initialize(const char *url, int width, int height, bool transparent);
+    void Initialize(const char *url, int width, int height, bool transparent);
+    void HandleMouseInputEvents();
+
+    void Blur();
+
+    void HandleMouseWheel();
+    void HandleMouseMovement(int x, int y);
+    void HandleMouseClicks(int x, int y);
+
+    void Focus();
+
+    bool hasFocus();
+    std::string TranslateKeyCode(int code);
+  private:
     Sensor * m_sensor;
     Plane *  m_plane;
     Texture *m_texture;
@@ -193,5 +203,6 @@ namespace Aztec {
     double m_last_click_time;
     bool   m_was_previously_focused;
     bool   m_always_focused;
+    bool   m_has_focus;
   };
 } // namespace Aztec

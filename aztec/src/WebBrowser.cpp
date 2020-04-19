@@ -2,8 +2,9 @@
 #include "GameEngine.h"
 #include "ResourceManager.h"
 #include "Shader.h"
+#include "json.hpp"
 
-#define CEF_DOUBLE_CLICK_INTERVAL 0.250f
+#define MOUSE_DOUBLE_CLICK_INTERVAL 0.150f
 namespace Aztec
 {
   WebBrowser::WebBrowser(const char *url, int width, int height, bool transparent)
@@ -22,6 +23,7 @@ namespace Aztec
     m_last_click_time = 0;
     m_was_previously_focused = false;
     m_always_focused = false;
+    m_has_focus = false;
     m_painted = false;
     m_width = width;
     m_height = height;
@@ -132,123 +134,53 @@ namespace Aztec
     }
 
     UpdateTexture();
+    
+    HandleMouseInputEvents();
 
-    bool extended = false;
-    int modifiers = GameEngine::getInstance()->getKeyboard()->getModifiers(extended);
-    int x = GameEngine::getInstance()->getMouse()->getPosX() - getGlobalTransform().position.x;
-    int y = GameEngine::getInstance()->getMouse()->getPosY() - getGlobalTransform().position.y;
-
-    static bool has_focus = false;
-
-    if (mouseOver) {
-      if (GameEngine::getInstance()->getMouse()->LeftButtonJustPressed()) {
-
-        if (!m_was_previously_focused) {
-          GameEngine::getInstance()->getKeyboard()->cleanBuffer();
-          m_browser->Execute("mainWindow.focusOnWebView();");
-          has_focus = true;
-        }
-
-        int count = 1;
-        double click_interval = (GameEngine::getInstance()->getCurrentTime() - m_last_click_time);
-        if (click_interval < CEF_DOUBLE_CLICK_INTERVAL) {
-          count++;
-        }
-
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseDown\", \"button\": \"left\", \"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) +
-                             ",\"clickCount\":" + std::to_string(count) + "})";
-        m_browser->Execute(script.c_str());        
-      }
-
-      if (GameEngine::getInstance()->getMouse()->LeftButtonJustReleased()) {
-        std::string script =
-            "mainWindow.webContents.sendInputEvent({\"type\":\"mouseUp\", \"button\": \"left\", \"x\": " + std::to_string(x) + ",\"y\": " + std::to_string(y) + "})";
-        m_browser->Execute(script.c_str());
-        m_last_click_time = GameEngine::getInstance()->getCurrentTime();
-      }
-
-      if (GameEngine::getInstance()->getMouse()->hasMovement) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseMove\", \"x\": " + std::to_string(x) + ",\"y\": " + std::to_string(y) + " })";
-        m_browser->Execute(script.c_str());
-      }
-
-      if (GameEngine::getInstance()->getMouse()->RightButtonJustPressed()) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseDown\", \"button\": \"right\", \"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) +
-          ",\"clickCount\":1})";
-        m_browser->Execute(script.c_str());
-      }
-      
-      else if (GameEngine::getInstance()->getMouse()->RightButtonJustReleased()) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseUp\", \"button\": \"right\", \"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) +
-          ",\"clickCount\":1})";
-        m_browser->Execute(script.c_str());
-      }
-
-      if (GameEngine::getInstance()->getMouse()->MiddleButtonJustPressed()) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseDown\", \"button\": \"middle\", \"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) +
-          ",\"clickCount\":1})";
-        m_browser->Execute(script.c_str());
-      }
-
-      else if (GameEngine::getInstance()->getMouse()->MiddleButtonJustReleased()) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"mouseUp\", \"button\": \"middle\", \"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) +
-          ",\"clickCount\":1})";
-        m_browser->Execute(script.c_str());
-      }
-      
-      if (GameEngine::getInstance()->getMouse()->hasWheel) {
-        std::string script = "mainWindow.webContents.sendInputEvent("
-          "{\"type\":\"mouseWheel\","
-          "\"x\":0,"
-          "\"y\":0,"
-          "\"deltaX\":" + std::to_string((int)GameEngine::getInstance()->getMouse()->getScrolledX()) + ","
-          "\"deltaY\":" + std::to_string((int)GameEngine::getInstance()->getMouse()->getScrolledY()) +
-          "})";
-        
-        m_browser->Execute(script.c_str());
-      }
-   
-    } else {
-      if (has_focus) {
-        if (!m_always_focused) {
-          m_browser->Execute("mainWindow.blur();");
-          m_was_previously_focused = false;
-          has_focus = false;
-        }
-      }
-
+    if (hasFocus()) {
+      Focus();
     }
-    /*
-        if (has_focus || m_always_focused) {
 
-          if (!m_was_previously_focused) {
-              m_browser->GetHost()->SendFocusEvent(true);
-            m_was_previously_focused = true;
-          }
+    bool extended = true;
+    int modifiers = GameEngine::getInstance()->getKeyboard()->getModifiers(extended);
 
-          while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
-            CefKeyEvent event;
+    while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
+      Keyboard::Key key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
 
-            Keyboard::Key key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
-
-            event.windows_key_code = key.code;
-            event.native_key_code = key.code;
-            event.unmodified_character = key.code;
-            event.modifiers = modifiers;
-
-            if (key.release_event)
-                event.type = KEYEVENT_KEYUP;
-            else {
-              if (key.is_character) {
-                event.character = key.code;
-                event.type = KEYEVENT_CHAR;
-              } else
-                event.type = KEYEVENT_RAWKEYDOWN;
-            }
-            m_browser->GetHost()->SendKeyEvent(event);
-          }
+      bool ctrl_pressed = (modifiers & Aztec::Keyboard::KEY_LCTRL) == Aztec::Keyboard::KEY_LCTRL || (modifiers & Aztec::Keyboard::KEY_RCTRL) == Aztec::Keyboard::KEY_RCTRL;
+      bool shift_pressed = (modifiers & Aztec::Keyboard::KEY_LSHIFT) == Aztec::Keyboard::KEY_LSHIFT || (modifiers & Aztec::Keyboard::KEY_RSHIFT) == Aztec::Keyboard::KEY_RSHIFT;
+      bool alt_pressed = (modifiers & Aztec::Keyboard::KEY_LALT) == Aztec::Keyboard::KEY_LALT || (modifiers & Aztec::Keyboard::KEY_RALT) == Aztec::Keyboard::KEY_RALT;
+      std::string key_code = TranslateKeyCode(key.code);
+     
+      nlohmann::json key_event{
+        {"keyCode", key_code },
+        {"ctrlKey", ctrl_pressed},
+        {"shiftKey", shift_pressed},
+        {"altKey", alt_pressed},
+      };
+            
+      if (key.release_event) {
+        key_event["type"] = "keyUp";
+      }
+      else {
+        if (key.is_character) {          
+          key_event["type"] = "char";          
         }
-      */
+        else {
+          key_event["type"] = "keyDown";
+        }
+      }
+
+      std::string script =
+        "mainWindow.webContents.sendInputEvent(" +
+        key_event.dump() +
+        ");";
+
+      std::cout << "Executing: " << script << std::endl;
+      m_browser->Execute(script);
+
+     
+    }      
   }
 
   void WebBrowser::draw()
@@ -323,6 +255,230 @@ namespace Aztec
   Shader *WebBrowser::setShader(Shader *shader)
   {
     return m_plane->setShader(shader);
+  }
+
+  void WebBrowser::HandleMouseInputEvents()
+  {
+    int x = GameEngine::getInstance()->getMouse()->getPosX() - getGlobalTransform().position.x;
+    int y = GameEngine::getInstance()->getMouse()->getPosY() - getGlobalTransform().position.y;
+    
+    if (mouseOver) {
+      HandleMouseClicks(x, y);
+      HandleMouseMovement(x, y);
+      HandleMouseWheel();
+
+    }
+    else {
+      Blur();
+
+    }
+  }
+
+  void WebBrowser::HandleMouseClicks(int x, int y)
+  {
+    if (GameEngine::getInstance()->getMouse()->LeftButtonJustPressed()) {
+      if (!m_was_previously_focused) {
+        GameEngine::getInstance()->getKeyboard()->cleanBuffer();
+        Focus();
+
+      }
+
+      int click_count = 1;
+      double click_interval = (GameEngine::getInstance()->getCurrentTime() - m_last_click_time);
+      if (click_interval < MOUSE_DOUBLE_CLICK_INTERVAL) {
+        click_count++;
+      }
+
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseDown"},
+          {"button", "left"},
+          {"x", x},
+          {"y", y},
+          {"clickCount", click_count},
+        }.dump() +
+        ");"
+      );
+    }
+
+    if (GameEngine::getInstance()->getMouse()->LeftButtonJustReleased()) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseUp"},
+          {"button", "left"},
+          {"x", x},
+          {"y", y}
+        }.dump() +
+        ");"
+      );
+      m_last_click_time = GameEngine::getInstance()->getCurrentTime();
+    }
+
+    if (GameEngine::getInstance()->getMouse()->RightButtonJustPressed()) {      
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseDown"},
+          {"button", "right"},
+          {"x", x},
+          {"y", y},
+          
+        }.dump() +
+        ");"
+      );
+    }
+
+    if (GameEngine::getInstance()->getMouse()->RightButtonJustReleased()) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseUp"},
+          {"button", "right"},
+          {"x", x},
+          {"y", y}
+        }.dump() +
+        ");"
+      );
+      m_last_click_time = GameEngine::getInstance()->getCurrentTime();
+    }
+
+    if (GameEngine::getInstance()->getMouse()->MiddleButtonJustPressed()) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseDown"},
+          {"button", "middle"},
+          {"x", x},
+          {"y", y},
+          {"clickCount", 1},
+        }.dump() +
+        ");"
+      );
+    }
+
+    if (GameEngine::getInstance()->getMouse()->MiddleButtonJustReleased()) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseUp"},
+          {"button", "middle"},
+          {"x", x},
+          {"y", y}
+        }.dump() +
+        ");"
+      );
+      m_last_click_time = GameEngine::getInstance()->getCurrentTime();
+    }
+  }
+
+  void WebBrowser::Focus()
+  {
+    m_browser->Execute("mainWindow.focus();");
+    m_has_focus = true;
+  }
+
+  bool WebBrowser::hasFocus()
+  {
+    return m_has_focus || m_always_focused;
+  }
+
+  void WebBrowser::HandleMouseMovement(int x, int y)
+  {
+    if (GameEngine::getInstance()->getMouse()->hasMovement) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseMove"},
+          {"x", x},
+          {"y", y}
+        }.dump() +
+        ");"
+      );
+    }
+  }
+
+  void WebBrowser::HandleMouseWheel()
+  {
+    if (GameEngine::getInstance()->getMouse()->hasWheel) {
+      m_browser->Execute(
+        "mainWindow.webContents.sendInputEvent(" +
+        nlohmann::json{
+          {"type", "mouseWheel"},
+          {"x", 0},
+          {"y", 0},
+          {"deltaX", GameEngine::getInstance()->getMouse()->getScrolledX()},
+          {"deltaY", GameEngine::getInstance()->getMouse()->getScrolledY()}
+        }.dump() +
+        ");"
+      );
+    }
+  }
+
+  void WebBrowser::Blur()
+  {
+    if (m_has_focus) {
+      if (!m_always_focused) {
+        m_browser->Execute("mainWindow.blur();");
+        m_was_previously_focused = false;
+        m_has_focus = false;
+      }
+    }
+  }
+
+  std::string WebBrowser::TranslateKeyCode(int code)
+  {
+    std::string key_code = "";
+    bool is_alphanumeric = code >= 0 && code <= 255 && std::isalnum(code);
+
+    if (is_alphanumeric) {
+      key_code = " ";
+      key_code[0] = code;
+    }
+    else {
+      if (code == Aztec::Keyboard::KEY_BACKSPACE) {
+        key_code = "Backspace";
+      }
+      else if (code == Aztec::Keyboard::KEY_DELETE) {
+        key_code = "Delete";
+      }
+      else if (code == Aztec::Keyboard::KEY_UP) {
+        key_code = "Up";
+      }
+      else if (code == Aztec::Keyboard::KEY_DOWN) {
+        key_code = "Down";
+      }
+      else if (code == Aztec::Keyboard::KEY_LEFT) {
+        key_code = "Left";
+      }
+      else if (code == Aztec::Keyboard::KEY_RIGHT) {
+        key_code = "Right";
+      }
+      else if (code == Aztec::Keyboard::KEY_RETURN) {
+        key_code = "Return";
+      }
+      else if (code == Aztec::Keyboard::KEY_PAGEUP) {
+        key_code = "PageUp";
+      }
+      else if (code == Aztec::Keyboard::KEY_PAGEDOWN) {
+        key_code = "PageDown";
+      }
+      else if (code == Aztec::Keyboard::KEY_HOME) {
+        key_code = "Home";
+      }
+      else if (code == Aztec::Keyboard::KEY_END) {
+        key_code = "End";
+      }
+      else if (code == Aztec::Keyboard::KEY_ESCAPE) {
+        key_code = "Escape";
+      }
+      else if (code == Aztec::Keyboard::KEY_TAB) {
+        key_code = "Tab";
+      }
+    }
+
+    return key_code;
   }
 
 } // namespace Aztec

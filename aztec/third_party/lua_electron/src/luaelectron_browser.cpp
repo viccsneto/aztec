@@ -1,5 +1,7 @@
 #include "luaelectron_browser.h"
 #include <tolua.h>
+#include <iostream>
+
 ElectronBrowser::ElectronBrowser(const char *command_line_args)
 :ElectronWindow(command_line_args)
 ,m_luastate(NULL)
@@ -19,6 +21,11 @@ ElectronBrowser::ElectronBrowser(const char *command_line_args)
       lua_pop(m_luastate, 1);
     }
   });
+}
+
+void ElectronBrowser::Execute(std::string& script)
+{  
+  SendMessage(std::make_shared<Petunia::Message>("execute", std::make_shared<std::string>(script)));
 }
 
 void ElectronBrowser::Execute(const char *script)

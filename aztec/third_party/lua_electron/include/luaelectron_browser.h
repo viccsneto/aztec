@@ -4,6 +4,7 @@ class ElectronBrowser : public ElectronWindow
 {
 public:
   ElectronBrowser(const char *command_line_args = NULL);
+  void Execute(std::string& script);
   void Execute(const char *script);
   void SetLuaState(lua_State *state);
   ~ElectronBrowser();
