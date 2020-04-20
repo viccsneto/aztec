@@ -142,44 +142,62 @@ namespace Aztec
     }
 
     bool extended = true;
-    int modifiers = GameEngine::getInstance()->getKeyboard()->getModifiers(extended);
+    
 
     while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
-      Keyboard::Key key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
+      Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
 
-      bool ctrl_pressed = (modifiers & Aztec::Keyboard::KEY_LCTRL) == Aztec::Keyboard::KEY_LCTRL || (modifiers & Aztec::Keyboard::KEY_RCTRL) == Aztec::Keyboard::KEY_RCTRL;
-      bool shift_pressed = (modifiers & Aztec::Keyboard::KEY_LSHIFT) == Aztec::Keyboard::KEY_LSHIFT || (modifiers & Aztec::Keyboard::KEY_RSHIFT) == Aztec::Keyboard::KEY_RSHIFT;
-      bool alt_pressed = (modifiers & Aztec::Keyboard::KEY_LALT) == Aztec::Keyboard::KEY_LALT || (modifiers & Aztec::Keyboard::KEY_RALT) == Aztec::Keyboard::KEY_RALT;
-      std::string key_code = TranslateKeyCode(key.code);
+      bool ctrl_pressed = pressed_key.control;
+      bool shift_pressed = pressed_key.shift;
+      bool alt_pressed = pressed_key.alt;
+      std::string code = TranslateKeyCode(pressed_key.code);
+      std::string key = code;
      
+      if (key.find("Left") != std::string::npos) {
+        key = key.substr(0, key.size() - 4);
+      }
+      else if (key.find("Right") != std::string::npos) {
+        key = key.substr(0, key.size() - 5);
+      }
+      
+      std::vector<std::string> modifiers;
+      
+      if (ctrl_pressed) {
+        modifiers.push_back("control");
+      }
+
+      if (shift_pressed) {
+        modifiers.push_back("shift");
+      }
+
+      if (alt_pressed) {
+        modifiers.push_back("alt");
+      }
+
       nlohmann::json key_event{
-        {"keyCode", key_code },
-        {"ctrlKey", ctrl_pressed},
-        {"shiftKey", shift_pressed},
-        {"altKey", alt_pressed},
+        {"keyCode", code },
+       {"modifiers", modifiers}
       };
-            
-      if (key.release_event) {
+
+      if (pressed_key.released) {
         key_event["type"] = "keyUp";
       }
       else {
-        if (key.is_character) {          
-          key_event["type"] = "char";          
-        }
+        if (pressed_key.is_character) {
+          key_event["type"] = "char";
+        }  
         else {
           key_event["type"] = "keyDown";
         }
       }
-
+      
+      std::string str_key_event = key_event.dump(2, ' ');
       std::string script =
         "mainWindow.webContents.sendInputEvent(" +
-        key_event.dump() +
+         str_key_event +
         ");";
-
-      std::cout << "Executing: " << script << std::endl;
-      m_browser->Execute(script);
-
      
+      m_browser->Execute(script);
     }      
   }
 
@@ -430,14 +448,20 @@ namespace Aztec
   std::string WebBrowser::TranslateKeyCode(int code)
   {
     std::string key_code = "";
-    bool is_alphanumeric = code >= 0 && code <= 255 && std::isalnum(code);
+    bool is_printable = code >= 0 && code <= 255 && !std::iscntrl(code);
 
-    if (is_alphanumeric) {
+    if (is_printable) {
       key_code = " ";
       key_code[0] = code;
     }
     else {
-      if (code == Aztec::Keyboard::KEY_BACKSPACE) {
+      if (code == Aztec::Keyboard::KEY_SPACE) {
+        key_code = "Space";
+      }
+      else if (code == Aztec::Keyboard::KEY_INSERT) {
+        key_code = "Insert";
+      }
+      else if (code == Aztec::Keyboard::KEY_BACKSPACE) {
         key_code = "Backspace";
       }
       else if (code == Aztec::Keyboard::KEY_DELETE) {
@@ -455,8 +479,8 @@ namespace Aztec
       else if (code == Aztec::Keyboard::KEY_RIGHT) {
         key_code = "Right";
       }
-      else if (code == Aztec::Keyboard::KEY_RETURN) {
-        key_code = "Return";
+      else if (code == Aztec::Keyboard::KEY_RETURN || code == Aztec::Keyboard::KEY_ENTER) {
+        key_code = "Enter";
       }
       else if (code == Aztec::Keyboard::KEY_PAGEUP) {
         key_code = "PageUp";
@@ -471,10 +495,19 @@ namespace Aztec
         key_code = "End";
       }
       else if (code == Aztec::Keyboard::KEY_ESCAPE) {
-        key_code = "Escape";
+        key_code = "Esc";
       }
       else if (code == Aztec::Keyboard::KEY_TAB) {
         key_code = "Tab";
+      }
+      else if (code == Aztec::Keyboard::KEY_LSHIFT) {
+        key_code = "ShiftLeft";
+      }
+      else if (code == Aztec::Keyboard::KEY_LCTRL) {
+        key_code = "ControlLeft";
+      }
+      else if (code == Aztec::Keyboard::KEY_LALT) {
+        key_code = "AltLeft";
       }
     }
 

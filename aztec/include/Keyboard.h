@@ -23,18 +23,27 @@ namespace Aztec {
     public:
       int  code;
       bool is_character;
-      bool release_event;
+      bool released;
+      bool shift;
+      bool alt;
+      bool control;
       Key()
       {
         code          = 0;
         is_character  = false;
-        release_event = false;
+        released      = false;
+        shift = false;
+        alt = false;
+        control = false;
       }
-      Key(int k, bool is_char, bool released)
+      Key(int code, bool is_character, bool released, bool shift, bool alt, bool control)
       {
-        code          = k;
-        is_character  = is_char;
-        release_event = released;
+        this->code          = code;
+        this->is_character  = is_character;
+        this->released = released;
+        this->shift = shift;
+        this->alt = alt;
+        this->control = control;
       }
     };
     Keyboard();

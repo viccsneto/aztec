@@ -9,6 +9,7 @@
 #include "GameEngine.h"
 #include "Config.h"
 #include "EventDispatcher.h"
+#include "Keyboard.h"
 #include "DebugDraw.h"
 #include <electron_bind.h>
 #include <luaelectron_bind.h>
@@ -37,24 +38,26 @@ namespace Aztec {
 
   static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
   {
+    auto keyboard = GameEngine::getInstance()->getKeyboard();
     if (action == GLFW_PRESS || action == GLFW_REPEAT) {
       GameEngine::getInstance()->getKeyboard()->keyPressed(key);
       EventDispatcher::doKeyDown(key);
       if (key == GLFW_KEY_PERIOD || key == GLFW_KEY_MINUS)
         return;
-      GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(key, false, false));
+      keyboard->putOnKeyboardBuffer(Keyboard::Key(key, false, false, keyboard->keyIsDown(Aztec::Keyboard::KEY_LSHIFT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LALT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LCTRL)));
     }
     else if (action == GLFW_RELEASE) {
       GameEngine::getInstance()->getKeyboard()->keyReleased(key);
       EventDispatcher::doKeyUp(key);
-      GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(key, false, true));
+      GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(key, false, true, keyboard->keyIsDown(Aztec::Keyboard::KEY_LSHIFT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LALT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LCTRL)));
     }
   }
 
   static void character_callback(GLFWwindow *window, unsigned int codepoint)
   {
-    GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(codepoint, true, false));
-    GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(codepoint, true, true));
+    auto keyboard = GameEngine::getInstance()->getKeyboard();
+    GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(codepoint, true, false, keyboard->keyIsDown(Aztec::Keyboard::KEY_LSHIFT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LALT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LCTRL)));
+    GameEngine::getInstance()->getKeyboard()->putOnKeyboardBuffer(Keyboard::Key(codepoint, true, true, keyboard->keyIsDown(Aztec::Keyboard::KEY_LSHIFT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LALT), keyboard->keyIsDown(Aztec::Keyboard::KEY_LCTRL)));
   }
 
   static void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
