@@ -32,7 +32,15 @@ namespace Aztec
     RESTexture *texture = ResourceManager::createTexture(width, height, NULL);
     m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
     m_plane = new Plane(Shader::getDefaultShader(), width, height, m_texture);
-    m_browser = new ElectronBrowser((std::string("--url \"") + url +"\"").c_str());
+
+    std::string full_parameters =
+      " --width " + std::to_string(width) +
+      " --height " + std::to_string(height) +
+      (transparent ? " --transparent" : "") +
+      " --offscreen" +      
+      " --url \"" + url + "\"";
+
+    m_browser = new ElectronBrowser(full_parameters.c_str());
     m_browser->RemoveListener("execute");
 
     m_browser->AddListener("execute", [&](std::shared_ptr<Petunia::Message> message) {
@@ -176,7 +184,7 @@ namespace Aztec
 
       nlohmann::json key_event{
         {"keyCode", code },
-       {"modifiers", modifiers}
+        {"modifiers", modifiers}
       };
 
       if (pressed_key.released) {

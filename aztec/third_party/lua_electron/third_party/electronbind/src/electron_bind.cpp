@@ -105,9 +105,11 @@ std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char
 
   std::string additional_args  = command_line_args ? " " + std::string(command_line_args) : "";
   additional_args              = (additional_args.length() > 1) ? additional_args : "";
-  std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" \"" + m_electron_path + ".\" ---inspect-brk --channel \"" + instance->GetChannel() + "\" " + additional_args;
-
-  std::cout << electron_command << std::endl;
+  std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" "+
+    "\"" + m_electron_path + ".\" " +
+    "--channel \"" + instance->GetChannel() + "\" "
+    + additional_args;
+  
   unsigned long electron_pid = ElectronOSUtils::CreateSystemProcess(electron_command.c_str());
   if (electron_pid != 0) {
     m_browser_count++;

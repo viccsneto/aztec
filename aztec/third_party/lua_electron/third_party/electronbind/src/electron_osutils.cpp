@@ -2,6 +2,7 @@
 #include <chrono>
 #include <ratio>
 #include <sys/stat.h>
+
 #ifdef _WIN32
 # include <windows.h>
 # include <process.h>
@@ -19,6 +20,8 @@ unsigned long long ElectronOSUtils::GetTimeMilliseconds()
 #ifdef _WIN32
 unsigned long ElectronOSUtils::CreateSystemProcess(const char *command)
 {
+  std::string encoded_command = EncodeCommandLineArguments(command).c_str();
+
   STARTUPINFO         si;
   PROCESS_INFORMATION pi;
 
@@ -30,7 +33,7 @@ unsigned long ElectronOSUtils::CreateSystemProcess(const char *command)
   char current_directory[4096];
   GetCurrentDirectory(4096, current_directory);
 
-  if (!CreateProcess(NULL, (LPSTR)(char *)command, NULL, NULL, TRUE, 0, NULL, (LPSTR)(char *)current_directory,
+  if (!CreateProcess(NULL, (LPSTR)(char *)encoded_command.c_str(), NULL, NULL, TRUE, 0, NULL, (LPSTR)(char *)current_directory,
                      &si, // Pointer to STARTUPINFO structure
                      &pi)) {
     return 0;
@@ -86,7 +89,44 @@ std::string ElectronOSUtils::RelativeToFullPath(std::string path)
   return path;
 }
 
+std::string ElectronOSUtils::EncodeCommandLineArguments(const char * command)
+{
+  std::string new_command = "";
+  size_t size = strlen(command);
+  for (size_t i = 0; i < size; ++i) {
+    if (command[i] == '&') {
+      new_command += "^&";
+    }    
+    else if (command[i] == '"' && (i > 0 && i < size -1) && command[i - 1] != ' ' && command[i + 1] != ' ') { 
+      new_command += "''";
+    }
+    else {
+      new_command += command[i];
+    }
+  }
+
+  return new_command;
+}
+
 #else
+std::string ElectronOSUtils::EncodeCommandLineArguments(const char * command)
+{
+  std::string new_command = "";
+  size_t size = strlen(command);
+  for (size_t i = 0; i < size; ++i) {
+    if (command[i] == '&') {
+      new_command += "\\&";
+    }
+    else if (command[i] == '"' && (i > 0 && i < size - 1) && command[i - 1] != ' ' && command[i + 1] != ' ') {
+      new_command += "''";
+    }
+    else {
+      new_command += command[i];
+    }
+  }
+
+  return new_command;
+}
 std::string ElectronOSUtils::GetTemporaryFolder()
 {
   return "/var/tmp/";

@@ -11,4 +11,6 @@ class ElectronOSUtils
     static bool DirectoryExists(std::string& looking_path);
     static std::string        GetTemporaryFolder();
     static std::string RelativeToFullPath(std::string path);
+private:
+  static std::string EncodeCommandLineArguments(const char * command);
 };

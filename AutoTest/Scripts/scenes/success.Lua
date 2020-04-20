@@ -20,9 +20,8 @@ function successScene:OnLoad(state)
 		end
 	end
   
-  --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
-  --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=sdduPpnqre4^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
-  state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s^&feature=youtu.be^&t=0  --opt {''webPreferences'':{''offscreen'':true},''width'':800,''height'':600}", 800, 600, true))  
+  --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc&feature=youtu.be&t=0", 800, 600, true))
+  state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
   
   --state.browser:getPlane():setColorBalance(1,1,1,0.9)
   state.browser.speed = 5
