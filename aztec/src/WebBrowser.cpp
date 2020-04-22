@@ -154,59 +154,15 @@ namespace Aztec
 
     while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
       Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
-
-      bool ctrl_pressed = pressed_key.control;
-      bool shift_pressed = pressed_key.shift;
-      bool alt_pressed = pressed_key.alt;
-      std::string code = TranslateKeyCode(pressed_key.code);
-      std::string key = code;
      
-      if (key.find("Left") != std::string::npos) {
-        key = key.substr(0, key.size() - 4);
-      }
-      else if (key.find("Right") != std::string::npos) {
-        key = key.substr(0, key.size() - 5);
-      }
-      
-      std::vector<std::string> modifiers;
-      
-      if (ctrl_pressed) {
-        modifiers.push_back("control");
-      }
-
-      if (shift_pressed) {
-        modifiers.push_back("shift");
-      }
-
-      if (alt_pressed) {
-        modifiers.push_back("alt");
-      }
-
-      nlohmann::json key_event{
-        {"keyCode", code },
-        {"modifiers", modifiers}
-      };
-
-      if (pressed_key.released) {
-        key_event["type"] = "keyUp";
-      }
-      else {
-        if (pressed_key.is_character) {
-          key_event["type"] = "char";
-        }  
-        else {
-          key_event["type"] = "keyDown";
-        }
-      }
-      
-      std::string str_key_event = key_event.dump(2, ' ');
+      std::string str_key_event = PressedKeyToJSONInputEvent(pressed_key);
       std::string script =
         "mainWindow.webContents.sendInputEvent(" +
          str_key_event +
         ");";
-     
+
       m_browser->Execute(script);
-    }      
+    }
   }
 
   void WebBrowser::draw()
@@ -306,7 +262,6 @@ namespace Aztec
       if (!m_was_previously_focused) {
         GameEngine::getInstance()->getKeyboard()->cleanBuffer();
         Focus();
-
       }
 
       int click_count = 1;
@@ -403,6 +358,7 @@ namespace Aztec
   {
     m_browser->Execute("mainWindow.focus();");
     m_has_focus = true;
+    m_was_previously_focused = true;
   }
 
   bool WebBrowser::hasFocus()
@@ -463,63 +419,113 @@ namespace Aztec
       key_code[0] = code;
     }
     else {
-      if (code == Aztec::Keyboard::KEY_SPACE) {
-        key_code = "Space";
+      switch (code) {
+        case Aztec::Keyboard::KEY_SPACE:
+          key_code = "Space";
+          break;
+        case Aztec::Keyboard::KEY_INSERT:
+          key_code = "Insert";
+          break;
+        case Aztec::Keyboard::KEY_BACKSPACE:
+          key_code = "Backspace";
+          break;
+        case Aztec::Keyboard::KEY_DELETE:
+          key_code = "Delete";
+          break;
+        case Aztec::Keyboard::KEY_UP:
+          key_code = "Up";
+          break;
+        case Aztec::Keyboard::KEY_DOWN:
+          key_code = "Down";
+          break;
+        case Aztec::Keyboard::KEY_LEFT:
+          key_code = "Left";
+          break;
+        case Aztec::Keyboard::KEY_RIGHT:
+          key_code = "Right";
+          break;        
+        case Aztec::Keyboard::KEY_RETURN:
+          key_code = "Return";
+          break;
+        case Aztec::Keyboard::KEY_PAGEUP:
+          key_code = "PageUp";
+          break;
+        case Aztec::Keyboard::KEY_PAGEDOWN:
+          key_code = "PageDown";
+          break;
+        case Aztec::Keyboard::KEY_HOME:
+          key_code = "Home";
+          break;
+        case Aztec::Keyboard::KEY_END:
+          key_code = "End";
+          break;
+        case Aztec::Keyboard::KEY_ESCAPE:
+          key_code = "Esc";
+          break;
+        case Aztec::Keyboard::KEY_TAB:
+          key_code = "Tab";
+          break;
+        case Aztec::Keyboard::KEY_LSHIFT:
+          key_code = "ShiftLeft";
+          break;
+        case Aztec::Keyboard::KEY_LCTRL:
+          key_code = "ControlLeft";
+          break;
+        case Aztec::Keyboard::KEY_LALT:
+          key_code = "AltLeft";
+          break;
       }
-      else if (code == Aztec::Keyboard::KEY_INSERT) {
-        key_code = "Insert";
-      }
-      else if (code == Aztec::Keyboard::KEY_BACKSPACE) {
-        key_code = "Backspace";
-      }
-      else if (code == Aztec::Keyboard::KEY_DELETE) {
-        key_code = "Delete";
-      }
-      else if (code == Aztec::Keyboard::KEY_UP) {
-        key_code = "Up";
-      }
-      else if (code == Aztec::Keyboard::KEY_DOWN) {
-        key_code = "Down";
-      }
-      else if (code == Aztec::Keyboard::KEY_LEFT) {
-        key_code = "Left";
-      }
-      else if (code == Aztec::Keyboard::KEY_RIGHT) {
-        key_code = "Right";
-      }
-      else if (code == Aztec::Keyboard::KEY_RETURN || code == Aztec::Keyboard::KEY_ENTER) {
-        key_code = "Enter";
-      }
-      else if (code == Aztec::Keyboard::KEY_PAGEUP) {
-        key_code = "PageUp";
-      }
-      else if (code == Aztec::Keyboard::KEY_PAGEDOWN) {
-        key_code = "PageDown";
-      }
-      else if (code == Aztec::Keyboard::KEY_HOME) {
-        key_code = "Home";
-      }
-      else if (code == Aztec::Keyboard::KEY_END) {
-        key_code = "End";
-      }
-      else if (code == Aztec::Keyboard::KEY_ESCAPE) {
-        key_code = "Esc";
-      }
-      else if (code == Aztec::Keyboard::KEY_TAB) {
-        key_code = "Tab";
-      }
-      else if (code == Aztec::Keyboard::KEY_LSHIFT) {
-        key_code = "ShiftLeft";
-      }
-      else if (code == Aztec::Keyboard::KEY_LCTRL) {
-        key_code = "ControlLeft";
-      }
-      else if (code == Aztec::Keyboard::KEY_LALT) {
-        key_code = "AltLeft";
-      }
+      
+      
     }
 
     return key_code;
+  }
+
+  std::string WebBrowser::PressedKeyToJSONInputEvent(Aztec::Keyboard::Key pressed_key)
+  {
+    std::string event_type;
+    if (pressed_key.released) {
+      event_type = "keyUp";
+    }
+    else {
+      if (pressed_key.is_character) {
+        event_type = "char";
+      }
+      else {
+        event_type = "keyDown";
+      }
+    }
+
+    std::string key_code = TranslateKeyCode(pressed_key.code);
+
+    std::vector<std::string> modifiers;
+
+    if (pressed_key.control) {
+      modifiers.push_back("control");
+    }
+
+    if (pressed_key.shift) {
+      modifiers.push_back("shift");
+    }
+
+    if (pressed_key.alt) {
+      modifiers.push_back("alt");
+    }
+
+    std::string json_result = std::string("{") +
+      "\"type\":\"" + event_type + "\"," +
+      "\"keyCode\":\"" + key_code + "\"," +
+      "\"modifiers\": [";
+
+      for (size_t i = 0; i < modifiers.size(); ++i) {
+        json_result += "\"" + modifiers[i] + "\"" +
+        (i < modifiers.size() - 1 ? ",":"");
+      }
+
+      json_result += "]}";
+
+      return json_result;
   }
 
 } // namespace Aztec
