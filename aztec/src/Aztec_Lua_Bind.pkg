@@ -276,7 +276,10 @@ public:
 
 	static const int KEY_UNDO;
 
-
+  bool isShiftPressed();
+  bool isControlPressed();
+  bool isAltPressed();
+  
 	bool keyIsDown( int keyCode );
 	bool keyIsUp( int keyCode );
 	int bufferLength();

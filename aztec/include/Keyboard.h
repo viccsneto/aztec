@@ -27,6 +27,7 @@ namespace Aztec {
       bool shift;
       bool alt;
       bool control;
+      bool repeating;
       Key()
       {
         code          = 0;
@@ -35,8 +36,10 @@ namespace Aztec {
         shift = false;
         alt = false;
         control = false;
+        repeating = false;
       }
-      Key(int code, bool is_character, bool released, bool shift, bool alt, bool control)
+
+      Key(int code, bool is_character, bool released, bool control, bool shift, bool alt, bool repeating)
       {
         this->code          = code;
         this->is_character  = is_character;
@@ -44,6 +47,7 @@ namespace Aztec {
         this->shift = shift;
         this->alt = alt;
         this->control = control;
+        this->repeating = repeating;
       }
     };
     Keyboard();
@@ -260,7 +264,6 @@ namespace Aztec {
     */
     void keyReleased(int keyCode);
 
-
     /**
     * <DIV class="ah icona">Lua</DIV>
     *
@@ -304,8 +307,24 @@ namespace Aztec {
     */
     void putOnKeyboardBuffer(Key k);
 
-    int getModifiers(bool &extended);
+    /**
+    * <DIV class = "ah icona">Lua</DIV>
+    * Returns if left shift or right shift key is being pressed
+    */
 
+    bool isShiftPressed();
+
+    /*<DIV class = "ah icona">Lua</DIV>
+    *
+    * Returns if left control or right control key is being pressed
+    */
+    bool isControlPressed();
+
+    /*<DIV class = "ah icona">Lua</DIV>
+    *
+    * Returns if left alt or right alt key is being pressed
+    */
+    bool isAltPressed();
   private:
     /**
     *unicodeToCodePage

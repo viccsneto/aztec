@@ -161,7 +161,16 @@ namespace Aztec
          str_key_event +
         ");";
 
+
       m_browser->Execute(script);
+
+      /************************************************************************/
+      /* Workaround for enter key                                             */
+      /************************************************************************/
+      if (!pressed_key.released && pressed_key.code == 257) {
+        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"char\",\"keyCode\":\"\\u000d\",\"modifiers\": []});";
+        m_browser->Execute(script);
+      }
     }
   }
 
@@ -475,8 +484,6 @@ namespace Aztec
           key_code = "AltLeft";
           break;
       }
-      
-      
     }
 
     return key_code;
@@ -495,6 +502,14 @@ namespace Aztec
       else {
         event_type = "keyDown";
       }
+    }
+
+    std::string repeating;
+    if (pressed_key.repeating) {
+      repeating = "true";
+    }
+    else {
+      repeating = "false";
     }
 
     std::string key_code = TranslateKeyCode(pressed_key.code);
@@ -516,12 +531,13 @@ namespace Aztec
     std::string json_result = std::string("{") +
       "\"type\":\"" + event_type + "\"," +
       "\"keyCode\":\"" + key_code + "\"," +
+      "\"isAutoRepeat\":" + repeating + "," +
       "\"modifiers\": [";
 
       for (size_t i = 0; i < modifiers.size(); ++i) {
         json_result += "\"" + modifiers[i] + "\"" +
         (i < modifiers.size() - 1 ? ",":"");
-      }
+      }      
 
       json_result += "]}";
 

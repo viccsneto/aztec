@@ -4,18 +4,15 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Sensor.h"
-
+#include "Keyboard.h"
 #include <luaelectron_browser.h>
 #include <petunia/message.h>
 
 #include <mutex>
 #include <memory>
 
-
-
 namespace Aztec {
-
-  /**
+   /**
   * WebBrowser
   *
   * A GameObject that implements Chromium Embedded Framework (The Open Source parts of Google Chrome Web Engine) and allows
@@ -204,5 +201,6 @@ namespace Aztec {
     bool   m_was_previously_focused;
     bool   m_always_focused;
     bool   m_has_focus;
+    std::string PressedKeyToJSONInputEvent(Aztec::Keyboard::Key pressed_key);
   };
 } // namespace Aztec

@@ -143,31 +143,19 @@ namespace Aztec {
     return key.code;
   }
 
-  int Keyboard::getModifiers(bool &extended)
+  bool Keyboard::isShiftPressed()
   {
-    int modifiers = 0;
+    return keyIsDown(KEY_LSHIFT) || keyIsDown(KEY_RSHIFT);
+  }
 
-    if (keyIsDown(KEY_LSHIFT)) { 
-      modifiers |= KEY_LSHIFT; 
-    }
-    if (keyIsDown(KEY_LCTRL)) { 
-      modifiers |= KEY_LCTRL;
-    }
-    if (keyIsDown(KEY_LALT)) {
-      modifiers |= KEY_LALT; 
-    }
+  bool Keyboard::isControlPressed()
+  {
+    return keyIsDown(KEY_LCTRL) || keyIsDown(KEY_RCTRL);
+  }
 
-    if (keyIsDown(KEY_RSHIFT)) {
-      modifiers |= KEY_RSHIFT;
-    }
-    if (keyIsDown(KEY_RCTRL)) {
-      modifiers |= KEY_RCTRL;
-    }
-    if (keyIsDown(KEY_RALT)) {
-      modifiers |= KEY_RALT;
-    }
-
-    return modifiers;
+  bool Keyboard::isAltPressed()
+  {
+    return keyIsDown(KEY_LALT) || keyIsDown(KEY_RALT);
   }
 
   Keyboard::Key Keyboard::readVKBuffer()
