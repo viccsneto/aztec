@@ -54,8 +54,6 @@ namespace Aztec {
 
   GameObject::~GameObject()
   {
-
-
     for (list<GameObject *>::iterator i = _toBeAdded.begin(); i != _toBeAdded.end(); ++i) {
       delete (*i);
     }
