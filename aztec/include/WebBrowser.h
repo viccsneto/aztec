@@ -174,6 +174,7 @@ namespace Aztec {
 
   private:
     void UpdateTexture();
+    void ExecuteReceivedScript();
     void Initialize(const char *url, int width, int height, bool transparent);
     void HandleMouseInputEvents();
 
@@ -195,7 +196,9 @@ namespace Aztec {
     int      m_width;
     int      m_height;
     std::mutex m_texture_mutex;
+    std::mutex m_received_script_mutex;
     std::shared_ptr<Petunia::Message> m_texture_message;    
+    std::shared_ptr<Petunia::Message> m_received_script_message;
 
     double m_last_click_time;
     bool   m_was_previously_focused;

@@ -44,18 +44,8 @@ namespace Aztec
     m_browser->RemoveListener("execute");
 
     m_browser->AddListener("execute", [&](std::shared_ptr<Petunia::Message> message) {
-      if (GameEngine::LUA_STATE) {
-        lua_getglobal(GameEngine::LUA_STATE, "EventDispatcher");
-        lua_getfield(GameEngine::LUA_STATE, -1, "Execute");
-        tolua_pushusertype(GameEngine::LUA_STATE, this, "WebBrowser");
-        tolua_pushstring(GameEngine::LUA_STATE, message->GetData()->c_str());
-
-        if (lua_pcall(GameEngine::LUA_STATE, 2, 0, 0) != 0) {
-          printf("WebBrowser:execute failed: %s - <%s [%d]>", lua_tostring(GameEngine::LUA_STATE, -1), __FILE__, __LINE__);
-        }
-
-        lua_pop(GameEngine::LUA_STATE, 1);
-      }
+      std::lock_guard<std::mutex> lock(m_received_script_mutex);
+      m_received_script_message = message;
     });
 
     m_browser->AddListener("paint", [&](std::shared_ptr<Petunia::Message> message) {
@@ -142,6 +132,7 @@ namespace Aztec
     }
 
     UpdateTexture();
+    ExecuteReceivedScript();
     
     HandleMouseInputEvents();
 
@@ -230,6 +221,26 @@ namespace Aztec
       m_painted = true;
       m_texture->UpdateTexture(m_texture_message->GetData()->data());
       m_texture_message = nullptr;
+    }    
+  }
+
+  void WebBrowser::ExecuteReceivedScript()
+  {
+    std::lock_guard<std::mutex> lock(m_received_script_mutex);
+    if (m_received_script_message) {
+      if (GameEngine::LUA_STATE) {
+        lua_getglobal(GameEngine::LUA_STATE, "EventDispatcher");
+        lua_getfield(GameEngine::LUA_STATE, -1, "Execute");
+        tolua_pushusertype(GameEngine::LUA_STATE, this, "WebBrowser");       
+        tolua_pushstring(GameEngine::LUA_STATE, m_received_script_message->GetData()->c_str());
+
+        if (lua_pcall(GameEngine::LUA_STATE, 2, 0, 0) != 0) {
+          printf("WebBrowser:execute failed: %s - <%s [%d]>", lua_tostring(GameEngine::LUA_STATE, -1), __FILE__, __LINE__);
+        }
+
+        lua_pop(GameEngine::LUA_STATE, 1);
+      }
+      m_received_script_message = nullptr;
     }
   }
 

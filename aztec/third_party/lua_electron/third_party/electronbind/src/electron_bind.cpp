@@ -107,6 +107,7 @@ std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char
   additional_args              = (additional_args.length() > 1) ? additional_args : "";
   std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" "+
     "\"" + m_electron_path + ".\" " +
+    "---inspect-brk "
     "--channel \"" + instance->GetChannel() + "\" "
     + additional_args;
   
