@@ -23,6 +23,8 @@ namespace Aztec {
   */
   class WebBrowser : public GameObject {
   public:
+    void SendMessage(std::shared_ptr<Petunia::Message>);
+
     /**
     * <DIV class="ah icona">Lua</DIV>
     *
@@ -34,6 +36,20 @@ namespace Aztec {
     * @param transparent A boolean indicating if the browser's background should be transparent (commonly desired when designing user interfaces such as HUD)
     */
     WebBrowser(const char *url, int width, int height, bool transparent);
+
+    /**
+    * <DIV class="ah icona">Lua</DIV>
+    *
+    * Creates a WebBrowser component
+    *
+    * @param url The url that will be opened at the browser startup
+    * @param width The width of the browser component in pixels
+    * @param height The height of the browser component in pixels
+    * @param transparent A boolean indicating if the browser's background should be transparent (commonly desired when designing user interfaces such as HUD)
+    * @param transparent A boolean indicating if the browser should be rendered offscreen
+    */
+
+    WebBrowser(const char *url, int width, int height, bool transparent, bool offscreen);
 
     /**
     * <DIV class="ah icona">Lua</DIV>
@@ -141,6 +157,10 @@ namespace Aztec {
     */
     void step();    
 
+    void HandleInputEvents();
+
+    void HandleKeyboardInputEvents();
+
     /**
     * Draw
     *
@@ -175,7 +195,7 @@ namespace Aztec {
   private:
     void UpdateTexture();
     void ExecuteReceivedScript();
-    void Initialize(const char *url, int width, int height, bool transparent);
+    void Initialize(const char *url, int width, int height, bool transparent, bool offscreen);
     void HandleMouseInputEvents();
 
     void Blur();
@@ -204,6 +224,7 @@ namespace Aztec {
     bool   m_was_previously_focused;
     bool   m_always_focused;
     bool   m_has_focus;
+    bool   m_offscreen;
     std::string PressedKeyToJSONInputEvent(Aztec::Keyboard::Key pressed_key);
   };
 } // namespace Aztec

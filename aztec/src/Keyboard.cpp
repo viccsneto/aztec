@@ -97,7 +97,6 @@ namespace Aztec {
 
   void Keyboard::putOnKeyboardBuffer(Key k)
   {
-
     if (_keyBuffer.size() > _bufferMaxSize) {
       _keyBuffer.pop_back();
     }
@@ -165,54 +164,6 @@ namespace Aztec {
     if (_keyBuffer.size() > 0) {
       key = _keyBuffer.back();
       _keyBuffer.pop_back();
-#if 0
-      if (!key.is_character) {
-        switch (key.code) {
-          case Keyboard::KEY_LEFT:
-            key.code = VK_LEFT;
-            break;
-          case Keyboard::KEY_RIGHT:
-            key.code = VK_RIGHT;
-            break;
-          case Keyboard::KEY_UP:
-            key.code = VK_UP;
-            break;
-          case Keyboard::KEY_DOWN:
-            key.code = VK_DOWN;
-            break;
-          case Keyboard::KEY_RETURN:
-          case Keyboard::KEY_KP_ENTER:
-            key.code = VK_RETURN;
-            break;
-          case Keyboard::KEY_ESCAPE:
-            key.code = VK_ESCAPE;
-            break;
-          case Keyboard::KEY_DELETE:
-            key.code = VK_DELETE;
-            break;
-          case Keyboard::KEY_TAB:
-            key.code = VK_TAB;
-            break;
-          case Keyboard::KEY_HOME:
-            key.code = VK_HOME;
-            break;
-          case Keyboard::KEY_END:
-            key.code = VK_END;
-            break;
-          case Keyboard::KEY_PAGEUP:
-            key.code = VK_PRIOR;
-            break;
-          case Keyboard::KEY_PAGEDOWN:
-            key.code = VK_NEXT;
-            break;
-          case Keyboard::KEY_BACKSPACE:
-            key.code = VK_BACK;
-            break;
-          default:
-            break;
-        }
-      }
-#endif
     }
     return key;
   }

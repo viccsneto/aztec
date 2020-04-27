@@ -7,17 +7,28 @@
 #define MOUSE_DOUBLE_CLICK_INTERVAL 0.150f
 namespace Aztec
 {
+
+  void WebBrowser::SendMessage(std::shared_ptr<Petunia::Message> message)
+  {
+    m_browser->SendMessage(message);
+  }
+
   WebBrowser::WebBrowser(const char *url, int width, int height, bool transparent)
   {
-    Initialize(url, width, height, transparent);
+    Initialize(url, width, height, transparent, true);
   }
 
   WebBrowser::WebBrowser(const char *url, int width, int height)
   {
-    Initialize(url, width, height, false);
+    Initialize(url, width, height, false, true);
   }
 
-  void WebBrowser::Initialize(const char *url, int width, int height, bool transparent)
+  WebBrowser::WebBrowser(const char *url, int width, int height, bool transparent, bool offscreen)
+  {
+    Initialize(url, width, height, transparent, offscreen);
+  }
+
+  void WebBrowser::Initialize(const char *url, int width, int height, bool transparent, bool offscreen)
   {
     _className.assign("WebBrowser");
     m_last_click_time = 0;
@@ -28,6 +39,7 @@ namespace Aztec
     m_width = width;
     m_height = height;
     m_texture_message= nullptr;
+    m_offscreen = offscreen;
 
     RESTexture *texture = ResourceManager::createTexture(width, height, NULL);
     m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
@@ -37,7 +49,7 @@ namespace Aztec
       " --width " + std::to_string(width) +
       " --height " + std::to_string(height) +
       (transparent ? " --transparent" : "") +
-      " --offscreen" +      
+      (offscreen ? " --offscreen" : "") +
       " --url \"" + url + "\"";
 
     m_browser = new ElectronBrowser(full_parameters.c_str());
@@ -134,24 +146,26 @@ namespace Aztec
     UpdateTexture();
     ExecuteReceivedScript();
     
-    HandleMouseInputEvents();
+
+    HandleInputEvents();
+
+
 
     if (hasFocus()) {
       Focus();
     }
+  }
 
-    bool extended = true;
-    
-
+  void WebBrowser::HandleKeyboardInputEvents()
+  {
     while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
       Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
-     
+
       std::string str_key_event = PressedKeyToJSONInputEvent(pressed_key);
       std::string script =
         "mainWindow.webContents.sendInputEvent(" +
-         str_key_event +
+        str_key_event +
         ");";
-
 
       m_browser->Execute(script);
 
@@ -437,6 +451,9 @@ namespace Aztec
     if (is_printable) {
       key_code = " ";
       key_code[0] = code;
+      if (key_code[0] == '"') {
+        key_code = "\\\"";
+      }
     }
     else {
       switch (code) {
@@ -553,6 +570,14 @@ namespace Aztec
       json_result += "]}";
 
       return json_result;
+  }
+
+  void WebBrowser::HandleInputEvents()
+  {
+    if (m_offscreen) {
+      HandleMouseInputEvents();
+      HandleKeyboardInputEvents();
+    }
   }
 
 } // namespace Aztec
