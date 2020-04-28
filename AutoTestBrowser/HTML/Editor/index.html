@@ -35,25 +35,22 @@
 <div id="container">
 <pre id="editor" style="width:640;height:480">
 function foo() 
-    for i = 1, 10 do
-      print(""..i.." - "..os.time())
-    end
+  for i = 1, 10 do
+    print(""..i.." - "..os.time())
+  end
 
-    if (not editorScene.offscreen_browser) then
-      editorScene.offscreen_browser = editorScene:addBackDrops(
-        WebBrowser:new(
-          "file:///HTML/OFFSCREENRender/index.html", 
-          1310, 
-          800, 
-          true, 
-          false
-        )
+  if (not editorScene.offscreen_browser) then
+    editorScene.offscreen_browser = editorScene:addBackDrops(
+      WebBrowser:new(
+        "file:///HTML/OFFSCREENRender/index.html", 
+        1310, 
+        800, 
+        true, 
+        false
       )
-
-      engine:SetOffscreenRenderer(editorScene.offscreen_browser)
-    end
-
-    --engine:run(firstScene)
+    )
+    engine:SetOffscreenRenderer(editorScene.offscreen_browser)
+  end
 end
 --Executes the above function  
 foo()
