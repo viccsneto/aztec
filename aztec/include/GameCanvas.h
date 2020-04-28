@@ -5,7 +5,7 @@
 #include "Rectangle.h"
 #include <glm.hpp>
 #include "Config.h"
-
+#include "WebBrowser.h";
 namespace Aztec {
   using namespace std;
   /**
@@ -21,8 +21,10 @@ namespace Aztec {
   private:
     GLint       _lastSurface;
     GLFWwindow *_glfwWindow;
-
+    void OffScreenRendering();
   public:
+    WebBrowser *m_browser = nullptr;
+    void SetOffscreenRenderer(WebBrowser *browser);
     GLFWwindow *getWindow();
 
     /**

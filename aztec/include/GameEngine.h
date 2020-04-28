@@ -20,6 +20,7 @@
 #include "ResourceManager.h"
 #include "Aztec_Lua_Bind.h"
 #include "DebugDraw.h"
+#include "WebBrowser.h"
 
 /**
 * Aztec Generic Namespace
@@ -35,6 +36,7 @@ namespace Aztec {
   */
   class GameEngine {
   public:
+    void SetOffscreenRenderer(WebBrowser *browser);
     /**
     * <DIV class="ah icona">Lua</DIV>
     *

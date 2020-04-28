@@ -22,8 +22,8 @@ function successScene:OnLoad(state)
   
   --state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=SImHi16cwqc&feature=youtu.be&t=0", 800, 600, true))
   state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
-  --state.browser = state:addOverlay(WebBrowser:new("file:///C:/Users/usuario/Desktop/AutoTest/HTML/Editor/index.html", 800, 600, true))
-  
+
+
   --state.browser:getPlane():setColorBalance(1,1,1,0.9)
   state.browser.speed = 5
   state.browser.x_dir = 1

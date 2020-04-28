@@ -1,6 +1,5 @@
 /*
 ** Lua binding: Aztec_Lua_Bind
-** Generated automatically by tolua 5.1.4 on 04/22/20 11:37:58.
 */
 
 #include "tolua.h"
@@ -54,25 +53,9 @@ LUALIB_API int luaopen_Aztec_Lua_Bind (lua_State* tolua_S);
 /* function to release collected object via destructor */
 #ifdef __cplusplus
 
-static int tolua_collect_GameObjectList (lua_State* tolua_S)
+static int tolua_collect_Texture (lua_State* tolua_S)
 {
- GameObjectList* self = (GameObjectList*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_Transform (lua_State* tolua_S)
-{
- Transform* self = (Transform*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_AutoSensor (lua_State* tolua_S)
-{
- AutoSensor* self = (AutoSensor*) tolua_tousertype(tolua_S,1,0);
+ Texture* self = (Texture*) tolua_tousertype(tolua_S,1,0);
  tolua_release(tolua_S,self);
  delete self;
  return 0;
@@ -86,25 +69,17 @@ static int tolua_collect_VertexArrayObject (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_VertexBufferObject (lua_State* tolua_S)
+{
+ VertexBufferObject* self = (VertexBufferObject*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_PropertyList (lua_State* tolua_S)
 {
  PropertyList* self = (PropertyList*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_PointList2D (lua_State* tolua_S)
-{
- PointList2D* self = (PointList2D*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_Plane (lua_State* tolua_S)
-{
- Plane* self = (Plane*) tolua_tousertype(tolua_S,1,0);
  tolua_release(tolua_S,self);
  delete self;
  return 0;
@@ -118,6 +93,38 @@ static int tolua_collect_Shader (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_Sound (lua_State* tolua_S)
+{
+ Sound* self = (Sound*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_Plane (lua_State* tolua_S)
+{
+ Plane* self = (Plane*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_GameStateController (lua_State* tolua_S)
+{
+ GameStateController* self = (GameStateController*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_PointList2D (lua_State* tolua_S)
+{
+ PointList2D* self = (PointList2D*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_Shape (lua_State* tolua_S)
 {
  Shape* self = (Shape*) tolua_tousertype(tolua_S,1,0);
@@ -126,9 +133,25 @@ static int tolua_collect_Shape (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_VertexBufferObject (lua_State* tolua_S)
+static int tolua_collect_AutoSensor (lua_State* tolua_S)
 {
- VertexBufferObject* self = (VertexBufferObject*) tolua_tousertype(tolua_S,1,0);
+ AutoSensor* self = (AutoSensor*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_Transform (lua_State* tolua_S)
+{
+ Transform* self = (Transform*) tolua_tousertype(tolua_S,1,0);
+ tolua_release(tolua_S,self);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_GameObjectList (lua_State* tolua_S)
+{
+ GameObjectList* self = (GameObjectList*) tolua_tousertype(tolua_S,1,0);
  tolua_release(tolua_S,self);
  delete self;
  return 0;
@@ -150,33 +173,9 @@ static int tolua_collect_Vector2 (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_GameStateController (lua_State* tolua_S)
-{
- GameStateController* self = (GameStateController*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
 static int tolua_collect_Music (lua_State* tolua_S)
 {
  Music* self = (Music*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_Sound (lua_State* tolua_S)
-{
- Sound* self = (Sound*) tolua_tousertype(tolua_S,1,0);
- tolua_release(tolua_S,self);
- delete self;
- return 0;
-}
-
-static int tolua_collect_Texture (lua_State* tolua_S)
-{
- Texture* self = (Texture*) tolua_tousertype(tolua_S,1,0);
  tolua_release(tolua_S,self);
  delete self;
  return 0;
@@ -187,37 +186,37 @@ static int tolua_collect_Texture (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
+ tolua_usertype(tolua_S,"Camera");
+ tolua_usertype(tolua_S,"Mouse");
  tolua_usertype(tolua_S,"GameObjectList");
- tolua_usertype(tolua_S,"Sensor");
- tolua_usertype(tolua_S,"Keyboard");
- tolua_usertype(tolua_S,"LuaBinded");
- tolua_usertype(tolua_S,"PointList2D");
- tolua_usertype(tolua_S,"Bitwise");
  tolua_usertype(tolua_S,"Shader");
- tolua_usertype(tolua_S,"WebBrowser");
- tolua_usertype(tolua_S,"VertexBufferObject");
- tolua_usertype(tolua_S,"VertexArrayObject");
- tolua_usertype(tolua_S,"Shape");
+ tolua_usertype(tolua_S,"Sound");
+ tolua_usertype(tolua_S,"LuaBinded");
  tolua_usertype(tolua_S,"GameStateController");
  tolua_usertype(tolua_S,"EventTypes");
- tolua_usertype(tolua_S,"Sound");
- tolua_usertype(tolua_S,"Texture");
- tolua_usertype(tolua_S,"GameEngine");
- tolua_usertype(tolua_S,"Config");
- tolua_usertype(tolua_S,"Camera");
- tolua_usertype(tolua_S,"Animation");
- tolua_usertype(tolua_S,"PropertyList");
- tolua_usertype(tolua_S,"Text");
- tolua_usertype(tolua_S,"GameObject");
  tolua_usertype(tolua_S,"Plane");
- tolua_usertype(tolua_S,"Sprite");
- tolua_usertype(tolua_S,"SpriteSensor");
- tolua_usertype(tolua_S,"Frame");
- tolua_usertype(tolua_S,"Vector2");
- tolua_usertype(tolua_S,"Transform");
- tolua_usertype(tolua_S,"Music");
  tolua_usertype(tolua_S,"AutoSensor");
- tolua_usertype(tolua_S,"Mouse");
+ tolua_usertype(tolua_S,"Frame");
+ tolua_usertype(tolua_S,"VertexBufferObject");
+ tolua_usertype(tolua_S,"GameObject");
+ tolua_usertype(tolua_S,"VertexArrayObject");
+ tolua_usertype(tolua_S,"Shape");
+ tolua_usertype(tolua_S,"Bitwise");
+ tolua_usertype(tolua_S,"SpriteSensor");
+ tolua_usertype(tolua_S,"Keyboard");
+ tolua_usertype(tolua_S,"PropertyList");
+ tolua_usertype(tolua_S,"Animation");
+ tolua_usertype(tolua_S,"Sensor");
+ tolua_usertype(tolua_S,"Texture");
+ tolua_usertype(tolua_S,"WebBrowser");
+ tolua_usertype(tolua_S,"PointList2D");
+ tolua_usertype(tolua_S,"Text");
+ tolua_usertype(tolua_S,"GameEngine");
+ tolua_usertype(tolua_S,"Transform");
+ tolua_usertype(tolua_S,"Sprite");
+ tolua_usertype(tolua_S,"Config");
+ tolua_usertype(tolua_S,"Vector2");
+ tolua_usertype(tolua_S,"Music");
 }
 
 /* get function: EventFlags of class  LuaBinded */
@@ -8035,6 +8034,37 @@ static int tolua_Aztec_Lua_Bind_Camera_setColorBalance00(lua_State* tolua_S)
 #endif
 }
 
+/* method: SetOffScreenRenderer of class  GameEngine */
+static int tolua_Aztec_Lua_Bind_GameEngine_SetOffscreenRenderer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"GameEngine",0,&tolua_err) || 
+ !tolua_isusertype(tolua_S,2,"WebBrowser",0,&tolua_err) || 
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  GameEngine* self = (GameEngine*)  tolua_tousertype(tolua_S,1,0);
+  WebBrowser* browser = ((WebBrowser*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetOffscreenRenderer'",NULL);
+#endif
+ {
+  self->SetOffscreenRenderer(browser);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetOffscreenRenderer'.",&tolua_err);
+ return 0;
+#endif
+}
+
 /* get function: Arguments of class  GameEngine */
 static int tolua_get_GameEngine_GameEngine_Arguments_ptr(lua_State* tolua_S)
 {
@@ -10238,6 +10268,37 @@ tolua_lerror:
  return tolua_Aztec_Lua_Bind_WebBrowser_new00(tolua_S);
 }
 
+/* method: new of class  WebBrowser */
+static int tolua_Aztec_Lua_Bind_WebBrowser_new02(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"WebBrowser",0,&tolua_err) || 
+ !tolua_isstring(tolua_S,2,0,&tolua_err) || 
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) || 
+ !tolua_isnumber(tolua_S,4,0,&tolua_err) || 
+ !tolua_isboolean(tolua_S,5,0,&tolua_err) || 
+ !tolua_isboolean(tolua_S,6,0,&tolua_err) || 
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  const char* url = ((const char*)  tolua_tostring(tolua_S,2,0));
+  int width = ((int)  tolua_tonumber(tolua_S,3,0));
+  int height = ((int)  tolua_tonumber(tolua_S,4,0));
+  bool transparent = ((bool)  tolua_toboolean(tolua_S,5,0));
+  bool offscreen = ((bool)  tolua_toboolean(tolua_S,6,0));
+ {
+  WebBrowser* tolua_ret = (WebBrowser*)  new WebBrowser(url,width,height,transparent,offscreen);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"WebBrowser");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_Aztec_Lua_Bind_WebBrowser_new01(tolua_S);
+}
+
 /* method: Navigate of class  WebBrowser */
 static int tolua_Aztec_Lua_Bind_WebBrowser_Navigate00(lua_State* tolua_S)
 {
@@ -11435,6 +11496,7 @@ LUALIB_API int luaopen_Aztec_Lua_Bind (lua_State* tolua_S)
  tolua_endmodule(tolua_S);
  tolua_cclass(tolua_S,"GameEngine","GameEngine","",NULL);
  tolua_beginmodule(tolua_S,"GameEngine");
+ tolua_function(tolua_S,"SetOffscreenRenderer",tolua_Aztec_Lua_Bind_GameEngine_SetOffscreenRenderer00);
  tolua_variable(tolua_S,"Arguments",tolua_get_GameEngine_GameEngine_Arguments_ptr,tolua_set_GameEngine_GameEngine_Arguments_ptr);
  tolua_function(tolua_S,"getInstance",tolua_Aztec_Lua_Bind_GameEngine_getInstance00);
  tolua_function(tolua_S,"freeInstance",tolua_Aztec_Lua_Bind_GameEngine_freeInstance00);
@@ -11576,6 +11638,7 @@ LUALIB_API int luaopen_Aztec_Lua_Bind (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,"WebBrowser");
  tolua_function(tolua_S,"new",tolua_Aztec_Lua_Bind_WebBrowser_new00);
  tolua_function(tolua_S,"new",tolua_Aztec_Lua_Bind_WebBrowser_new01);
+ tolua_function(tolua_S,"new",tolua_Aztec_Lua_Bind_WebBrowser_new02);
  tolua_function(tolua_S,"Navigate",tolua_Aztec_Lua_Bind_WebBrowser_Navigate00);
  tolua_function(tolua_S,"GoBack",tolua_Aztec_Lua_Bind_WebBrowser_GoBack00);
  tolua_function(tolua_S,"GoForward",tolua_Aztec_Lua_Bind_WebBrowser_GoForward00);
@@ -12175,7 +12238,7 @@ LUALIB_API int luaopen_Aztec_Lua_Bind (lua_State* tolua_S)
   98,101,114, 40,104, 44, 32, 49, 54, 41, 41, 10,101,110,100,
   41, 10,114,101,116,117,114,110, 32,115, 10,101,110,100,32
  };
- luaL_loadbuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code") ||
+ if (luaL_loadbuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code") == LUA_OK)
  lua_pcall(tolua_S,0,LUA_MULTRET,0);
  } /* end of embedded lua code */
 
