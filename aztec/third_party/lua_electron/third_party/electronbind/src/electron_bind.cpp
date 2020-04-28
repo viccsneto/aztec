@@ -102,12 +102,14 @@ std::shared_ptr<ElectronInstance> ElectronBind::CreateBrowserInstance(const char
                             std::to_string(m_browser_count + 1) + std::string("__");
 
   std::shared_ptr<ElectronInstance> instance = std::make_shared<ElectronInstance>(instance_id);
+  std::string additional_args  = command_line_args ? " " + std::string(command_line_args) : "";  
 
-  std::string additional_args  = command_line_args ? " " + std::string(command_line_args) : "";
-  additional_args              = (additional_args.length() > 1) ? additional_args : "";
+//   if (additional_args.find("--offscreen") == std::string::npos) {
+//     additional_args = std::string (" --inspect-brk ") + additional_args;
+//   }
+
   std::string electron_command = "\"" + m_electron_path + m_electron_name + "\" "+
     "\"" + m_electron_path + ".\" " +
-    "---inspect-brk "
     "--channel \"" + instance->GetChannel() + "\" "
     + additional_args;
   

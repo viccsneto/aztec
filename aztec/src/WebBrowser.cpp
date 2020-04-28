@@ -145,11 +145,8 @@ namespace Aztec
 
     UpdateTexture();
     ExecuteReceivedScript();
-    
 
     HandleInputEvents();
-
-
 
     if (hasFocus()) {
       Focus();
@@ -390,9 +387,11 @@ namespace Aztec
 
   void WebBrowser::Focus()
   {
-    m_browser->Execute("mainWindow.focus();");
-    m_has_focus = true;
-    m_was_previously_focused = true;
+    if (!m_was_previously_focused) {
+      m_browser->Execute("mainWindow.focus();");
+      m_has_focus = true;
+      m_was_previously_focused = true;
+    }
   }
 
   bool WebBrowser::hasFocus()

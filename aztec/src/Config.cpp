@@ -15,8 +15,9 @@ namespace Aztec {
   int Config::SOUND_BUFFER_SIZE = 1024;
 
 
-  /**/
+  /*Max elapsed time before redrawing and maximum step while dragging the window (thus suspending the execution)*/
   double Config::MAX_ELAPSEDTIME = 1.0f / 60.0f;
+
   /*Box2D parameters*/
   float Config::PHYSICS_PIXELS_METERS_RATIO = 60.0f;
   float Config::PHYSICS_TIME_STEP           = 1.0f / 60.0f;

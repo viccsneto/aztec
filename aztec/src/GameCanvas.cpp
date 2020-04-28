@@ -5,11 +5,9 @@
 namespace Aztec {
   void GameCanvas::beginScissor(Rectangle *rect, int level)
   {
-
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     glStencilFunc(GL_EQUAL, level, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-
 
     Plane plane = Plane(Shader::getStencilShader(), rect->w, rect->h, NULL);
     plane.setTranslation(rect->x, rect->y, 0);
@@ -23,7 +21,6 @@ namespace Aztec {
 
   void GameCanvas::endScissor(Rectangle *rect, int level)
   {
-
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     glStencilFunc(GL_EQUAL, level, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
@@ -42,9 +39,32 @@ namespace Aztec {
     _clearColor = glm::vec4(r, g, b, a);
   }
 
+  void GameCanvas::OffScreenRendering()
+  {
+    static double interval_sum = 0.0;
+    interval_sum += GameEngine::getInstance()->getElapsedTime();
+
+    if (interval_sum >= 1.0 / 30.0) {
+      if (m_browser) {
+        size_t size = 4 * getScreenWidth() * getScreenHeight();
+        auto pixels = std::make_shared<std::string>();
+        pixels->resize(size);
+        
+        glReadPixels(0, 0, getScreenWidth(), getScreenHeight(), GL_RGBA, GL_UNSIGNED_BYTE, (void *)pixels->data());
+        auto texture_message = std::make_shared<Petunia::Message>("update_canvas", pixels);
+        m_browser->SendMessage(texture_message);
+      }
+      interval_sum = 0.0;
+    }
+  }
+
+  void GameCanvas::SetOffscreenRenderer(WebBrowser *browser)
+  {
+    m_browser = browser;
+  }
+
   GLFWwindow *GameCanvas::getWindow()
   {
-
     return _glfwWindow;
   }
 
@@ -82,7 +102,6 @@ namespace Aztec {
     glEnable(GL_STENCIL_BUFFER);
     glEnable(GL_DOUBLEBUFFER);
 
-
     // Inicializa Glew
     glewExperimental = GL_TRUE;
     glewInit();
@@ -91,6 +110,7 @@ namespace Aztec {
   void GameCanvas::endRendering()
   {
     glfwSwapBuffers(_glfwWindow);
+    OffScreenRendering();
   }
 
   int GameCanvas::getScreenHeight()
@@ -103,10 +123,8 @@ namespace Aztec {
     return Config::SCREEN_WIDTH;
   }
 
-
   void GameCanvas::beginRendering()
   {
-
     activateContext();
 
     glClearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearColor.a);
@@ -139,7 +157,6 @@ namespace Aztec {
 
   Rectangle *GameCanvas::popClipRect()
   {
-
     Rectangle *rect;
 
     if (_stackClipRect.empty()) {
@@ -166,5 +183,4 @@ namespace Aztec {
   {
     glfwMakeContextCurrent(_glfwWindow);
   }
-
 } // namespace Aztec

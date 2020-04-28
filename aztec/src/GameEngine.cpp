@@ -414,6 +414,12 @@ namespace Aztec {
   {
     return _engineRunning;
   }
+
+  void GameEngine::SetOffscreenRenderer(WebBrowser *browser)
+  {
+    getGameCanvas()->SetOffscreenRenderer(browser);
+  }
+
   GameEngine *GameEngine::getInstance()
   {
     return _instance;

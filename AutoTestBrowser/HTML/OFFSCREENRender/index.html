@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .tv {
+      opacity: 1.0;
+      
+    }
+    body {
+      background-color: black;
+    }
+    .canvas-div {
+     position: absolute;
+     background-color: #111111;
+     z-index: -10;  
+     left:272px;
+     top: 25px;
+     zoom: 0.82;
+     transform: scaleY(-1.0);
+    };
+    .tv {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      margin: auto;
+      
+    };
+  </style>
+  <script>
+    var ipcRenderer;
+    var context;
+    var canvas;
+    function Load() {
+      console.log("Loaded");
+      ipcRenderer = require("electron").ipcRenderer;
+      canvas = document.getElementById("canvas");
+      context = canvas.getContext("2d")
+      ipcRenderer.on("update_canvas", function (event, image) {
+        //console.log(image);
+        updateCanvas(image.data, image.width, image.height);
+      });
+
+      function canvasOnclick(event) {
+        console.log(event);
+      }
+
+      function updateCanvas(pixels, width, height) {
+        const imageData = context.createImageData(width, height);
+        const pixelCount = width * height;
+        // Iterate through every pixel
+        for (let i = 0; i < pixelCount; ++i) {
+        // Modify pixel data
+          let data_idx = i * 4;
+          let pixels_idx = i * 4;
+          imageData.data[data_idx + 0] = pixels[pixels_idx + 0];  // R value
+          imageData.data[data_idx + 1] = pixels[pixels_idx + 1];  // G value
+          imageData.data[data_idx + 2] = pixels[pixels_idx + 2];  // B value
+          imageData.data[data_idx + 3] = pixels[pixels_idx + 3];  // A value
+        }
+        context.putImageData(imageData,0, 0);
+
+      }
+    }
+  </script>
+</head>
+<body onload = "Load()">
+  <div class= "canvas-div">
+    <canvas id="canvas" onclick ="canvasOnclick($event)" width='1024' height='768'></canvas>
+  </div>
+  <img class = "tv" src="image/tv.png"/>
+</body>
+</html>

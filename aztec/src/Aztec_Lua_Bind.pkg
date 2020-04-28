@@ -575,6 +575,7 @@ public:
 class GameEngine
 {
 public:
+  void SetOffScreenRenderer(WebBrowser *browser);
   PropertyList *Arguments;
 	static GameEngine* getInstance();
 	static void freeInstance();
@@ -727,6 +728,7 @@ class WebBrowser :public GameObject
   public:
     WebBrowser(const char *url, int width, int height);
     WebBrowser(const char *url, int width, int height, bool transparent);
+    WebBrowser(const char *url, int width, int height, bool transparent, bool offscreen);
     void Navigate(const char *url);
     void GoBack();
     void GoForward();
