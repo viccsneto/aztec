@@ -36,7 +36,7 @@ function editorScene:OnLoad(state)
   state.browser.x_max = 1024 - 800
   state.browser.y_max = 768 - 600
   --]]
-  ---[[
+  --[[
   function state.browser:OnUpdate(sender)
 		self.Transform.position.x = self.Transform.position.x + self.x_dir * self.speed * engine:getElapsedTime()
     self.Transform.position.y = self.Transform.position.y + self.y_dir * self.speed * engine:getElapsedTime()

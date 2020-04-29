@@ -50,8 +50,9 @@ function foo()
       )
     )
     engine:SetOffscreenRenderer(editorScene.offscreen_browser)
-  end
-  --engine:run(firstScene)
+  else
+    engine:run(firstScene)
+  end  
 end
 --Executes the above function  
 foo()

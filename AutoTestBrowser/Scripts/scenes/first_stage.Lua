@@ -10,38 +10,38 @@ firstStage = GameStateController:new()
 firstStage.Speed = 17
 
 function CreateBrowser(state)
-    if (not state.browser) then
-      state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
-      state.browser.speed = 5
-      state.browser.x_dir = 1
-      state.browser.y_dir = 1
-      
-      state.browser.x_min = 0
-      state.browser.y_min = 0
-      
-      state.browser.x_max = 1024 - 800
-      state.browser.y_max = 768 - 600
+  if (not state.browser) then
+    state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
+    state.browser.speed = 5
+    state.browser.x_dir = 1
+    state.browser.y_dir = 1
+    
+    state.browser.x_min = 0
+    state.browser.y_min = 0
+    
+    state.browser.x_max = 1024 - 800
+    state.browser.y_max = 768 - 600
 
-      function state.browser:OnUpdate(sender)
-        self.Transform.position.x = self.Transform.position.x + self.x_dir * self.speed * engine:getElapsedTime()
-        self.Transform.position.y = self.Transform.position.y + self.y_dir * self.speed * engine:getElapsedTime()
-        if (self.Transform.position.x < self.x_min) then
-          self.Transform.position.x = self.x_min
-          self.x_dir = 1
-        elseif (self.Transform.position.x > self.x_max) then
-          self.Transform.position.x = self.x_max
-          self.x_dir = -1
-        end
-        
-        if (self.Transform.position.y < self.y_min) then
-          self.Transform.position.y = self.y_min
-          self.y_dir = 1
-        elseif (self.Transform.position.y > self.y_max) then
-          self.Transform.position.y = self.y_max
-          self.y_dir = -1
-        end
+    function state.browser:OnUpdate(sender)
+      self.Transform.position.x = self.Transform.position.x + self.x_dir * self.speed * engine:getElapsedTime()
+      self.Transform.position.y = self.Transform.position.y + self.y_dir * self.speed * engine:getElapsedTime()
+      if (self.Transform.position.x < self.x_min) then
+        self.Transform.position.x = self.x_min
+        self.x_dir = 1
+      elseif (self.Transform.position.x > self.x_max) then
+        self.Transform.position.x = self.x_max
+        self.x_dir = -1
+      end
+      
+      if (self.Transform.position.y < self.y_min) then
+        self.Transform.position.y = self.y_min
+        self.y_dir = 1
+      elseif (self.Transform.position.y > self.y_max) then
+        self.Transform.position.y = self.y_max
+        self.y_dir = -1
       end
     end
+  end
 end  
    
 function firstStage:OnLoad(state)
