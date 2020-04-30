@@ -56,11 +56,11 @@
         for (let i = 0; i < pixelCount; ++i) {
         // Modify pixel data
           let data_idx = i * 4;
-          let pixels_idx = i * 4;
+          let pixels_idx = i * 3;
           imageData.data[data_idx + 0] = pixels[pixels_idx + 0];  // R value
           imageData.data[data_idx + 1] = pixels[pixels_idx + 1];  // G value
           imageData.data[data_idx + 2] = pixels[pixels_idx + 2];  // B value
-          imageData.data[data_idx + 3] = pixels[pixels_idx + 3];  // A value
+          imageData.data[data_idx + 3] = 255;
         }
         context.putImageData(imageData,0, 0);
 

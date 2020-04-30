@@ -2,6 +2,9 @@
 #include "GameCanvas.h"
 #include "Plane.h"
 #include "GameEngine.h"
+
+#define OFFSCREEN_FRAME_RATE (1.0L / 30.0f)
+
 namespace Aztec {
   void GameCanvas::beginScissor(Rectangle *rect, int level)
   {
@@ -41,20 +44,19 @@ namespace Aztec {
 
   void GameCanvas::OffScreenRendering()
   {
-    static double interval_sum = 0.0;
-    interval_sum += GameEngine::getInstance()->getElapsedTime();
-
-    if (interval_sum >= 1.0 / 30.0) {
-      if (m_browser) {
-        size_t size = 4 * getScreenWidth() * getScreenHeight();
-        auto pixels = std::make_shared<std::string>();
+    m_offscreen_interval_sum += GameEngine::getInstance()->getElapsedTime();
+    if (m_browser) {
+      if (m_offscreen_interval_sum >= OFFSCREEN_FRAME_RATE) {
+        size_t size = 3 * getScreenWidth() * getScreenHeight();
+        static auto pixels = std::make_shared<std::string>();
         pixels->resize(size);
         
-        glReadPixels(0, 0, getScreenWidth(), getScreenHeight(), GL_RGBA, GL_UNSIGNED_BYTE, (void *)pixels->data());
+        glReadPixels(0, 0, getScreenWidth(), getScreenHeight(), GL_RGB, GL_UNSIGNED_BYTE, (void *)pixels->data());
+
         auto texture_message = std::make_shared<Petunia::Message>("update_canvas", pixels);
         m_browser->SendMessage(texture_message);
+        m_offscreen_interval_sum = 0.0;
       }
-      interval_sum = 0.0;
     }
   }
 
@@ -70,13 +72,13 @@ namespace Aztec {
 
   GameCanvas::GameCanvas(int w, int h)
   {
+    m_offscreen_interval_sum = 0.0f;
 #ifdef _DEBUG
     setClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 #else
     setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 #endif
 
-    // Inicializa GLFW
     if (!glfwInit()) {
       GameEngine::getInstance()->registerError("GameCanvas: %s - <%s - [%d]>", "Couldn't initialize GLFW3...\n", __FILE__, __LINE__);
       return;
@@ -102,7 +104,6 @@ namespace Aztec {
     glEnable(GL_STENCIL_BUFFER);
     glEnable(GL_DOUBLEBUFFER);
 
-    // Inicializa Glew
     glewExperimental = GL_TRUE;
     glewInit();
   }

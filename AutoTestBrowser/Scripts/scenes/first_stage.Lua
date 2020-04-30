@@ -42,7 +42,14 @@ function CreateBrowser(state)
       end
     end
   end
-end  
+end
+
+function DestroyBrowser(state)
+  if (state.browser) then
+    state.browser:destroy()
+    state.browser = nil
+  end
+end
    
 function firstStage:OnLoad(state)
   --mouse:hideCursor()
@@ -74,10 +81,7 @@ function firstStage:OnLoad(state)
         
   self:addOverlay(state.enemy)
 end
-function DestroyBrowser(state)
-  state.browser:destroy()
-  state.browser = nil
-end
+
 function firstStage:OnStart(state)
   --state.Music:Play()
   CreateBrowser(state)
@@ -85,9 +89,12 @@ end
 
 function firstStage:OnUpdate(state)
   if (keyboard:keyIsDown(Keyboard.KEY_ESCAPE)) then
-    DestroyBrowser(state)
     engine:run(editorScene)
   end
+end
+
+function firstStage:OnStop(state)
+  DestroyBrowser(state)
 end
 
 return firstStage

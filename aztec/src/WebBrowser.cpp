@@ -169,7 +169,7 @@ namespace Aztec
       /************************************************************************/
       /* Workaround for enter key                                             */
       /************************************************************************/
-      if (!pressed_key.released && pressed_key.code == 257) {
+      if (!pressed_key.released && (pressed_key.code == GLFW_KEY_ENTER || pressed_key.code == GLFW_KEY_KP_ENTER)) {
         std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"char\",\"keyCode\":\"\\u000d\",\"modifiers\": []});";
         m_browser->Execute(script);
       }
@@ -480,8 +480,9 @@ namespace Aztec
         case Aztec::Keyboard::KEY_RIGHT:
           key_code = "Right";
           break;        
-        case Aztec::Keyboard::KEY_RETURN:
-          key_code = "Return";
+        case Aztec::Keyboard::KEY_ENTER:
+        case Aztec::Keyboard::KEY_KP_ENTER:
+          key_code = "Enter";
           break;
         case Aztec::Keyboard::KEY_PAGEUP:
           key_code = "PageUp";

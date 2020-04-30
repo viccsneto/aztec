@@ -220,6 +220,7 @@ namespace Aztec {
       //calculate the delta time since last frame
       _currentTime = glfwGetTime();
       _elapsedTime = _currentTime - _lastTime;
+
       if (_elapsedTime > Config::MAX_ELAPSEDTIME) {
         _elapsedTime = Config::MAX_ELAPSEDTIME;
         _currentTime = _lastTime + Config::MAX_ELAPSEDTIME;

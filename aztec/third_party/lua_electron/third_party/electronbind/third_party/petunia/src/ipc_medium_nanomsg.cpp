@@ -36,10 +36,13 @@ namespace Petunia {
       if (!outbox_queue.empty()) {
         while (!outbox_queue.empty()) {
           std::shared_ptr<Message> message = outbox_queue.front();
-
-          m_nano_socket->send(message.get()->GetType(), strlen(message.get()->GetType()) + 1, 0);
-          m_nano_socket->send(message.get()->GetData().get()->c_str(), message->GetDataSize(), 0);
-
+          auto composed_message = std::make_shared<std::string>();
+          size_t type_size = strlen(message.get()->GetType()) + 1;         
+          composed_message->resize(type_size + message->GetDataSize());
+          memcpy((void *)composed_message->data(), message->GetType(), type_size);
+          memcpy((void *)(composed_message->data() + type_size), (void *)message->GetData()->data(), message->GetDataSize());
+          
+          m_nano_socket->send(composed_message->data(), composed_message->size(), 0);
           outbox_queue.pop();
         }
         return true;
@@ -54,17 +57,23 @@ namespace Petunia {
       int rc;
       bool received = false;
       while ((rc = m_nano_socket->recv(&buffer, NN_MSG, NN_DONTWAIT)) > 0) {        
-        std::string message_type(buffer);
+        size_t type_size = strlen(buffer);
+        std::string message_type;
+        message_type.resize(type_size);
+        strncpy((char *)message_type.data(), buffer, type_size);
+        auto message_body = std::make_shared<std::string>();
+        size_t body_offset = type_size + 1;
+        size_t body_size = rc - body_offset;
+        message_body->resize(body_size);
+        
+        memcpy((char *)message_body->data(), buffer + body_offset, body_size);
+        
         nn_freemsg(buffer);
         buffer = nullptr;
-        if ((rc = m_nano_socket->recv(&buffer, NN_MSG, 0)) > 0) {
-          std::shared_ptr<std::string> data = std::make_shared<std::string>();
-          data->resize(rc);
-          memcpy((char *)data->data(), buffer,  rc);
-          nn_freemsg(buffer);
-          inbox_queue.push(std::make_shared<Message>(message_type, data));
-          received = true;
-        }
+
+        inbox_queue.push(std::make_shared<Message>(message_type, message_body));
+
+        received = true;
       }
       return received;
     }

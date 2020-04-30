@@ -16,7 +16,7 @@ namespace Aztec {
 
 
   /*Max elapsed time before redrawing and maximum step while dragging the window (thus suspending the execution)*/
-  double Config::MAX_ELAPSEDTIME = 1.0f / 60.0f;
+  double Config::MAX_ELAPSEDTIME = 1.0L / 60.0f;
 
   /*Box2D parameters*/
   float Config::PHYSICS_PIXELS_METERS_RATIO = 60.0f;

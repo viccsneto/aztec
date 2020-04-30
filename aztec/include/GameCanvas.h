@@ -18,12 +18,7 @@ namespace Aztec {
   */
 
   class GameCanvas {
-  private:
-    GLint       _lastSurface;
-    GLFWwindow *_glfwWindow;
-    void OffScreenRendering();
   public:
-    WebBrowser *m_browser = nullptr;
     void SetOffscreenRenderer(WebBrowser *browser);
     GLFWwindow *getWindow();
 
@@ -100,7 +95,14 @@ namespace Aztec {
     */
     ~GameCanvas();
 
+    void activateContext();
+
   private:
+    GLint       _lastSurface;
+    GLFWwindow *_glfwWindow;
+    void OffScreenRendering();
+    WebBrowser *m_browser = nullptr;
+    double m_offscreen_interval_sum;
     /**
     * Clear color
     */
@@ -128,7 +130,5 @@ namespace Aztec {
     * @param The Retangulo pointer that will be removed from the stencil buffer.
     */
     void endScissor(Rectangle *rect, int level);
-public:
-  void activateContext();
   };
 } // namespace Aztec
