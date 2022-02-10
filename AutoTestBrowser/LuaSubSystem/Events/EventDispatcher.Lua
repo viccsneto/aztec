@@ -12,7 +12,10 @@ function EventDispatcher.OnUpdate(sender)
   end
 end
 
-function EventDispatcher.Execute(sender, script)
+function EventDispatcher.Execute(sender, script_package)
+  print(script_package)
+  script_package = json.decode(script_package)  
+  local script = script_package.script
   local script_function = load("return function(sender, script) "..script.." end")()
   script_function(sender, script)
 end

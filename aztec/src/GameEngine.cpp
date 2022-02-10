@@ -221,7 +221,7 @@ namespace Aztec {
       _currentTime = glfwGetTime();
       _elapsedTime = _currentTime - _lastTime;
 
-      if (_elapsedTime > Config::MAX_ELAPSEDTIME) {
+      if (_elapsedTime >= Config::MAX_ELAPSEDTIME) {
         _elapsedTime = Config::MAX_ELAPSEDTIME;
         _currentTime = _lastTime + Config::MAX_ELAPSEDTIME;
         glfwSetTime(_currentTime);
@@ -416,9 +416,9 @@ namespace Aztec {
     return _engineRunning;
   }
 
-  void GameEngine::SetOffscreenRenderer(WebBrowser *browser)
+  void GameEngine::SetOffScreenRenderer(WebBrowser *browser)
   {
-    getGameCanvas()->SetOffscreenRenderer(browser);
+    getGameCanvas()->SetOffScreenRenderer(browser);
   }
 
   GameEngine *GameEngine::getInstance()

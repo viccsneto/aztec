@@ -60,7 +60,7 @@ namespace Aztec {
     }
   }
 
-  void GameCanvas::SetOffscreenRenderer(WebBrowser *browser)
+  void GameCanvas::SetOffScreenRenderer(WebBrowser *browser)
   {
     m_browser = browser;
   }

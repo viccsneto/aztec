@@ -26,11 +26,13 @@
     function ConsoleExecute(script) {
       ipcRenderer.sendSync("Execute", script);
     }
-  </script>
+	
+	</script>
 </head>
 <body onload = "Init()">
 <div class="scope bar">
     <button class="scope" onclick="ConsoleExecute(editor.getValue())" >Execute</button>
+	<button class="scope" onclick="alert(editor.getValue())" >Alert</button>
 </div>   
 <div id="container">
 <pre id="editor" style="width:640;height:480">
@@ -49,13 +51,17 @@ function foo()
         false
       )
     )
-    engine:SetOffscreenRenderer(editorScene.offscreen_browser)
+    engine:SetOffScreenRenderer(editorScene.offscreen_browser)
   else
     engine:run(firstScene)
   end  
+  
+  --editorScene.offscreen_browser:WindowExecuteScript('alert(\'Hello\');')
+  
 end
 --Executes the above function  
-foo()
+--foo()
+sender:WindowExecuteScript('alert("hello")');
 </pre>
 </div>
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>

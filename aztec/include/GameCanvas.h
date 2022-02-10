@@ -19,7 +19,7 @@ namespace Aztec {
 
   class GameCanvas {
   public:
-    void SetOffscreenRenderer(WebBrowser *browser);
+    void SetOffScreenRenderer(WebBrowser *browser);
     GLFWwindow *getWindow();
 
     /**

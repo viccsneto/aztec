@@ -738,9 +738,11 @@ class WebBrowser :public GameObject
     void setAlwaysFocused(bool always_focused);
     bool getAlwaysFocused();
     Shader *setShader(Shader *shader);
-	  Shader *getShader();
+	Shader *getShader();
     Plane *getPlane();
     void ExecuteScript(const char *script);
+    void WindowExecuteScript(const char *script);
+	
 };
 /***********************************/
  class PointList2D :public LuaBinded
@@ -759,6 +761,15 @@ class WebBrowser :public GameObject
 };
 
 $[
+local loadstring = load
+
+EventDispatcher = {}
+
+function EventDispatcher.Execute(sender, script_package)
+  script_package = json.decode(script_package)
+  return json.execute(script_package.script)
+end
+
 -----------------------------------------------------------------------------
 -- This version of JSON4Lua was slightly modified to accept userdata
 -- serialization through a object:toJSON() method call.
@@ -1194,8 +1205,10 @@ end
 
 --- Executes a statement returning the serialized result 
 function json.execute(statement)
-  local returned_object = loadstring("return ("..statement..")")()
-  return json.encode(returned_object)  
+  local script_function = loadstring("return ("..statement..")")()
+  local result = nil
+  xpcall(function() result = script_function()(sender, script) end, debug.traceback);  
+  return json.encode(result)  
 end
 
 -- Web utility functions

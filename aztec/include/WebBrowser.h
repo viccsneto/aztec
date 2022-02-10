@@ -120,6 +120,14 @@ namespace Aztec {
     void ExecuteScript(const char *script);
 
     /**
+    * <DIV class="ah icona">Lua</DIV>
+    *
+    * Executes Javascript in the main Window
+    * @param script The javascript code that will be executed
+    */
+    void WindowExecuteScript(const char *script);
+
+    /**
      * <DIV class="ah icona">Lua</DIV>
      *
      * Executes a script called from the webbrowser binded function window.ExecuteScript(source)

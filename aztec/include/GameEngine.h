@@ -36,19 +36,16 @@ namespace Aztec {
   */
   class GameEngine {
   public:
-    void SetOffscreenRenderer(WebBrowser *browser);
+    void SetOffScreenRenderer(WebBrowser *browser);
     /**
     * <DIV class="ah icona">Lua</DIV>
     *
-    * @return The current instance of the Game Engine. (Provides singleton behaviour)
+    * @return The current instance of the Game Engine. (Provides singleton behavior)
     */
     static GameEngine *getInstance();
 
     /**
-    * Initializes the singleton instance of the GameEngine and handles the multi-process behavior of
-    * Chromium Embedded Framework
-    *
-    * @return A pointer to the GameEngine singleton or null if it is not the main process but a CEF sub-process
+    * @return A pointer to the GameEngine singleton 
     */
     static GameEngine *Initialize();
 

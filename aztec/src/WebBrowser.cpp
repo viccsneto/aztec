@@ -111,6 +111,11 @@ namespace Aztec
     m_browser->Execute(script);
   }
 
+  void WebBrowser::WindowExecuteScript(const char *script)
+  {
+    m_browser->WindowExecute(script);
+  }
+
   void WebBrowser::ExecuteCallBackScript(const char *script)
   {
     lua_getglobal(GameEngine::LUA_STATE, "EventDispatcher");
@@ -237,6 +242,7 @@ namespace Aztec
 
   void WebBrowser::ExecuteReceivedScript()
   {
+    
     std::lock_guard<std::mutex> lock(m_received_script_mutex);
     if (m_received_script_message) {
       if (GameEngine::LUA_STATE) {
@@ -244,7 +250,7 @@ namespace Aztec
         lua_getfield(GameEngine::LUA_STATE, -1, "Execute");
         tolua_pushusertype(GameEngine::LUA_STATE, this, "WebBrowser");       
         tolua_pushstring(GameEngine::LUA_STATE, m_received_script_message->GetData()->c_str());
-
+        
         if (lua_pcall(GameEngine::LUA_STATE, 2, 0, 0) != 0) {
           printf("WebBrowser:execute failed: %s - <%s [%d]>", lua_tostring(GameEngine::LUA_STATE, -1), __FILE__, __LINE__);
         }

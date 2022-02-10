@@ -33,6 +33,17 @@ void ElectronBrowser::Execute(const char *script)
   SendMessage(std::make_shared<Petunia::Message>("execute", std::make_shared<std::string>(script)));
 }
 
+void ElectronBrowser::WindowExecute(const char *script)
+{
+  
+  std::string window_script = "mainWindow.webContents.executeJavaScript(\""
+    + std::string(script)
+    + "\");";
+  
+     
+  SendMessage(std::make_shared<Petunia::Message>("execute", std::make_shared<std::string>(window_script)));
+}
+
 void ElectronBrowser::SetLuaState(lua_State *state)
 {
   m_luastate = state;

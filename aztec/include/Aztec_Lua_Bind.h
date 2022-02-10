@@ -3,6 +3,7 @@
 ** Lua binding: lua_bind
 ** Generated automatically by tolua 5.1.4 on 06/07/12 04:09:01.
 */
+//#define TOLUA_RELEASE
 #include <tolua.h>
 /* Exported function */
 using namespace Aztec;

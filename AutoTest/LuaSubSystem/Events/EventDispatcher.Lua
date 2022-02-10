@@ -12,9 +12,9 @@ function EventDispatcher.OnUpdate(sender)
   end
 end
 
-function EventDispatcher.Execute(sender, script)
-  local script_function = load("return function(sender, script) "..script.." end")()
-  script_function(sender, script)
+function EventDispatcher.Execute(sender, script_package)
+  script_package = json.decode(script_package)
+  return json.execute(script_package.script)
 end
 
 function EventDispatcher.ExecuteCallBackScript(sender, script)
