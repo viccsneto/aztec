@@ -11,7 +11,7 @@ firstStage.Speed = 17
 
 function CreateBrowser(state)
   if (not state.browser) then
-    state.browser = state:addOverlay(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
+    state.browser = state:addBackDrops(WebBrowser:new("https://www.youtube.com/watch?v=l15PDRSTn7s&feature=youtu.be&t=0", 800, 600, true))
     state.browser.speed = 5
     state.browser.x_dir = 1
     state.browser.y_dir = 1
