@@ -1,0 +1,193 @@
+@font-face {
+    font-family: 'DialogText';
+    src: url("../Font/DialogText.ttf") format("truetype");
+}
+
+.container {
+    position:absolute;
+    left:5%;
+    width: 95%;
+    height: 100%;
+    margin: auto;        
+}
+
+body
+{
+  overflow:hidden;
+}
+
+.blue_dialog {
+  
+    min-width: 90%;
+    max-width: 90%;
+        
+    border-radius: 5px 5px 5px 5px;    
+    background: linear-gradient(to bottom right, rgba(0,0,255,1.0), rgba(0,0,0,0.7));
+    border-color: #FFFFFF;
+    border-style: solid;
+    
+    position: absolute;
+    
+    line-height: 150%;
+    
+    /*height:auto;*/
+    /*font-family: 'DialogText';*/
+    color: #FFFFFF;
+    font-size: 16pt;
+    text-shadow: 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000;
+        
+    margin:auto;
+    padding:10px 10px 10px 10px;
+   
+}
+
+.center
+{ 
+  top: 50%;
+  transform: translateY(-50%);   
+}
+
+.north
+{  
+  top: 3%;  
+}
+
+.northeast
+{
+  top: 3%;
+  left: 50%;  
+  min-width:40%;
+  max-width:40%;
+}
+
+.east
+{
+  top: 50%;
+  transform: translateY(-50%);  
+  left: 50%;      
+  max-width:40%;
+  
+}
+
+
+.southeast
+{
+  top:97%;
+  transform: translateY(-100%);
+  left: 55%;    
+  min-width:40%;
+  max-width:40%;
+}
+
+.south
+{ 
+  top:97%;
+  transform: translateY(-100%);
+  min-width: 90%;
+}
+
+.southwest
+{ 
+  top:97%;
+  transform: translateY(-100%);  
+  min-width:40%;
+  max-width:40%;
+}
+
+.west
+{
+  top: 50%;
+  transform: translateY(-50%);  
+  max-width:40%;
+}
+
+.northwest
+{  
+  top: 3%;
+  min-width:40%;
+  max-width:40%;
+}
+
+/*
+.blue_dialog_fadein_effect {
+  animation-name: dialog_fadein;
+  animation-duration: 500ms;
+}
+
+.blue_dialog_fadeout_effect {
+  animation-name: dialog_fadeout;
+  animation-duration: 500ms;
+}
+*/
+.dialog_text {   
+   overflow: hidden;
+   position:relative !important;
+   width: 100%;
+   margin: auto;  
+   cursor: default;   
+   white-space: pre-wrap; /* Chrome */
+}
+
+
+@keyframes dialog_fadein {
+    from {opacity:0; transform:scale(0.5,0.5);}
+    to {opacity:1; transform:scale(1,1);}
+}
+
+@keyframes dialog_fadeout {
+    from {opacity:1;}
+    to {opacity:0;}
+}
+
+#radio_toolbar 
+{
+  margin-left: 25px;  
+}
+
+#radio_toolbar  input[type="radio"] {
+    opacity:0;      
+    /*margin-bottom: 8px;*/
+    /*margin-top: -5px;*/    
+}
+
+#radio_toolbar  label {
+    display: block;
+    padding: 0px 44px;
+    cursor:pointer; 
+    font-size: 16pt;       
+}
+
+.textnoselect {  
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+}
+
+#radio_toolbar  input[type="radio"]:checked + label {
+    background-image: url("../images/hand_select.png");
+    background-position: 0px 8px; 
+    background-repeat: no-repeat;    
+
+}
+
+.hidden_element {
+  opacity: 0;
+  visibility:hidden;
+  display:none;
+}
+
+.always_hidden_element {
+  opacity: 0;
+  visibility:hidden;
+  display:none;
+}
+
+.hidden_math {
+  opacity: 0;
+  visibility:hidden;
+  display:none;
+}
+
+#MathJax_Message {
+  opacity:0;
+}

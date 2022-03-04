@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="49" height="56" tilewidth="32" tileheight="32" backgroundcolor="#000000" nextobjectid="176">
+ <properties>
+  <property name="Music" value="orchestra/castle.ogg"/>
+ </properties>
+ <tileset firstgid="1" name="effects" tilewidth="32" tileheight="32" tilecount="300" columns="20">
+  <image source="../tilesets/effects.png" width="640" height="480"/>
+  <tile id="3">
+   <animation>
+    <frame tileid="3" duration="200"/>
+    <frame tileid="2" duration="200"/>
+    <frame tileid="1" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="23">
+   <animation>
+    <frame tileid="21" duration="200"/>
+    <frame tileid="22" duration="200"/>
+    <frame tileid="23" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="43">
+   <animation>
+    <frame tileid="41" duration="200"/>
+    <frame tileid="42" duration="200"/>
+    <frame tileid="43" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="63">
+   <animation>
+    <frame tileid="61" duration="200"/>
+    <frame tileid="62" duration="200"/>
+    <frame tileid="63" duration="200"/>
+   </animation>
+  </tile>
+ </tileset>
+ <imagelayer name="Background" offsetx="0" offsety="1">
+  <image source="../tilesets/castle.png"/>
+  <properties>
+   <property name="BackgroundImage" value=""/>
+  </properties>
+ </imagelayer>
+ <objectgroup color="#555500" name="Objects" offsetx="1" offsety="1">
+  <object id="41" name="Entrance" x="780.333" y="1703.5" width="14" height="13.3333">
+   <ellipse/>
+  </object>
+  <object id="42" name="Outside" x="777.166" y="1803.5" width="16.6667" height="16">
+   <ellipse/>
+  </object>
+  <object id="126" name="king" x="716.136" y="825.652" width="14" height="13.3333">
+   <properties>
+    <property name="Action" value="queryname(&quot;king&quot;):interact()"/>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="130" name="chanceler" x="870.333" y="920" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="131" name="local_crono" x="779" y="1646" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="134" name="soldier.3" x="956.75" y="736.208" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="135" name="soldier.4" x="1021.5" y="736.333" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="138" name="soldier.1" x="543.333" y="736.5" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="139" name="soldier.2" x="606.667" y="735.167" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="140" name="captain.1" x="574.03" y="753.5" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="141" name="captain.2" x="988.333" y="754.083" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="142" name="soldier.5" x="692.667" y="1339.5" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="143" name="soldier.6" x="870.833" y="1340.17" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="144" name="soldier.blocking_dungeon_left" x="1337" y="1171" width="14" height="13.3333">
+   <properties>
+    <property name="Action" value="gamestate():infinite_dungeon_soldier_warning()"/>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="145" name="soldier.blocking_dungeon_right" x="1376" y="1171" width="14" height="13.3333">
+   <properties>
+    <property name="Action" value="gamestate():infinite_dungeon_soldier_warning()"/>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="146" name="soldier.9" x="190.333" y="1208.25" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="147" name="soldier.10" x="220.167" y="1208.42" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="148" name="captain.3" x="657.909" y="803.606" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="149" name="captain.4" x="903.333" y="805" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="150" name="captain.walking" x="985" y="1666.33" width="14" height="13.3333">
+   <properties>
+    <property name="Action" value="gamestate():captain_walking_interact()"/>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="169" name="soldier.blocking_left" x="757.995" y="1326.69" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="170" name="soldier.blocking_right" x="806.008" y="1326.66" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="171" name="captain.blocking" x="781.875" y="1349.71" width="14" height="13.3333">
+   <properties>
+    <property name="Action" value="gamestate():check_gone_school()"/>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="175" x="1315.33" y="1356.5" width="99" height="22.6667">
+   <properties>
+    <property name="AutoAction" value="gamestate():check_unblock_dungeon_entrance()"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ffff00" name="StoryLayer"/>
+ <imagelayer name="Overlay">
+  <image source="../tilesets/castle_overlay.png"/>
+  <properties>
+   <property name="OverlayImage" value=""/>
+  </properties>
+ </imagelayer>
+ <layer name="Effects" width="49" height="56">
+  <data encoding="base64" compression="zlib">
+   eJzt2EEKgEAIheEWHaJDdAjvf6r20SCOKa/p/1ZKkgy4ELcNANayO3m2vsPh5Nn6DqeTZ+s7mJNn6wEAUBHdlxRF9yVF0X1JkSW/AwAAdFK8C0bN3AXV3j1zF1S7h5qTP1G8h0bZS/9Rm8kZajM5Y8WZvOcA8Hf7IP5Sr2MQV6jqdQ7iClW9bBBX6OwFQNMFpGIIQQ==
+  </data>
+ </layer>
+ <objectgroup color="#ff0000" name="Blocked">
+  <properties>
+   <property name="Blocked" value=""/>
+  </properties>
+  <object id="2" x="515" y="1729" width="225" height="71"/>
+  <object id="3" x="834" y="1729" width="225" height="71"/>
+  <object id="4" x="484.318" y="1763.46" width="47.4564" height="44.6667" rotation="-45.0476"/>
+  <object id="6" x="119.645" y="1721.38" width="44" height="102.632" rotation="-45.0476"/>
+  <object id="8" x="1354" y="1758.33" width="105.577" height="44.6667" rotation="-45.0476"/>
+  <object id="9" x="1029.86" y="1760.52" width="42.6572" height="44.3956" rotation="-45.0476"/>
+  <object id="11" x="209" y="1759.33" width="313" height="76.6667"/>
+  <object id="12" x="1069.5" y="1759" width="313" height="75"/>
+  <object id="13" x="-26.197" y="1376" width="186.864" height="333.333"/>
+  <object id="14" x="296.333" y="1608" width="116.667" height="57"/>
+  <object id="15" x="1154.67" y="1614.67" width="126.667" height="37.3333"/>
+  <object id="16" x="1413.56" y="1327.27" width="188.864" height="357.243"/>
+  <object id="17" x="455.568" y="1406" width="203.432" height="149.334"/>
+  <object id="18" x="916" y="1406" width="206.432" height="156.667"/>
+  <object id="19" x="646" y="1442" width="65" height="157"/>
+  <object id="20" x="867" y="1441.5" width="60" height="157"/>
+  <object id="21" x="711.5" y="1423.33" width="9.5" height="208.167"/>
+  <object id="22" x="856.25" y="1421.67" width="9.5" height="208.083"/>
+  <object id="24" x="510.784" y="1121.33" width="245.466" height="216.831"/>
+  <object id="25" x="820" y="1120.67" width="247.216" height="215.5"/>
+  <object id="26" x="1060" y="1114.67" width="121" height="277.836"/>
+  <object id="27" x="390.667" y="1133.33" width="124" height="272.667"/>
+  <object id="28" x="414.615" y="1092.97" width="42.2121" height="136.771" rotation="-45.8836"/>
+  <object id="29" x="1131.46" y="1061.78" width="60" height="157" rotation="55.9259"/>
+  <object id="30" x="388" y="880" width="60" height="188.5"/>
+  <object id="31" x="1124" y="858" width="60" height="208.25"/>
+  <object id="32" x="477.038" y="787.185" width="50.5795" height="157.302" rotation="47.8197"/>
+  <object id="33" x="1059.32" y="815.416" width="58.0627" height="157" rotation="313"/>
+  <object id="34" x="452" y="518" width="60" height="306"/>
+  <object id="35" x="648" y="486" width="278" height="317.125"/>
+  <object id="36" x="1058.67" y="508.875" width="65.3333" height="306.25"/>
+  <object id="37" x="1100" y="198.875" width="60" height="306.25"/>
+  <object id="38" x="418" y="210.875" width="60" height="306.25"/>
+  <object id="39" x="1554.85" y="1068.09" width="60" height="306.25"/>
+  <object id="64" x="394.84" y="1644.1" width="156.386" height="30.6178" rotation="-45.0476"/>
+  <object id="65" x="1030" y="155.468" width="25" height="210.532"/>
+  <object id="66" x="261.445" y="1626.33" width="44" height="57.9667" rotation="-45.0476"/>
+  <object id="67" x="1071.14" y="1564.96" width="44" height="127.27" rotation="-45.0476"/>
+  <object id="68" x="35.7688" y="1055.92" width="64.2312" height="200.667"/>
+  <object id="69" x="834.819" y="796" width="32.5148" height="34.6667"/>
+  <object id="70" x="1186.48" y="1002.59" width="61.0152" height="184"/>
+  <object id="71" x="518.667" y="153.771" width="30.8182" height="212.229"/>
+  <object id="72" x="1479.33" y="1001.59" width="81.1515" height="184"/>
+  <object id="73" x="1242.44" y="1630.76" width="57.8628" height="44.4102" rotation="-45.0476"/>
+  <object id="74" x="1128.15" y="1326.59" width="186.85" height="294.66"/>
+  <object id="75" x="710.485" y="262" width="160" height="224.667"/>
+  <object id="76" x="-21.4849" y="1067.65" width="60" height="306.25"/>
+  <object id="77" x="260.545" y="1374.59" width="195.607" height="251.683"/>
+  <object id="78" x="817.333" y="830" width="68" height="24.6667"/>
+  <object id="79" x="326" y="1060.59" width="67.4848" height="192"/>
+  <object id="80" x="645.485" y="158.441" width="27.8485" height="206.226"/>
+  <object id="81" x="900.742" y="160.22" width="29.9243" height="206.226"/>
+  <object id="82" x="132.167" y="1049.89" width="31.1663" height="212.229"/>
+  <object id="83" x="258.985" y="1054.56" width="27.8485" height="206.226"/>
+  <object id="84" x="1285.17" y="983.386" width="30.8182" height="212.229"/>
+  <object id="85" x="1411.98" y="988.055" width="27.8485" height="206.226"/>
+  <object id="86" x="1242.04" y="1131.66" width="44" height="57.5038" rotation="-45.0476"/>
+  <object id="87" x="1416.4" y="1142.63" width="59.5408" height="39.9773" rotation="-45.0476"/>
+  <object id="88" x="90.7146" y="1195.25" width="44" height="57.5038" rotation="-45.0476"/>
+  <object id="89" x="262.411" y="1208.22" width="59.5408" height="39.9773" rotation="-45.0476"/>
+  <object id="90" x="472.715" y="268.581" width="44" height="57.5038" rotation="-45.0476"/>
+  <object id="91" x="649.745" y="282.218" width="59.5408" height="39.9773" rotation="-45.0476"/>
+  <object id="92" x="858.715" y="270.248" width="44" height="57.5038" rotation="-45.0476"/>
+  <object id="93" x="1030.24" y="280.218" width="59.5408" height="39.9773" rotation="-45.0476"/>
+  <object id="94" x="706.819" y="795.667" width="32.5148" height="34.6667"/>
+  <object id="106" x="1045.83" y="1387.96" width="9.5" height="175.542"/>
+  <object id="107" x="917.833" y="1390.96" width="9.5" height="208.083"/>
+  <object id="108" x="646.333" y="1389.92" width="9.5" height="208.167"/>
+  <object id="109" x="518.666" y="1391.42" width="9.5" height="173.917"/>
+  <object id="115" x="708.405" y="1159.94" width="30.8182" height="199.057"/>
+  <object id="116" x="997.367" y="1163.58" width="30.8182" height="194.422"/>
+  <object id="117" x="834.11" y="1159.31" width="30.8182" height="199.448"/>
+  <object id="118" x="545.148" y="1155.67" width="30.8182" height="199.448"/>
+  <object id="119" x="1157.92" y="1464.55" width="30.8182" height="212.229"/>
+  <object id="120" x="1252.59" y="1464.39" width="30.8182" height="212.229"/>
+  <object id="121" x="389.591" y="1467.89" width="30.8182" height="212.229"/>
+  <object id="122" x="294.591" y="1461.89" width="30.8182" height="212.229"/>
+  <object id="127" x="690" y="827.833" width="68" height="25.5003"/>
+  <object id="151" x="930.333" y="589.208" width="17.6666" height="176.125"/>
+  <object id="152" x="1042.83" y="586.938" width="17.6666" height="176.125"/>
+  <object id="153" x="514.585" y="590.072" width="17.6666" height="176.125"/>
+  <object id="154" x="627.082" y="587.802" width="17.6666" height="176.125"/>
+  <object id="155" x="164.75" y="1032.05" width="10.2498" height="212.229"/>
+  <object id="156" x="248.375" y="1035.39" width="10.2498" height="212.229"/>
+  <object id="157" x="175.875" y="1077" width="70.1249" height="75.6145"/>
+  <object id="158" x="1325.25" y="1012.83" width="73.3949" height="75.6145"/>
+  <object id="159" x="1317.4" y="1155.75" width="10.2498" height="24.361"/>
+  <object id="160" x="1401.02" y="971.222" width="10.2498" height="212.229"/>
+  <object id="161" x="943.521" y="173.832" width="70.1249" height="75.6145"/>
+  <object id="162" x="932.396" y="128.882" width="10.2498" height="212.229"/>
+  <object id="163" x="1016.02" y="132.222" width="10.2498" height="212.229"/>
+  <object id="164" x="561.688" y="180.166" width="70.1249" height="75.6145"/>
+  <object id="165" x="550.563" y="135.216" width="10.2498" height="212.229"/>
+  <object id="166" x="634.188" y="138.556" width="10.2498" height="212.229"/>
+  <object id="167" x="1125.4" y="1319" width="44" height="88.8713" rotation="-45.0476"/>
+  <object id="168" x="346.604" y="1392.34" width="105.577" height="44.6667" rotation="-45.0476"/>
+ </objectgroup>
+ <objectgroup color="#0000ff" name="Teleport">
+  <object id="96" name="Teleport" x="740" y="1753" width="94" height="17">
+   <properties>
+    <property name="AutoAction" value="scene_controller:run(&quot;1000AD_OVERWORLD&quot;, &quot;Castle&quot;, 0,1)"/>
+   </properties>
+  </object>
+  <object id="172" name="Teleport" x="1306.37" y="1088.08" width="19.2536" height="67.3333">
+   <properties>
+    <property name="AutoAction" value="gamestate():teleport_to_dungeon()"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

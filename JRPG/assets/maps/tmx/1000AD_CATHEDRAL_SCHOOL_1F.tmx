@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="30" tilewidth="32" tileheight="32" backgroundcolor="#180808" nextobjectid="49">
+ <properties>
+  <property name="Music" value="orchestra/cathedral.ogg"/>
+ </properties>
+ <imagelayer name="Background">
+  <image source="../tilesets/cathedral_school.png"/>
+ </imagelayer>
+ <objectgroup color="#00aa00" name="Objects">
+  <object id="26" name="Outside" x="244.166" y="981.75" width="16.6667" height="16">
+   <ellipse/>
+  </object>
+  <object id="27" name="Entrance" x="247.333" y="873.75" width="14" height="13.3333">
+   <ellipse/>
+  </object>
+  <object id="28" name="Teleport" x="207" y="931.25" width="94" height="17">
+   <properties>
+    <property name="AutoAction" value="scene_controller:run(&quot;1000AD_OVERWORLD&quot;, &quot;Cathedral_School&quot;, 0,1)"/>
+   </properties>
+  </object>
+  <object id="40" name="local_crono" x="296.584" y="835.333" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="41" name="local_lucca" x="209" y="705.519" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="42" name="Nun" x="247.584" y="347.333" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="47" name="portal_position" x="392.75" y="268" width="10" height="10">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <imagelayer name="Overlay">
+  <image source="../tilesets/cathedral_school_overlay.png"/>
+  <properties>
+   <property name="Blocked" value=""/>
+  </properties>
+ </imagelayer>
+ <objectgroup color="#ff0000" name="Blocked">
+  <properties>
+   <property name="Blocked" value=""/>
+  </properties>
+  <object id="1" x="1" y="896" width="223" height="54"/>
+  <object id="3" x="288.011" y="896" width="217.989" height="54"/>
+  <object id="4" x="-14" y="102" width="76.6667" height="792"/>
+  <object id="5" x="450" y="108" width="72" height="792"/>
+  <object id="6" x="58" y="175" width="69.8182" height="65"/>
+  <object id="7" x="197" y="194" width="116" height="46"/>
+  <object id="8" x="159.5" y="129.5" width="190.5" height="62.5"/>
+  <object id="9" x="349" y="165.5" width="99" height="61"/>
+  <object id="10" x="57.3333" y="606" width="22.1212" height="65.4545"/>
+  <object id="11" x="431.818" y="603.25" width="21.5148" height="67.5"/>
+  <object id="12" x="128" y="463" width="96" height="48"/>
+  <object id="15" x="287.875" y="463" width="96" height="48"/>
+  <object id="16" x="128" y="558.875" width="96" height="48"/>
+  <object id="17" x="288.188" y="558.875" width="96" height="48"/>
+  <object id="30" x="128.843" y="752" width="96.25" height="48"/>
+  <object id="31" x="128" y="656" width="96" height="48"/>
+  <object id="32" x="288" y="752" width="96" height="48"/>
+  <object id="33" x="288" y="656" width="96.25" height="48"/>
+  <object id="46" x="128.5" y="165.938" width="31" height="63.125"/>
+ </objectgroup>
+</map>

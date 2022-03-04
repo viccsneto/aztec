@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="-1">
+    <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <script src="../libs/jquery/jquery-ui.min.js"></script>
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>    
+    <style>
+      body {
+        background-color:transparent;
+        opacity:1.0;
+        overflow:hidden;
+      }
+      
+      #ipad {
+        background-image: url("images/tablet.png");
+        position: absolute;
+        width:1024px;
+        height:768px;
+      }      
+      #ipad_screen {
+        position:absolute;
+        width: 420px;
+        height: 561px;
+        left: 307px;
+        top: 120px;
+        z-index:-1;
+        background-color:white;
+      }
+    </style>
+  </head>
+  <body > 
+    <em></em>
+    <div id="ipad">  
+      <div id="ipad_screen">
+        <table id="table_question">
+          <tr>
+            <td>
+              <img src="" id="img_question"></img>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="" id="img_answer"></img>
+            </td>
+          </tr>
+        </table>
+      </div>            
+    </div>
+    
+  
+  <script>
+        
+    function close()
+    {
+      if (window.ExecuteScript) 
+        window.ExecuteScript('sender:close()');
+      else
+        console.log("close()");
+    }
+    function embed(question, answer)
+    {      
+      $("#img_question").attr("src", question);
+      $("#img_answer").attr("src", answer);
+    }
+   embed("images/question1.png","images/question1_answer.png");
+   
+  $("body").keydown(function(event) {
+    if (event.which == 32 || event.which == 13)  {      
+        close();
+    }        
+  });        
+  </script>
+  </body>
+</html>  

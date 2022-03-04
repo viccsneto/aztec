@@ -1,0 +1,162 @@
+﻿<!DOCTYPE HTML>
+<html ng-app="battle">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css"
+      href="../libs/jquery/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.min.css">
+    <link href="../libs/emojify/emojify.css" rel="stylesheet" type="text/css">
+    <link href="../libs/nvd3/css/nv.d3.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/battle.css">
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <script src="../libs/jquery/jquery-ui.min.js"></script>
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../libs/angular/angular.min.js"></script>
+    <script src="../libs/d3/d3.v31.js"></script>
+    <script src="../libs/nvd3/js/nv.d3.js"></script>
+    <script src="../libs/emojify/emojify.js"></script>
+    <script type="text/javascript"
+      src="../libs/MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function () {
+      MathJax.Hub.Config({
+        showMathMenu:false,
+        tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+      });
+      document.getElementById("hide_page").style.visibility = "";
+      emojify.setConfig({emojify_tag_type:'div'});
+      });
+    </script>
+    <script src="js/battle_wheel.js"></script>
+    <script src="js/battle.js"></script>
+  </head>
+  <body ng-controller="RegisterDataController" ng-cloak>
+    <div id="hide_page" style="visibility: hidden">
+      <div class="container hidden_element textnoselect" id="battle_results">
+        <div id="result_holder" class="with-3d-shadow with-transitions blue_window">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Análise de desempenho</h3>
+                </div>
+                <div class="panel-body">
+                  <div id="result_chart">
+                    <svg>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-offset-2 col-lg-8">
+              
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Desafios e respostas</h3>
+                </div>
+                <div class="panel-body">
+                  <div id="answers_holder">
+                    <table class="table_answers">
+                      <thead>
+                        <tr>
+                          <th rowspan="2">Expressão</th>
+                          <th colspan="4">Alternativas</th>
+                        </tr>
+                        <tr>
+                          <th>a</th>
+                          <th>b</th>
+                          <th>c</th>
+                          <th>d</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="answer in challenges.questions">
+                          <td>{{answer.math_expression}}</td>
+                          <td ng-repeat="option in answer.options" ng-class="{'right_answer':answer.expected_value === option, 'wrong_answer':answer.expected_value !== option}">
+                            <div ng-class="{'user_choose':option === answer.user_choose, ' ':option !== answer.user_choose}">{{option}}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>             
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="battle_running">
+        <div id="menu_holder"></div>
+        <div class="battle_window south textnoselect">
+          <div class="row">
+            <div class="col col-sm-3">
+              <div
+                class="battle_window textnoselect"
+                ng-keydown="keydown($event)">
+                <table>
+                  <tbody>
+                    <tr ng-repeat="enemy in enemies">
+                      <td class="character_name">{{enemy.Name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col col-sm-3"></div>
+            <div class="col col-sm-6">
+              <div
+                class="battle_window textnoselect"
+                ng-keydown="keydown($event)">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td class="character_name">&nbsp;</td>
+                      <td class="character_hp">HP</td>
+                      <td>&nbsp;</td>
+                      <td class="character_mp">MP</td>
+                      <td class="character_gauge">&nbsp;</td>
+                    </tr>
+                    <tr ng-repeat="player in players">
+                      <td class="character_name">{{player.Name}}</td>
+                      <td class="character_hp">{{player.HP}}</td>
+                      <td>:</td>
+                      <td class="character_mp">{{player.MP}}</td>
+                      <td class="character_gauge">
+                        <div class="progress">
+                          <div class="progress-bar progress-bar "
+                            ng-class="{'progress-bar-gray': player.Gauge < 100 , 'progress-bar-white':  player.Gauge == 100}"
+                            role="progressbar" style='width: {{player.Gauge}}%'>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("body").keydown(function(event) {			    
+          if (event.which == 13 || event.which == 27 || event.which == 32 ) { //  Enter / Esc / Space 
+              if (results_shown)
+                Terminate();
+          }
+      	if (event.which == 37 || event.which == 65 ) // left / A
+            select_menu(2);
+          else if (event.which == 38 || event.which == 87) // up / W 
+            select_menu(3);
+      	else if (event.which == 39 || event.which == 68) // right / D
+            select_menu(0);
+      	else if (event.which == 40 || event.which == 83) // down / S
+            select_menu(1);      
+      });
+      
+      window.ExecuteScript('sender:set_battle_ready(true)');
+    </script>
+  </body>
+</html>

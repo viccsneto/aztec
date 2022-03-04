@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="18" tilewidth="32" tileheight="32" backgroundcolor="#180808" nextobjectid="64">
+ <properties>
+  <property name="Music" value="orchestra/peaceful.ogg"/>
+ </properties>
+ <tileset firstgid="1" name="cronoshouse" tilewidth="32" tileheight="32" tilecount="1344" columns="48">
+  <image source="../tilesets/cronoshouse.png" width="1548" height="904"/>
+ </tileset>
+ <tileset firstgid="1345" name="control" tilewidth="32" tileheight="32" tilecount="40" columns="10">
+  <image source="../tilesets/control.png" width="320" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="Blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Stairs" value="CHRONO_HOUSE_2F"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Teleport" value="1000AD_OVERWORLD"/>
+   </properties>
+  </tile>
+ </tileset>
+ <imagelayer name="closed_curtains">
+  <image source="../tilesets/cronoshouse_2f_closed_window.png"/>
+ </imagelayer>
+ <imagelayer name="open_curtains" visible="0">
+  <image source="../tilesets/cronoshouse_2f_open_window.png"/>
+ </imagelayer>
+ <objectgroup color="#55aa00" name="Objects">
+  <object id="53" name="Entrance" x="52.3333" y="333.417">
+   <ellipse/>
+  </object>
+  <object id="55" name="Bed" x="258.458" y="238.042">
+   <ellipse/>
+  </object>
+  <object id="57" name="local_crono" x="250.833" y="206.5" width="14" height="13.3333">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="58" x="178.666" y="132.334" width="32" height="32">
+   <properties>
+    <property name="Action" value="gamestate():toggle_curtains()"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="63" x="229" y="220" width="64.5" height="34.5">
+   <properties>
+    <property name="Action" value="gamestate():sleep()"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <imagelayer name="overlay">
+  <image source="../tilesets/cronoshouse_2f_overlay.png"/>
+ </imagelayer>
+ <objectgroup color="#ff0000" name="Blocked">
+  <properties>
+   <property name="Blocked" value=""/>
+  </properties>
+  <object id="37" x="-13.6667" y="72.6667" width="29" height="327"/>
+  <object id="38" x="-17.6667" y="376.667" width="206" height="23"/>
+  <object id="39" x="84.5" y="300.75" width="122.5" height="4.91667"/>
+  <object id="41" x="207.333" y="301" width="102" height="13.6667"/>
+  <object id="42" x="306.333" y="52.6667" width="43" height="264"/>
+  <object id="43" x="144.333" y="144.667" width="32" height="33"/>
+  <object id="45" x="23.3333" y="103.667" width="121" height="68"/>
+  <object id="46" x="176.666" y="114.667" width="64.6667" height="34"/>
+  <object id="47" x="244.333" y="114.667" width="66" height="60"/>
+  <object id="50" x="100.333" y="170.667" width="29" height="38"/>
+  <object id="54" x="226.833" y="258.167" width="65.5" height="21.5"/>
+  <object id="61" x="230.25" y="175.25" width="65.5" height="39.75"/>
+ </objectgroup>
+ <objectgroup color="#5500ff" name="Teleport">
+  <object id="62" name="Stair" x="88.0833" y="306.333" width="24.8333" height="69.6667">
+   <properties>
+    <property name="AutoAction" value="scene_controller:run(&quot;CRONO_HOUSE_1F&quot;, &quot;StairBase&quot;, 0,1)"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,164 @@
+<!DOCTYPE html >
+<html ng-app="quest"  >
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/quest.css">
+    <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.min.css">
+    
+    <link href="../libs/emojify/emojify.css" rel="stylesheet" type="text/css">
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <script src="../libs/jquery/jquery-ui.min.js"></script>
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../libs/angular/angular.min.js"></script>        
+    <script src="../libs/angular/angular-sanitize.min.js"></script>        
+    <script src="../libs/emojify/emojify.js"></script>
+    <script type="text/javascript" src="../libs/MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full"></script>
+    <script type="text/x-mathjax-config">  
+    MathJax.Hub.Queue(function () {
+    MathJax.Hub.Config({
+      showMathMenu:false,
+      tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+    });    
+  });
+  
+  var creationTime = new Date().getTime();
+  
+  emojify.setConfig({emojify_tag_type:'div'});
+  </script>
+
+    <script>
+  
+ 
+    function replaceTolkens(text)
+    {
+    	  function replaceAll(str, find, replace) {
+    		  var result = str.replace(find, replace);
+    		  if (result != str)
+    			  return replaceAll(result, find, replace);
+    		  return result;
+    		}
+    	  
+    	  text = replaceAll(text, "<%","");
+    	  
+    	  text = replaceAll(text, "%>", "");
+    	  text = replaceAll(text, "<|", "<");
+    	  text = replaceAll(text, "|>", ">");
+    	  text = replaceAll(text, "<:", ":");
+    	  text = replaceAll(text, ":>", ":");
+    	  console.log(text);
+    	  return text;
+    	   
+    }
+    function begin_render()
+    {           
+          
+    }
+    
+    function finish_render()
+    {        
+    	setTimeout(function(){	   
+	      angular.element($("body")).scope().written_time = new Date().getTime(),
+        MathJax.Hub.Typeset();  
+        emojify.run();   
+	      },1);
+    }
+    
+    function setQuests(quests) 
+    {
+      if (typeof(quests) == "string") {
+        quests = JSON.parse(quests)        
+      }
+      
+      for (var i = 0; i < quests.length;i++) {
+    	  quests[i].text = replaceTolkens(quests[i].text);
+    	  if (quests[i].done == null)
+    		  quests[i].done = false
+      }
+      
+      quests.sort(function (a,b) {    	   
+    	    if(a.done === b.done) 
+    	    	return b.id - a.id;    	    
+    	    else if(a.done)
+				return 1;
+          else if(b.done)            
+				return -1;
+          return 0;
+        });
+      var scope = angular.element($("body")).scope();
+      scope.$apply(function() {      
+        scope.quests = {}
+        scope.quests = angular.copy(quests);    
+         $(".quest_window").scrollTop(0);
+      });      
+    }
+           
+    
+    function Setup(quests)
+    {   
+    	var delay = 10;
+    	var currentTime = (new Date()).getTime(); 
+    	
+    	if ((currentTime - creationTime) < 1000)
+    		delay = 500;
+
+    	setTimeout( function() {   
+    	  begin_render();            
+        
+        setQuests(quests); 
+                                              
+        finish_render()     
+      }, delay);
+    }
+    
+    var app = angular.module('quest', ['ngSanitize']);
+    app.controller('RegisterDataController', ['$scope', '$sce', function($scope, $sce) {
+      var audio_global = new Audio('../sfx/select.wav');     
+      
+      $scope.changed = function() {      
+        if (audio_global)
+          audio_global.play();
+      }
+      
+      
+    }]);
+    
+    </script>
+  </head>
+  <body ng-controller="RegisterDataController" ng-cloak >
+    <div >  
+      <div class="container">
+        <div class="quest_window north textnoselect">
+          <div class="quest_list">
+            <div ng-repeat="quest in quests">
+              <div class="quest" ng-class="{'completed_quest': quest.done , 'pendent_quest':  !quest.done}">
+                <table>
+                  <tr>
+                    <td>
+                      <div  class="quest_icon">{{quest.done?":thumbsup:":":thumbsdown:"}}</div>
+                    </td>
+                  
+                    <td class="quest_description">
+                      <div>
+                        <p ng-bind-html="quest.text"></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>                  
+              </div>
+            </div>          
+          </div>
+      </div>
+    </div>  
+  <script>
+		$("body").keydown(function(event) {			    
+      if([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+        
+          event.preventDefault();
+      }
+     
+		});
+
+	</script>
+  </body>
+</html>

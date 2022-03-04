@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="18" tilewidth="32" tileheight="32" backgroundcolor="#180808" nextobjectid="44">
+ <properties>
+  <property name="Music" value="orchestra/peaceful.ogg"/>
+ </properties>
+ <tileset firstgid="1" name="cronoshouse" tilewidth="32" tileheight="32" tilecount="1344" columns="48">
+  <image source="../tilesets/cronoshouse.png" width="1548" height="904"/>
+ </tileset>
+ <tileset firstgid="1345" name="control" tilewidth="32" tileheight="32" tilecount="40" columns="10">
+  <image source="../tilesets/control.png" width="320" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="Blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Stairs" value="CHRONO_HOUSE_2F"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Teleport" value="1000AD_OVERWORLD"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztzflPz3EAx/GP7/ebq/I/OJKIzVUI/4Pc5+ZMoa1yJ1u5ic2dos192xw5cmzIEbKF5P4fXLnN4x/ww/v3Xtvjt9f2jKL2te//K4pFUTElLGYJS1nGclawklJWUcbqWFjjoP8hDnOEoxzjOCc4ySlOc4aznAtsNPs/4zkvaOElrbziNW94yzve8yGw0SEeRTHiJEiiI53oTBe6kkwKqXSLhzUG+g9iMEMYShbZDGM4I8hhJKMYHdiY6T+L2cxhLvPIYz75FLCAhSyiMLCx3X8HO9nFbvawlyr2UU0N+zlAbWDjtv8d7tLAPe7zgIc08ojHPKGJp4GNj/6f+MwXvtLGN77zg5/84jd/+BvY6J6Ioh70pBdp9CadPmTQl35k0p8BibDGGP9cxjKO8UxgIpOYzBSmMo3pzAhslPtXsIa1rGM9G9jIJjazhUq2si2wcd7/Ahe5RB2XucJVrlHPdW5wk1v8AwYjX+Y=
+  </data>
+ </layer>
+ <objectgroup color="#00aa00" name="Objects">
+  <object id="34" name="Entrance" x="665.167" y="505.166" width="14" height="13.3333">
+   <ellipse/>
+  </object>
+  <object id="36" name="Stair" x="675.5" y="268.5" width="23.166" height="88">
+   <properties>
+    <property name="AutoAction" value="scene_controller:run(&quot;CRONO_HOUSE_2F&quot;, &quot;Entrance&quot;, -1,0)"/>
+   </properties>
+  </object>
+  <object id="40" name="StairBase" x="731" y="329.833" width="14" height="13.3333">
+   <ellipse/>
+  </object>
+  <object id="41" name="Outside" x="665.333" y="557.001" width="16.6667" height="16">
+   <ellipse/>
+  </object>
+  <object id="43" name="local_crono" x="718.917" y="462.25" width="15.5" height="15.5">
+   <properties>
+    <property name="Spawn" value=""/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <layer name="Overlay" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BggTULbjkTPHKkgFvMDAy3mUmzg1S78dmBC1BiRyCQDkKzjxVoHgcQcyKZS4kdjUC6Cc2OTCA/C4gzKbADFOdHoXo2As3aRES4kWPHVxL1DPY4p5Ud+PIgNe3gBmIePBgGeIFsPhbS3WUN1WMKxGZQ2hSJbw7ENkBsC6VtoOoBuMgYfQ==
+  </data>
+ </layer>
+ <objectgroup color="#ff0000" name="Blocked">
+  <properties>
+   <property name="Blocked" value=""/>
+  </properties>
+  <object id="4" x="451.5" y="369.333" width="64.5" height="105.167"/>
+  <object id="6" x="385.333" y="397.333" width="33.3333" height="62"/>
+  <object id="7" x="452.667" y="340.333" width="29.3333" height="42">
+   <properties>
+    <property name="Blocked" value=""/>
+   </properties>
+  </object>
+  <object id="8" x="356.667" y="184.667" width="29.3333" height="367.333"/>
+  <object id="11" x="387.333" y="254.667" width="191.333" height="34.333">
+   <properties>
+    <property name="Blocked" value=""/>
+   </properties>
+  </object>
+  <object id="12" x="353.333" y="531.667" width="289" height="28.9996"/>
+  <object id="13" x="774" y="206.667" width="40" height="352.667"/>
+  <object id="19" x="578.667" y="179.333" width="30" height="129.333"/>
+  <object id="20" x="580" y="311.333" width="94" height="152.667"/>
+  <object id="21" x="673.333" y="351.5" width="30.667" height="20"/>
+  <object id="24" x="699" y="224" width="73.6663" height="82.5"/>
+  <object id="31" x="704" y="531.667" width="111.333" height="31.6666"/>
+  <object id="39" x="548.333" y="289" width="29.3333" height="47.5">
+   <properties>
+    <property name="Blocked" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#5500ff" name="Teleports">
+  <object id="32" name="Teleport" x="641.5" y="549" width="65.1663" height="14">
+   <properties>
+    <property name="AutoAction" value="sender:getGameState():check_condition()"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

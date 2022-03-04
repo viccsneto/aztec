@@ -1,0 +1,231 @@
+<!DOCTYPE html >
+<html ng-app="dialog"  >
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/dialog.css">
+    <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
+    <link href="../libs/emojify/emojify.css" rel="stylesheet" type="text/css">
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <script src="../libs/jquery/jquery-ui.min.js"></script>
+    <script src="../libs/angular/angular.min.js"></script>        
+    <script src="../libs/emojify/emojify.js"></script>
+    <script type="text/javascript" src="../libs/MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full"></script>
+    <script type="text/x-mathjax-config">  
+    MathJax.Hub.Queue(function () {
+    MathJax.Hub.Config({
+      showMathMenu:false,
+      tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+    });
+    document.getElementById("hide_page").style.visibility = "";
+    emojify.setConfig({emojify_tag_type:'div'});
+  });
+  </script>
+
+    <script>
+ 
+     var options_height = 0;
+     
+     
+    function begin_render()
+    {
+      
+      angular.element($("body")).scope().write_instantly = false;
+      $(".blue_dialog_rendered").removeClass("blue_dialog_rendered");
+      $(".blue_dialog").removeClass("blue_dialog_fadein_effect");
+      $("#dialog_text").removeClass("dialog_text_effect");
+      $('#radio_toolbar').addClass('hidden_element');     
+      
+      $(".blue_dialog").show();
+      $(".blue_dialog").addClass("blue_dialog_fadein_effect"); 
+      $("#dialog_text").addClass("dialog_text_effect");                  
+      
+      setOptions([]);                             
+    }
+
+    function verifyFocus()
+    {
+      var obj = $("input:focus");
+      
+      if (obj.length == 0) {
+        obj = $("input:checked");    
+        if (obj.length > 0) 
+          obj.focus();
+      }  
+      setTimeout(verifyFocus, 100);
+    }
+    
+    function finish_render()
+    {
+      
+      MathJax.Hub.Typeset();
+      
+      $('.hidden_element').removeClass('hidden_element');
+             
+      
+      $('.blue_dialog').addClass("blue_dialog_rendered");
+      angular.element($("body")).scope().written_time = new Date().getTime()
+     
+      emojify.run();         
+
+    }
+    
+    function embrace_math(text)
+    {
+      if(text.substr(0, 1) == '`')
+        text = "<span class='hidden_element'>" + text + "</span>"
+      return text;
+    }
+    
+    
+    function replaceTolkens(text)
+    {
+    	  function replaceAll(str, find, replace) {
+    		  var result = str.replace(find, replace);
+    		  if (result != str)
+    			  return replaceAll(result, find, replace);
+    		  return result;
+    		}
+    	  
+    	  text = replaceAll(text, "<%","");
+    	  
+    	  text = replaceAll(text, "%>", "");
+    	  text = replaceAll(text, "<|", "<");
+    	  text = replaceAll(text, "|>", ">");
+    	  text = replaceAll(text, "<:", ":");
+    	  text = replaceAll(text, ":>", ":");
+    	  console.log(text);
+    	  return text;
+    	   
+    }
+    
+    function setText(dialog_text) 
+    {    
+      $("#dialog_text").html(replaceTolkens(dialog_text));
+    }
+    
+    function setOptions(dialog_options) 
+    {
+      options_height = dialog_options.length * 90;
+      for (var i = 0; i < dialog_options.length;i++)
+    	  dialog_options[i] = replaceTolkens(dialog_options[i]);
+        
+      var scope = angular.element($("body")).scope();
+      scope.$apply(function() {        
+        scope.dialog_options = angular.copy(dialog_options);        
+        scope.selected_option = angular.copy({"name":dialog_options[0]});                        
+      });      
+    }
+    
+    function Answered(opt)
+    {
+      $(".blue_dialog").hide();
+      var script = "sender:answered(json.decode('"+JSON.stringify(opt)+"'))";
+      if (window.ExecuteScript)
+        window.ExecuteScript(script);
+      else
+        console.log(script);
+    }
+        
+    function getSelectedOption()
+    {
+      var scope = angular.element($("body")).scope();
+      var selected_value = scope.selected_option.name || ""; 
+      var selected_index = -1;
+      for(var i = 0; i < scope.dialog_options.length;i++) {
+    	  if (scope.dialog_options[i] == selected_value) {
+    		  selected_index = i;
+    		  break;
+    	  }
+      }
+
+      return {"value":selected_value, "index":selected_index};
+    }
+    
+    function setPosition(position_class)
+    {
+      if (position_class == "")
+        position_class = "north";
+        
+      $(".blue_dialog").removeClass("north");
+      $(".blue_dialog").removeClass("northeast");
+      $(".blue_dialog").removeClass("east");
+      $(".blue_dialog").removeClass("southeast");
+      $(".blue_dialog").removeClass("south");
+      $(".blue_dialog").removeClass("southwest");
+      $(".blue_dialog").removeClass("west");
+      $(".blue_dialog").removeClass("northwest");
+      $(".blue_dialog").removeClass("center");
+      
+      setTimeout(function(){$(".blue_dialog").addClass(position_class);}, 1);
+    }        
+    
+    function Setup(title, text, options, position_class)
+    { 
+      setPosition(position_class);    
+      begin_render();         
+      setOptions(options);                            
+      setText(title + ": "+text);
+      
+      finish_render();                  
+
+    }
+    
+    var app = angular.module('dialog', []);
+    app.controller('RegisterDataController', ['$scope', function($scope) {
+      var audio_global = new Audio('../sfx/select.wav');     
+      
+      $scope.changed = function() {      
+        if (audio_global)
+          audio_global.play();
+      }
+      
+      
+    }]);
+    
+    </script>
+  </head>
+  <body ng-controller="RegisterDataController" ng-cloak >
+    <div id="hide_page" style="visibility:hidden">  
+      <div class="container">        
+        <div id="dialog_message_container" class="blue_dialog blue_dialog_fadein_effect north textnoselect"  ondblclick="DoAnswer()">                              
+          <p id = "dialog_text" class="dialog_text" tabindex="-1"></p> 
+          <form>
+            <div id="radio_toolbar" class="hidden_element" >
+              <div ng-repeat="opt in dialog_options">
+                <input type="radio" name="radio_options" id = "radio_{{$index}}" value="{{opt}}" ng-change="changed()" ng-model="selected_option.name" />                              
+                <label for = "radio_{{$index}}"  >{{opt}}</label>            
+              </div>
+            </div>          
+          </form>   
+          
+        </div>
+      </div>
+    </div>  
+  <script>  
+  
+  function DoAnswer() 
+  {
+    var scope = angular.element($("body")).scope();
+    if ($(".blue_dialog_rendered").length > 0) {
+      var currentTime = new Date().getTime();
+      if(currentTime - scope.written_time > 150)
+        Answered(getSelectedOption());
+    }
+    else
+      scope.write_instantly = true;
+	  
+  }
+  
+  $("body").keydown(function(event) {
+    if (event.which == 32 || event.which == 13)  {      
+        DoAnswer();
+    }        
+  });        
+  
+ verifyFocus()
+ 
+ </script>
+  </body>
+
+ 
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/minimap.css">
+    <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
+    <script src="../libs/d3/d3.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <script src="../libs/jquery/jquery-ui.min.js"></script>    
+    
+    <script>
+      var world_position = {"x":0, "y":0}
+      var conversionFactor = 0.12 * 32; // 12% of original map size
+      function setPosition(x, y)
+      {
+        world_position.x = x;
+        world_position.y = y;
+        drawLines();
+      }
+      function drawLines()
+      {
+        d3.selectAll("svg").remove()
+        
+        var canvas =  d3.selectAll(".minimap")
+        .append("svg")
+        
+        var map_position = {"x":world_position.x * conversionFactor,"y":world_position.y * conversionFactor}
+
+        
+        var image = $("img");
+        
+        // vertical line
+        canvas.append("line")
+          .classed("vertical_line", true)
+          .attr("x1", map_position.x) 
+          .attr("y1", 0)
+          .attr("x2", map_position.x) 
+          .attr("y2", image.height())
+          .style("stroke-width", 1)
+          .style("stroke", "white")
+          .style("fill", "none");
+          
+        // horizontal line
+        canvas.append("line")
+          .classed("horizontal_line", true)
+          .attr("x1", 0)
+          .attr("y1", map_position.y)
+          .attr("x2", image.width())  
+          .attr("y2", map_position.y)
+          .style("stroke-width", 1)
+          .style("stroke", "white")
+          .style("fill", "none");    
+
+        canvas.append("text")
+          .attr("x", map_position.x + 2)
+          .attr("y", map_position.y - 6)
+          .attr("fill","white")
+          .text("(x = " + Math.floor(world_position.x)+", y = " + Math.floor(world_position.y) + ")");
+          
+      }    
+    </script>
+  </head> 
+<body>  
+  <div class="minimap">   
+    <img src="images/overworld_minimap.png"/>
+  </div>
+  <script>
+    setPosition(16, 24);
+  </script>
+  </body>
+
+ 
+</html>
