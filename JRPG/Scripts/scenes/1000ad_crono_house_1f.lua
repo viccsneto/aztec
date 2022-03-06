@@ -3,9 +3,9 @@ local tmxScene = scene_controller:create('assets/maps/tmx/crono_house_1f.tmx', '
 
 function tmxScene:lucca_prevents_exit()
   if (not quest_controller:get_quest_status("multiplying_table")) then
-    quest_controller:add_quest({key = "multiplying_table", text = "PRATIQUE A TABUADA <|br/|> Lucca e vocÃª combinaram de praticar um pouco de tabuada antes da prova oral de matemÃ¡tica."})
+    quest_controller:add_quest({key = "multiplying_table", text = "PRATIQUE A TABUADA <|br/|> Lucca e você combinaram de praticar um pouco de tabuada antes da prova oral de matemática."})
   end
-  dialog_controller:create("Lucca", "Aonde vocÃª pensa que vai? NÃ£o se esqueÃ§a que hoje vai ter prova oral e que nÃ³s combinamos de treinar a tabuada antes de ir para escola...<|br/|>VocÃª faltou a P1 e se for mal nessa vai ser transferido para a AMAE (AssociaÃ§Ã£o dos Moleques Analfabetos ExcluÃ­dos) <:cry:>", "[]", "north",
+  dialog_controller:create("Lucca", "Aonde você pensa que vai? Não se esqueça que hoje vai ter prova oral e que nós combinamos de treinar a tabuada antes de ir para escola...<|br/|>Você faltou a P1 e se for mal nessa vai ser transferido para a AMAE (Associação dos Moleques Analfabetos Excluídos) <:cry:>", "[]", "north",
         function (self, opt)
           self:destroy()      
           
@@ -77,17 +77,17 @@ function tmxScene:lucca_enters()
       local questions = {}
       local n_question = 6;
       local current_question = 1
-      questions[1] = {question = "De cor e saltiado hein?!<|br/|>Quanto Ã© 2 x 2?", options = "['2', '6', '4', 'NÃ£o sei...']", correct_index = 2}
-      questions[2] = {question = "Quanto Ã© 2 x 5?", options = "['10', '2', '5', '25']", correct_index = 0}
-      questions[3] = {question = "Vamos lÃ¡, 5 x 7?", options = "['57', '75', '35', 'Posso usar a calculadora?']", correct_index = 2}  
+      questions[1] = {question = "De cor e saltiado hein?!<|br/|>Quanto é 2 x 2?", options = "['2', '6', '4', 'Não sei...']", correct_index = 2}
+      questions[2] = {question = "Quanto é 2 x 5?", options = "['10', '2', '5', '25']", correct_index = 0}
+      questions[3] = {question = "Vamos lá, 5 x 7?", options = "['57', '75', '35', 'Posso usar a calculadora?']", correct_index = 2}  
       questions[4] = {question = "Hmmm, 7 x 5?", options = "['57', '75', '35, como na anterior <:unamused:> ...', '53']", correct_index = 2}
       questions[5] = {question = "Certo, 8 x 8?", options = "['88', '64', '16', 'Vish... nenhuma das anteriores?']", correct_index = 1}
-      questions[6] = {question = "Hahahaha vocÃª estÃ¡ arrasando, Crono <%:joy::clap::clap:<br/>%> Quanto Ã© <%`sum_(n=1)^(2^64) ((n(n+1))/2)^2 ?`%>", options="['42', 'Ah, vocÃª sÃ³ pode estar brincando... isso nÃ£o Ã© tabuada <:rage:>']", correct_index = 1}
+      questions[6] = {question = "Hahahaha você está arrasando, Crono <%:joy::clap::clap:<br/>%> Quanto é <%`sum_(n=1)^(2^64) ((n(n+1))/2)^2 ?`%>", options="['42', 'Ah, você só pode estar brincando... isso não é tabuada <:rage:>']", correct_index = 1}
   
       dialog_controller:create("Lucca", questions[current_question].question, questions[current_question].options, "north",
         function(self, opt)
           if (opt.index ~= questions[current_question].correct_index) then
-            self:setup("Lucca", "NÃ£o, pense mais um pouco...<|br/|>"..questions[current_question].question, questions[current_question].options, "south", self.answered)
+            self:setup("Lucca", "Não, pense mais um pouco...<|br/|>"..questions[current_question].question, questions[current_question].options, "south", self.answered)
           else
             current_question = current_question + 1
             if (current_question <= n_question) then

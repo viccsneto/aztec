@@ -86,7 +86,7 @@ function dialog_controller:create(title, text, options, position, callback)
     player:set_can_control(false)    
     if (not sender:isLoading() and sender.script_to_execute ~= nil) then
       print(sender.script_to_execute)
-      sender:ExecuteScript(sender.script_to_execute)
+      sender:WindowExecuteScript(sender.script_to_execute)
       sender.script_to_execute = nil      
     end
   end

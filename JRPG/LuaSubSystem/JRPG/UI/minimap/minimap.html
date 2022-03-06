@@ -15,7 +15,13 @@
       {
         world_position.x = x;
         world_position.y = y;
-        drawLines();
+		try {
+			console.log("setPosition called ", x, y);
+			drawLines();
+		}
+		catch(err) {
+			console.log("Error calling drawLines(): ", err);
+		}
       }
       function drawLines()
       {
@@ -27,7 +33,7 @@
         var map_position = {"x":world_position.x * conversionFactor,"y":world_position.y * conversionFactor}
 
         
-        var image = $("img");
+        var image = document.getElementById("map");
         
         // vertical line
         canvas.append("line")
@@ -35,7 +41,7 @@
           .attr("x1", map_position.x) 
           .attr("y1", 0)
           .attr("x2", map_position.x) 
-          .attr("y2", image.height())
+          .attr("y2", image.height)
           .style("stroke-width", 1)
           .style("stroke", "white")
           .style("fill", "none");
@@ -45,7 +51,7 @@
           .classed("horizontal_line", true)
           .attr("x1", 0)
           .attr("y1", map_position.y)
-          .attr("x2", image.width())  
+          .attr("x2", image.width)  
           .attr("y2", map_position.y)
           .style("stroke-width", 1)
           .style("stroke", "white")
@@ -62,12 +68,7 @@
   </head> 
 <body>  
   <div class="minimap">   
-    <img src="images/overworld_minimap.png"/>
+    <img src="images/overworld_minimap.png" id = "map"/>
   </div>
-  <script>
-    setPosition(16, 24);
-  </script>
   </body>
-
- 
 </html>

@@ -253,6 +253,7 @@ namespace Aztec
         
         if (lua_pcall(GameEngine::LUA_STATE, 2, 0, 0) != 0) {
           printf("WebBrowser:execute failed: %s - <%s [%d]>", lua_tostring(GameEngine::LUA_STATE, -1), __FILE__, __LINE__);
+          luaL_dostring(GameEngine::LUA_STATE, "print(debug.traceback(nil, 2))");
         }
 
         lua_pop(GameEngine::LUA_STATE, 1);

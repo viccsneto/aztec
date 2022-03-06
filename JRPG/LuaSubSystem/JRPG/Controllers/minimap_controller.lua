@@ -22,9 +22,9 @@ function minimap_controller:create()
   ---
   -- Uses a chromium instance to render and control the dialog (implemented with web technologies)
   -- @type minimap
-  local minimap = WebBrowser:new ("", minimap_controller.__private.width, minimap_controller.__private.height, true)
+  local minimap = WebBrowser:new ("file:///LuaSubSystem/JRPG/UI/minimap/minimap.html", minimap_controller.__private.width, minimap_controller.__private.height, true)
   minimap:setProperty("Name", "minimap")  
-  minimap:Navigate("file:///LuaSubSystem/JRPG/UI/minimap/minimap.html");
+  
   --[[
   local grayscale = Shader:createFromFiles(nil, 'shaders/grayscale.fs')
   minimap:setShader(grayscale)
@@ -38,12 +38,12 @@ function minimap_controller:create()
   
   -- Offers an API to update the current player position in the map
   function minimap:setup(x, y)
-    x = string.format("%.1f", x / minimap.__private.tile_size)
-    y = string.format("%.1f", y / minimap.__private.tile_size)
+    x = string.format("%.1f", x / minimap.__private.tile_size):gsub(",",".")
+    y = string.format("%.1f", y / minimap.__private.tile_size):gsub(",",".")
     
     -- check if the minimap is not updated already
     if (minimap.__private.last_coords.x ~= x or minimap.__private.last_coords.y ~= y) then    
-      minimap.script_to_execute = "setPosition("..x..","..y..")"
+      minimap.script_to_execute = "window.setPosition("..x..","..y..")"
       minimap.__private.last_coords.x = x 
       minimap.__private.last_coords.y = y
     end              
@@ -55,12 +55,12 @@ function minimap_controller:create()
     local camera = state:getActiveCamera()
     
     local player = maincharacter()
-    if (player ~= nil) then
+    if (player ~= nil) then      
       minimap:setup(player.Transform.position.x, player.Transform.position.y)
     end
     
     if (not sender:isLoading() and sender.script_to_execute ~= nil) then     
-      sender:ExecuteScript(sender.script_to_execute)
+      sender:WindowExecuteScript(sender.script_to_execute)
       sender.script_to_execute = nil
     end
     

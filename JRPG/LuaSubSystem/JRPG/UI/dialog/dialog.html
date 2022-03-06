@@ -5,12 +5,22 @@
     <link rel="stylesheet" type="text/css" href="css/dialog.css">
     <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
     <link href="../libs/emojify/emojify.css" rel="stylesheet" type="text/css">
-    <script src="../libs/jquery/jquery.min.js"></script>
+    <script>window.$ = window.jQuery = require('../libs/jquery/jquery.min.js');</script>   
     <script src="../libs/jquery/jquery-ui.min.js"></script>
     <script src="../libs/angular/angular.min.js"></script>        
     <script src="../libs/emojify/emojify.js"></script>
     <script type="text/javascript" src="../libs/MathJax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full"></script>
-    <script type="text/x-mathjax-config">  
+    <script type = "text/javascript">
+      var ipcRenderer = require("electron").ipcRenderer;
+        
+      function ExecuteScript(script) {
+        ipcRenderer.sendSync("Execute", script);
+      }
+      
+    </script>
+
+
+    <script type="text/x-mathjax-config">      
     MathJax.Hub.Queue(function () {
     MathJax.Hub.Config({
       showMathMenu:false,
@@ -30,17 +40,17 @@
     function begin_render()
     {
       
-      angular.element($("body")).scope().write_instantly = false;
-      $(".blue_dialog_rendered").removeClass("blue_dialog_rendered");
-      $(".blue_dialog").removeClass("blue_dialog_fadein_effect");
-      $("#dialog_text").removeClass("dialog_text_effect");
-      $('#radio_toolbar').addClass('hidden_element');     
+      jQuery("body").scope().write_instantly = false;
+      jQuery(".blue_dialog_rendered").removeClass("blue_dialog_rendered");
+      jQuery(".blue_dialog").removeClass("blue_dialog_fadein_effect");
+      jQuery("#dialog_text").removeClass("dialog_text_effect");
+      jQuery('#radio_toolbar').addClass('hidden_element');     
       
       setTimeout(
       function() {
-        $(".blue_dialog").show();
-        $(".blue_dialog").addClass("blue_dialog_fadein_effect"); 
-        $("#dialog_text").addClass("dialog_text_effect");                  
+        jQuery(".blue_dialog").show();
+        jQuery(".blue_dialog").addClass("blue_dialog_fadein_effect"); 
+        jQuery("#dialog_text").addClass("dialog_text_effect");                  
         }, 1
       ); 
       
@@ -52,19 +62,19 @@
     
     function finish_render()
     {
-      $('.hidden_element').removeClass('hidden_element');      
+      jQuery('.hidden_element').removeClass('hidden_element');      
       MathJax.Hub.Typeset();
       
       
-      var radio = $("input").first();
+      var radio = jQuery("input").first();
       if (radio)
         radio.focus();
       emojify.run();      
       
-      $('.blue_dialog').addClass("blue_dialog_rendered");
-      angular.element($("body")).scope().written_time = new Date().getTime()
+      jQuery('.blue_dialog').addClass("blue_dialog_rendered");
+      angular.element(jQuery("body")).scope().written_time = new Date().getTime()
       setTimeout(function() {
-        $('.hidden_math').removeClass('hidden_math');
+        jQuery('.hidden_math').removeClass('hidden_math');
       },
       500);
     }
@@ -81,12 +91,12 @@
     function animate_text()
     {
       
-      var  textobj = $("#dialog_text");
-      var actual_text = $("#dialog_text").html();
-      var remaining_text = $("#dialog_text").attr("data-text");
+      var  textobj = jQuery("#dialog_text");
+      var actual_text = jQuery("#dialog_text").html();
+      var remaining_text = jQuery("#dialog_text").attr("data-text");
       var start_pos = 0;
       var end_pos = 1;
-      if (angular.element($("body")).scope().write_instantly) {
+      if (angular.element(jQuery("body")).scope().write_instantly) {
     	  part =  replaceTolkens(remaining_text);
     	  remaining_text = "";
       }
@@ -136,8 +146,8 @@
       }            
       
       actual_text += embrace_math(part);
-      $("#dialog_text").attr("data-text", remaining_text);          
-      $("#dialog_text").html(actual_text);
+      jQuery("#dialog_text").attr("data-text", remaining_text);          
+      jQuery("#dialog_text").html(actual_text);
       emojify.run();
       
       var part_time = 50;
@@ -154,10 +164,10 @@
     
     function verifyFocus()
     {
-      var obj = $("input:focus");
+      var obj = jQuery("input:focus");
       
       if (obj.length == 0) {
-        obj = $("input:checked");    
+        obj = jQuery("input:checked");    
         if (obj.length > 0) 
           obj.focus();
       }  
@@ -187,9 +197,9 @@
     
     function setText(dialog_text) 
     {
-      $("#dialog_text").html("");
-      $("#dialog_text").attr("data-text", dialog_text);
-      $("#hidden_dialog_text").html(replaceTolkens(dialog_text));            
+      jQuery("#dialog_text").html("");
+      jQuery("#dialog_text").attr("data-text", dialog_text);
+      jQuery("#hidden_dialog_text").html(replaceTolkens(dialog_text));            
     }
     
     function setOptions(dialog_options) 
@@ -201,7 +211,7 @@
       for (var i = 0; i < dialog_options.length;i++)
     	  dialog_options[i] = replaceTolkens(dialog_options[i]);
       
-      var scope = angular.element($("body")).scope();
+      var scope = angular.element(jQuery("body")).scope();
       scope.$apply(function() {        
         scope.dialog_options = angular.copy(dialog_options);        
         scope.selected_option = angular.copy({"name":dialog_options[0]});
@@ -211,8 +221,8 @@
     
     function Answered(opt)
     {
-      $(".blue_dialog").hide();
-      var script = "sender:answered(json.decode('"+JSON.stringify(opt)+"'))";
+      jQuery(".blue_dialog").hide();
+      var script = "sender:answered(json.decode('"+JSON.stringify(opt)+"'))";      
       if (window.ExecuteScript)
         window.ExecuteScript(script);
       else
@@ -221,7 +231,7 @@
         
     function getSelectedOption()
     {
-      var scope = angular.element($("body")).scope();
+      var scope = angular.element(jQuery("body")).scope();
       var selected_value = scope.selected_option.name || ""; 
       var selected_index = -1;
       for(var i = 0; i < scope.dialog_options.length;i++) {
@@ -241,27 +251,27 @@
       if (position_class[0] == "")
         position_class[0] = "north";
         
-      $(".blue_dialog").removeClass("north");
-      $(".blue_dialog").removeClass("northeast");
-      $(".blue_dialog").removeClass("east");
-      $(".blue_dialog").removeClass("southeast");
-      $(".blue_dialog").removeClass("south");
-      $(".blue_dialog").removeClass("southwest");
-      $(".blue_dialog").removeClass("west");
-      $(".blue_dialog").removeClass("northwest");
-      $(".blue_dialog").removeClass("center");
+        jQuery(".blue_dialog").removeClass("north");
+        jQuery(".blue_dialog").removeClass("northeast");
+        jQuery(".blue_dialog").removeClass("east");
+        jQuery(".blue_dialog").removeClass("southeast");
+        jQuery(".blue_dialog").removeClass("south");
+        jQuery(".blue_dialog").removeClass("southwest");
+        jQuery(".blue_dialog").removeClass("west");
+        jQuery(".blue_dialog").removeClass("northwest");
+        jQuery(".blue_dialog").removeClass("center");
       
-      $(".blue_dialog").addClass(position_class[0]);
+        jQuery(".blue_dialog").addClass(position_class[0]);
       
       predefined_size = position_class.length == 3;
       
       if (predefined_size) {
-    	  $(".blue_dialog").width(position_class[1]);
-    	  $(".blue_dialog").height(position_class[2]);
+    	  jQuery(".blue_dialog").width(position_class[1]);
+    	  jQuery(".blue_dialog").height(position_class[2]);
       }
     	else {
-        $(".blue_dialog").width("");
-        $(".blue_dialog").height("");
+        jQuery(".blue_dialog").width("");
+        jQuery(".blue_dialog").height("");
       }
     }
     
@@ -271,12 +281,9 @@
     		 return;
       setTimeout( function() {
         
-          $("#dialog_message_container").width($("#final_size_simulation").width())
-          
-          //options_height = $("#radio_toolbar").height();
-          
-          var div_height = $("#final_size_simulation").height();
-          $("#dialog_message_container").height(div_height + options_height);          
+          jQuery("#dialog_message_container").width(jQuery("#final_size_simulation").width())                  
+          var div_height = jQuery("#final_size_simulation").height();
+          jQuery("#dialog_message_container").height(div_height + options_height);          
         },
       100)
     }
@@ -334,8 +341,8 @@
   
   function DoAnswer() 
   {
-    var scope = angular.element($("body")).scope();
-    if ($(".blue_dialog_rendered").length > 0) {
+    var scope = angular.element(jQuery("body")).scope();
+    if (jQuery(".blue_dialog_rendered").length > 0) {
       var currentTime = new Date().getTime();
       if(currentTime - scope.written_time > 150)
         Answered(getSelectedOption());
@@ -345,7 +352,7 @@
 	  
   }
   
-  $("body").keydown(function(event) {
+  jQuery("body").keydown(function(event) {
     if (event.which == 32 || event.which == 13)  {      
         DoAnswer();
     }        

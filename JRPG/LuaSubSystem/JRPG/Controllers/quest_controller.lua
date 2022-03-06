@@ -205,7 +205,7 @@ function quest_controller:create()
         
     if (not sender:isLoading()) then
       if(sender.__private.script_to_execute ~= nil) then
-        sender:ExecuteScript(sender.__private.script_to_execute)
+        sender:WindowExecuteScript(sender.__private.script_to_execute)
         sender.__private.script_to_execute = nil      
       end
       

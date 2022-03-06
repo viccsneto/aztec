@@ -767,7 +767,7 @@ EventDispatcher = {}
 
 function EventDispatcher.Execute(sender, script_package)
   script_package = json.decode(script_package)
-  return json.execute(script_package.script)
+  return json.execute(sender, script_package.script)
 end
 
 -----------------------------------------------------------------------------
@@ -1204,10 +1204,18 @@ function isEncodable(o)
 end
 
 --- Executes a statement returning the serialized result 
-function json.execute(statement)
-  local script_function = loadstring("return ("..statement..")")()
-  local result = nil
-  xpcall(function() result = script_function()(sender, script) end, debug.traceback);  
+function json.execute(sender, statement)
+  print(1, script_function, sender, statement)
+  local script_function = loadstring("return function (sender, statement) return "..statement.." end")
+  if (script_function) then
+	script_function = script_function()
+  else
+    print("Couldn't loadstring "..statement)
+  end
+  
+  
+  print(2, script_function, sender, statement)
+  local result = script_function(sender, statement)
   return json.encode(result)  
 end
 
