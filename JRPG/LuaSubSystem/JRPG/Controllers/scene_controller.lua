@@ -68,6 +68,7 @@ function scene_controller:create (tmx_path, scene_name)
       if (music_path ~= nil) then  
         -- Intantiates the Music resource and associates it with the state         
         state.Music = Music:new("assets/music/"..music_path)
+        state.Music:setVolume(0.25)
       end
     -- creates the quest lists window
     state:add(quest_controller:create(), 1000000)

@@ -76,7 +76,7 @@ namespace Aztec {
 
   bool Music::setVolume(double value)
   {
-    _music->setVolume(value);
+    _music->setVolume(value * 100);
     return true;
   }
 
