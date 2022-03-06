@@ -10,7 +10,7 @@ function tmxScene:check_melchior_hut()
   if (quest_controller:get_quest_status("talk_to_melchior") ~= nil) then    
     scene_controller:run("MELCHIOR_HUT_1F", "Entrance", 0,-1)
   else
-    dialog_controller:create("Lucca","NÃ£o parece ter gente em casa...","[]","center")
+    dialog_controller:create("Lucca","Não parece ter gente em casa...","[]","center")
   end
 end
 
@@ -35,7 +35,7 @@ function tmxScene:check_sword_making_objectives(objective)
   else
     local items = ""
     items = items .. (found_copper and "" or "cobre... ")    
-    items = items .. (found_silica and "" or "sÃ­lica... ")
+    items = items .. (found_silica and "" or "sílica... ")
     items = items .. (found_carbon and "" or "carbono... ")
     
     

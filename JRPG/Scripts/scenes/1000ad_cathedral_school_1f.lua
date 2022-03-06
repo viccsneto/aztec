@@ -25,7 +25,7 @@ function tmxScene:SceneLoad(state)
       dofile("scripts/story/conclusion.lua")
       return
     elseif (quest_controller:get_quest_status("talk_to_the_king") ~= nil) then
-      dialog_controller:create("Professora Freira", "Isso Ã© tudo que eu sei... <:pensive:>", "[]", "center",           
+      dialog_controller:create("Professora Freira", "Isso é tudo que eu sei... <:pensive:>", "[]", "center",           
         function(self, opt)
           print("Answered "..opt.value..","..opt.index)
           state.player_controller:clean_action()
@@ -39,16 +39,16 @@ function tmxScene:SceneLoad(state)
     local questions = {}
     local n_question = 5;
     local current_question = 1
-    questions[1] = {question = "OlÃ¡, eu sou NÃ¡d... cof cof... a nova Professora de vocÃªs, mas...", options = "[]"}
-    questions[2] = {question = "VocÃªs nÃ£o estÃ£o sabendo? Hoje nÃ£o haverÃ¡ aula...", options = "['Por quÃª?', 'Vivaaa <:laughing:>!!!']", correct_index = 0}
-    questions[3] = {question = "Nossa majestade, o Rei, decretou recesso em todo o reino de Tecgrafia atÃ© que... atÃ© que uma situaÃ§Ã£o muito grave seja resolvida :/", options = "[]"}
-    questions[4] = {question = "O mensageiro disse ser algo que pode afetar o destino de todos nÃ³s, alguma coisa sobre monstros e cristais mÃ¡gicos que eu nÃ£o entendi direito...<|br/|>Pap... cof, cof...<|br/|>Desculpem-me! O Rei as vezes nÃ£o fala coisa com coisa, talvez vocÃªs possam descobrir algo no castelo.", options = "['E essa tosse aÃ­?! Quer uma bala Halls?', 'Certo, vamos lÃ¡ tentar descobrir o que se passa <:neutral_face:>']", correct_index = 1}
+    questions[1] = {question = "Olá, eu sou Nád... cof cof... a nova Professora de vocês, mas...", options = "[]"}
+    questions[2] = {question = "Vocês não estão sabendo? Hoje não haverá aula...", options = "['Por quê?', 'Vivaaa <:laughing:>!!!']", correct_index = 0}
+    questions[3] = {question = "Nossa majestade, o Rei, decretou recesso em todo o reino de Tecgrafia até que... até que uma situação muito grave seja resolvida :/", options = "[]"}
+    questions[4] = {question = "O mensageiro disse ser algo que pode afetar o destino de todos nós, alguma coisa sobre monstros e cristais mágicos que eu não entendi direito...<|br/|>Pap... cof, cof...<|br/|>Desculpem-me! O Rei as vezes não fala coisa com coisa, talvez vocês possam descobrir algo no castelo.", options = "['E essa tosse aí?! Quer uma bala Halls?', 'Certo, vamos lá tentar descobrir o que se passa <:neutral_face:>']", correct_index = 1}
     questions[5] = {question = "Boa sorte! <:pensive:>", options="[]", position = "center"}
         
     dialog_controller:create("Freira", questions[current_question].question, questions[current_question].options, "north",
       function(self, opt)
         if (questions[current_question].options ~="[]" and opt.index ~= questions[current_question].correct_index) then      
-          self:setup("Professora Freira", "Muito engraÃ§adinho vocÃª <:unamused:>...<|br/|>"..questions[current_question].question, questions[current_question].options, "south", self.answered)
+          self:setup("Professora Freira", "Muito engraçadinho você <:unamused:>...<|br/|>"..questions[current_question].question, questions[current_question].options, "south", self.answered)
         else
           current_question = current_question + 1
           if (current_question <= n_question) then
@@ -56,7 +56,7 @@ function tmxScene:SceneLoad(state)
           else      
             quest_controller:set_quest_status("go_to_school", true)
             
-            quest_controller:add_quest({key = "talk_to_the_king", text = "VÃ ATÃ‰ O CASTELO FALAR COM O REI <|br/|> Descubra o que de tÃ£o grave estÃ¡ acontecendo e o porquÃª de o Rei ter decretado recesso...", done = false})          
+            quest_controller:add_quest({key = "talk_to_the_king", text = "VÁ ATÉ O CASTELO FALAR COM O REI <|br/|> Descubra o que de tão grave está acontecendo e o porquê de o Rei ter decretado recesso...", done = false})          
             state.player_controller:clean_action()
             state.player_controller:set_can_control(true)
             self:destroy()          

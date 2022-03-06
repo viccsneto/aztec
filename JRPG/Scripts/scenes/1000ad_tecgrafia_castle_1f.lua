@@ -9,16 +9,16 @@ function tmxScene:SceneLoad(state)
   state.captain = queryname('captain.walking')
      
    local captain_actions = {
-    state.captain:call_action(function()  state.captain.message = "Cad√™ o Skinner para me render? Preciso ir ao banheiro <:fearful:>" end),    
+    state.captain:call_action(function()  state.captain.message = "CadÍ o Skinner para me render? Preciso ir ao banheiro <:fearful:>" end),    
     state.captain:move_action(6.5, 52, false, false),  
     state.captain:move_action(6.5 ,40, false, false),
     state.captain:move_action(6.5, 52, false, false),
     state.captain:move_action(42.5, 52, false, false),
     state.captain:move_action(42.5, 40, false, false),
     state.captain:move_action(42.5, 52, false, false),
-    state.captain:call_action(function()  state.captain.message = "Cad√™ o Skinner para me render? Preciso ir ao banheiro <:fearful:>" end),
+    state.captain:call_action(function()  state.captain.message = "CadÍ o Skinner para me render? Preciso ir ao banheiro <:fearful:>" end),
     
-    state.captain:call_action(function()  state.captain.message = "Ai, ai... Vou-me j√° que est√° pingando <:cold_sweat:>" end),
+    state.captain:call_action(function()  state.captain.message = "Ai, ai... Vou-me j· que est· pingando <:cold_sweat:>" end),
         
     state.captain:move_action(6.5, 52, true, false),  
     state.captain:move_action(6.5 ,40, true, false),
@@ -26,7 +26,7 @@ function tmxScene:SceneLoad(state)
     state.captain:move_action(42.5, 52, true, false),
     state.captain:move_action(42.5, 40, true, false), 
     state.captain:move_action(42.5, 52, true, false),
-    state.captain:call_action(function()  state.captain.message = "Ai, ai... Vou-me j√° que est√° pingando <:cold_sweat:>" end),
+    state.captain:call_action(function()  state.captain.message = "Ai, ai... Vou-me j· que est· pingando <:cold_sweat:>" end),
     
     state.captain:call_action(function()  state.captain.message = "Talvez... se eu andar... bem devagarzinho <:sweat:>..." end),     
     state.captain:move_action(6.5, 52, false, true),  
@@ -51,9 +51,9 @@ function tmxScene:SceneLoad(state)
     if (quest_controller:get_quest_status("defeat_guardian_robot") ~= nil) then
       tell_about_melchior()
     elseif (quest_controller:get_quest_status("rescue_the_princess") ~= nil) then
-      dialog_controller:create("Chanceler", "Eis a Masmorra do Infinito!!! Contamos com voc√™s para salvarem a princesa N√°dia e o futuro do reino.", "[]", "center")
+      dialog_controller:create("Chanceler", "Eis a Masmorra do Infinito!!! Contamos com vocÍs para salvarem a princesa N·dia e o futuro do reino.", "[]", "center")
     else
-      dialog_controller:create("Chanceler", "Oh meu Deus, o que ser√° de n√≥s sem a princesa??? <:scream:>", "[]", "center")
+      dialog_controller:create("Chanceler", "Oh meu Deus, o que ser· de nÛs sem a princesa??? <:scream:>", "[]", "center")
     end
   end
   
@@ -63,9 +63,9 @@ function tmxScene:SceneLoad(state)
     if (not quest_controller:get_quest_status("talk_to_the_king")) then
       dofile("scripts/story/the12diamonds.lua")
     elseif (quest_controller:get_quest_status("defeat_guardian_robot") ~= nil and quest_controller:get_quest_status("talk_to_melchior") == nil) then
-      dialog_controller:create("Rei Willian II", "O qu√™? Um inimigo muito forte?! Comuniquem j√° o Chanceler... <:scream:>", "[]", "center")
+      dialog_controller:create("Rei Willian II", "O quÍ? Um inimigo muito forte?! Comuniquem j· o Chanceler... <:scream:>", "[]", "center")
     else
-      dialog_controller:create("Rei Willian II", "N√°dia... Por favor, tragam-na de volta <:pensive:>", "[]", "center")         
+      dialog_controller:create("Rei Willian II", "N·dia... Por favor, tragam-na de volta <:pensive:>", "[]", "center")         
     end
   end
 end
@@ -102,10 +102,10 @@ function tmxScene:check_unblock_dungeon_entrance()
 end
 
 function tmxScene:infinite_dungeon_soldier_warning()
-  local text = "Voc√™s n√£o est√£o autorizados a passar... al√©m disso, eu n√£o entraria a√≠ nem que me pagassem..."
+  local text = "VocÍs n„o est„o autorizados a passar... alÈm disso, eu n„o entraria aÌ nem que me pagassem..."
   
   if (quest_controller:get_quest_status("talk_to_the_king")) then
-    text = "Boa sorte, her√≥is!!! Tragam a princesa de volta ou estaremos perdidos <:pensive:>..."
+    text = "Boa sorte, herÛis!!! Tragam a princesa de volta ou estaremos perdidos <:pensive:>..."
   end
   
   dialog_controller:create("Soldado", text, "[]", "center")
@@ -171,10 +171,10 @@ end
 
 
 function tell_about_melchior()
-  dialog_controller:create("Chanceler","Se esse inimigo √© mesmo t√£o poderoso, somente uma pessoa poder√° nos ajudar... O Mago Melchior!!! Procurem-no em sua ilha, entreguem este documento e informem que o reino precisa de sua ajuda...","['Pode deixar com a gente! :sunglasses:']","center", function(sender, opt)
+  dialog_controller:create("Chanceler","Se esse inimigo È mesmo t„o poderoso, somente uma pessoa poder· nos ajudar... O Mago Melchior!!! Procurem-no em sua ilha, entreguem este documento e informem que o reino precisa de sua ajuda...","['Pode deixar com a gente! :sunglasses:']","center", function(sender, opt)
     sender:destroy()      
     if (not quest_controller:get_quest_status("talk_to_melchior")) then 
-      quest_controller:add_quest({key="talk_to_melchior", text = "FALE COM O MAGO MELCHIOR<br/> O Chanceler disse que apenas o Mago Melchior saber√° como derrotar o poderoso Rob√¥ Guardi√£o. Encontrem-no!!!", false})
+      quest_controller:add_quest({key="talk_to_melchior", text = "FALE COM O MAGO MELCHIOR<br/> O Chanceler disse que apenas o Mago Melchior saber· como derrotar o poderoso RobÙ Guardi„o. Encontrem-no!!!", false})
     end   
     maincharacter():clean_action()
     maincharacter():set_can_control(true)
@@ -182,23 +182,23 @@ function tell_about_melchior()
 end
 
 function tmxScene:check_gone_school()
-    --quest_controller:add_quest({key = "talk_to_the_king", text = "V√Å AT√â O CASTELO FALAR COM O REI <|br/|> Descubra o que de t√£o grave est√° acontecendo e o porqu√™ de o Rei ter decretado recesso...", done = true})
+    --quest_controller:add_quest({key = "talk_to_the_king", text = "V¡ AT… O CASTELO FALAR COM O REI <|br/|> Descubra o que de t„o grave est· acontecendo e o porquÍ de o Rei ter decretado recesso...", done = true})
   if (quest_controller:get_quest_status("talk_to_the_king") ~= nil) then    
-    dialog_controller:create("Capit√£o","Ent√£o voc√™s s√£o os her√≥is que a Professora Freira prometeu nos enviar? <:no_mouth:><|br/|>O Rei est√° esperando por voc√™s <:scream:>","[]","center", function(sender, opt)
+    dialog_controller:create("Capit„o","Ent„o vocÍs s„o os herÛis que a Professora Freira prometeu nos enviar? <:no_mouth:><|br/|>O Rei est· esperando por vocÍs <:scream:>","[]","center", function(sender, opt)
       sender:destroy()            
       self:unblock_main_passage()
       maincharacter():clean_action()
       maincharacter():set_can_control(true)
     end)    
   else
-    dialog_controller:create("Capit√£o","V√£o embora, o Rei mandou dizer que n√£o est√°... <:trollface:>","[]","center")    
+    dialog_controller:create("Capit„o","V„o embora, o Rei mandou dizer que n„o est·... <:trollface:>","[]","center")    
   end  
 end
 
 
 function tmxScene:captain_walking_interact()
   local walking_captain = queryname("captain.walking") 
-  dialog_controller:create("Capit√£o", walking_captain.message, "[]", "north", function(sender, opt)
+  dialog_controller:create("Capit„o", walking_captain.message, "[]", "north", function(sender, opt)
     sender:destroy() 
     maincharacter():clean_action()
     maincharacter():set_can_control(true)

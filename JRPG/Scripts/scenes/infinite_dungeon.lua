@@ -61,9 +61,9 @@ function tmxScene:battle()
   
   if (enemy:get_current_hp() == 0) then
     if (self.__private.current_level == self.__private.max_level) then
-      dialog_controller:create("Rob√¥ Guardi√£o", "Falha no sist :capital_abcd: :warning: :interrobang: :top: :top: :top: subject not found :bangbang: <|br/|>Princesa N√°dia n√£o se encontra no castel :clock1130: Localiza√ß√£o estim :o: ad :a: : (x = 19, y = 36)<|br/|>Localiza√ß√£o estimada: (x = 19, y = 36) <|br/|>Kernel Panic!","[]", "center")
+      dialog_controller:create("RobÙ Guardi„o", "Falha no sist :capital_abcd: :warning: :interrobang: :top: :top: :top: subject not found :bangbang: <|br/|>Princesa N·dia n„o se encontra no castel :clock1130: LocalizaÁ„o estim :o: ad :a: : (x = 19, y = 36)<|br/|>LocalizaÁ„o estimada: (x = 19, y = 36) <|br/|>Kernel Panic!","[]", "center")
       quest_controller:set_quest_status("defeat_guardian_robot", true)      
-      quest_controller:add_quest({key="find_princess", text = "ENCONTRE A PRINCESA<|br/|> Ap√≥s derrotar o Rob√¥ Guardi√£o, voc√™ descobriu que a localiza√ß√£o estimada da Princesa N√°dia √© (x = 19, y = 36), nem precisa calcular...", done = true})
+      quest_controller:add_quest({key="find_princess", text = "ENCONTRE A PRINCESA<|br/|> ApÛs derrotar o RobÙ Guardi„o, vocÍ descobriu que a localizaÁ„o estimada da Princesa N·dia È (x = 19, y = 36), nem precisa calcular...", done = true})
     end          
     return
   end           
@@ -71,7 +71,7 @@ function tmxScene:battle()
   if (crono:get_current_hp() > 0) then
     if (self.__private.current_level == self.__private.max_level) then
       if (not quest_controller:get_quest_status("defeat_guardian_robot")) then
-        quest_controller:add_quest({key="defeat_guardian_robot", text = "DERROTE O ROB√î GUARDI√ÉO<|br/|> Ao que tudo indica, para resgatar a princesa voc√™s precisar√£o derrotar o poderoso Rob√¥ Guardi√£o da Masmorra Infinita...", false})
+        quest_controller:add_quest({key="defeat_guardian_robot", text = "DERROTE O ROB‘ GUARDI√O<|br/|> Ao que tudo indica, para resgatar a princesa vocÍs precisar„o derrotar o poderoso RobÙ Guardi„o da Masmorra Infinita...", false})
       end
     end
     local crono_actions = {
@@ -205,7 +205,7 @@ function tmxScene:spawn_monster()
     monster = spawn("local_imp", maincharacter():getLayerID())
     
     function monster:interact()
-      dialog_controller:create("Lacaio", "Voc√™ n√£o precisa me derrotar no n√≠vel introdut√≥rio, calouro... Escolha logo uma porta e vaze daqui <:unamused:>.<|br/|> Ou ent√£o... atice as chamas e vamos aprender algo novo (eu adoro a do Donald) <:joy:>", "[]", "center")    
+      dialog_controller:create("Lacaio", "VocÍ n„o precisa me derrotar no nÌvel introdutÛrio, calouro... Escolha logo uma porta e vaze daqui <:unamused:>.<|br/|> Ou ent„o... atice as chamas e vamos aprender algo novo (eu adoro a do Donald) <:joy:>", "[]", "center")    
     end
   else
     local monster_name = self.__private.monsters[self.__private.current_level]

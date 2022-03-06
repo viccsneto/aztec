@@ -10,7 +10,7 @@ local function tell_about_sword_making()
 end
 
 function tmxScene:go_down_stairs()
-  dialog_controller:create("Melchior", "Hey, sua m√£e n√£o te deu educa√ß√£o?!<|br/|>Voc√™ n√£o pode ir entrando assim pela casa dos outros <:rage:>...", "[]", "center", function(sender, opt)
+  dialog_controller:create("Melchior", "Hey, sua m„e n„o te deu educaÁ„o?!<|br/|>VocÍ n„o pode ir entrando assim pela casa dos outros <:rage:>...", "[]", "center", function(sender, opt)
       sender:destroy()                        
       maincharacter():addGameObject(sequence_controller:create({      
             maincharacter():move_action(7, 9, true, false),

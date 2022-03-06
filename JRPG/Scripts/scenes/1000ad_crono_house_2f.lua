@@ -2,7 +2,7 @@ local tmxScene = scene_controller:create('assets/maps/tmx/crono_house_2f.tmx', '
 
 function tmxScene:SceneLoad(state) 
   if (not quest_controller:get_quest_status("go_to_school")) then
-    quest_controller:add_quest({key = "go_to_school", text = "PROVA ORAL DE MATEM√ÅTICA :cry: <br/> V√° para Catedral Escola (que fica na parte Sul do continente logo ap√≥s a ponte) e se apresente para a prova oral..."})
+    quest_controller:add_quest({key = "go_to_school", text = "PROVA ORAL DE MATEM¡TICA :cry: <br/> V· para Catedral Escola (que fica na parte Sul do continente logo apÛs a ponte) e se apresente para a prova oral..."})
   end
   self.curtains_sfx = Sound:new('assets/sfx/curtains.wav')   
 end
@@ -47,7 +47,7 @@ function tmxScene:lucca_suggest_talk_to_the_king()
       lucca:move_action(6, 4, false, false),
       lucca:call_action(function()
         self:toggle_curtains()
-        dialog_controller:create("Lucca","Crono, precisamos de uma estrat√©gia para vencer esse Rob√¥ Guardi√£o. Ele tem uma defesa muito forte <:pensive:>...<|br/|>Venha, vamos falar com o Rei!!!","[]", "center", function (sender, opt)
+        dialog_controller:create("Lucca","Crono, precisamos de uma estratÈgia para vencer esse RobÙ Guardi„o. Ele tem uma defesa muito forte <:pensive:>...<|br/|>Venha, vamos falar com o Rei!!!","[]", "center", function (sender, opt)
                  
           tmxScene:lucca_exit_scene()
           sender:destroy()

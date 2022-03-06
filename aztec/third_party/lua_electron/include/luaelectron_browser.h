@@ -8,6 +8,7 @@ public:
   void Execute(const char *script);
   void WindowExecute(const char *script);
   void SetLuaState(lua_State *state);
+  void SetFocus(bool value);
   ~ElectronBrowser();
 private:
   lua_State *m_luastate;

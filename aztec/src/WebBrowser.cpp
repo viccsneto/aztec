@@ -174,7 +174,7 @@ namespace Aztec
       /************************************************************************/
       /* Workaround for enter key                                             */
       /************************************************************************/
-      if (!pressed_key.released && (pressed_key.code == GLFW_KEY_ENTER || pressed_key.code == GLFW_KEY_KP_ENTER)) {
+      if (!pressed_key.released &&  (pressed_key.code == GLFW_KEY_ENTER || pressed_key.code == GLFW_KEY_KP_ENTER)) {
         std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"char\",\"keyCode\":\"\\u000d\",\"modifiers\": []});";
         m_browser->Execute(script);
       }
@@ -218,7 +218,7 @@ namespace Aztec
 
   void WebBrowser::setAlwaysFocused(bool value)
   {
-    //    m_browser->GetHost()->SetFocus(value||mouseOver);
+    m_browser->SetFocus(value||mouseOver);
     if (!m_always_focused)
       m_was_previously_focused = false;
 

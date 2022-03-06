@@ -317,7 +317,7 @@
     
     </script>
   </head>
-  <body ng-controller="RegisterDataController" ng-cloak >
+  <body ng-controller="RegisterDataController" ng-cloak  onload="pageLoaded()">
     <div id="hide_page" style="visibility:hidden">  
       <div class="container">
         <div  id="final_size_simulation" class="blue_dialog textnoselect always_hidden_element">                              
@@ -351,14 +351,17 @@
       scope.write_instantly = true;
 	  
   }
+
+  function pageLoaded() {    
+    alert("page loaded")
+    document.onkeydown = function(event) {
+      if (event.key == ' ' || event.which == 'Enter')  {
+          DoAnswer();
+      }        
+    };
   
-  jQuery("body").keydown(function(event) {
-    if (event.which == 32 || event.which == 13)  {      
-        DoAnswer();
-    }        
-  });        
- 
- verifyFocus();
+    verifyFocus();
+  }
  </script>
   </body>
 

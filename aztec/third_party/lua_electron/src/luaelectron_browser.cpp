@@ -44,6 +44,16 @@ void ElectronBrowser::WindowExecute(const char *script)
   SendMessage(std::make_shared<Petunia::Message>("execute", std::make_shared<std::string>(window_script)));
 }
 
+void ElectronBrowser::SetFocus(bool value)
+{
+  if (value) {
+    WindowExecute("window.focus()");
+  }
+  else {
+    WindowExecute("window.blur()");
+  }
+}
+
 void ElectronBrowser::SetLuaState(lua_State *state)
 {
   m_luastate = state;
