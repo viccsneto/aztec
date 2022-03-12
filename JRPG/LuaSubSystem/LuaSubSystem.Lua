@@ -11,9 +11,6 @@ __AztecBindedObjects =
 --Initializes event subsystem
 dofile("LuaSubSystem/Events/Events.Lua")
 
---Initializes JRPG subsystem
-dofile("LuaSubSystem/JRPG/JRPGEngine.Lua")
-
 -- Simplifies access to common componentes
 function __Aztec__InitializeCommonComponents() 
   engine   = GameEngine:getInstance()

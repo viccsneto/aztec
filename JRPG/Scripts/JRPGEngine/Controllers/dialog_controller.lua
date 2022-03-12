@@ -24,8 +24,8 @@ function dialog_controller:create(title, text, options, position, callback)
   
   ---
   -- @type dialog
-  local dialog = WebBrowser:new ("file:///LuaSubSystem/JRPG/UI/Dialog/dialog.html", Config.SCREEN_WIDTH , Config.SCREEN_HEIGHT, true) 
-  --local dialog = WebBrowser:new ("file:///LuaSubSystem/JRPG/UI/Dialog/dialog2.html", Config.SCREEN_WIDTH , Config.SCREEN_HEIGHT, true)
+  local dialog = WebBrowser:new ("file:///scripts/JRPGEngine/UI/Dialog/dialog.html", Config.SCREEN_WIDTH , Config.SCREEN_HEIGHT, true) 
+  --local dialog = WebBrowser:new ("file:///scripts/JRPGEngine/UI/Dialog/dialog2.html", Config.SCREEN_WIDTH , Config.SCREEN_HEIGHT, true)
   
   
   dialog:setAlwaysFocused(true)  
@@ -85,7 +85,6 @@ function dialog_controller:create(title, text, options, position, callback)
     local player = maincharacter()
     player:set_can_control(false)    
     if (not sender:isLoading() and sender.script_to_execute ~= nil) then
-      print(sender.script_to_execute)
       sender:WindowExecuteScript(sender.script_to_execute)
       sender.script_to_execute = nil      
     end

@@ -53,7 +53,7 @@ function battle_controller:create(players, enemies)
   
   battle:setProperty("Name", "battle")
 
-  battle:Navigate("file:///LuaSubSystem/JRPG/UI/battle/battle.html");
+  battle:Navigate("file:///scripts/JRPGEngine/UI/battle/battle.html");
   battle.__private = self.__private;
   battle.__private.players = players or {}
   battle.__private.enemies = enemies or {}

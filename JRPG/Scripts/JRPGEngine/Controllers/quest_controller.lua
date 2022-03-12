@@ -165,14 +165,18 @@ end
 ---
 -- Creates the quest and places it at the bottom right side of the screen
 function quest_controller:create()
- 
+  local abort = true
+  if abort then
+	return nil
+  end
+  
   -- if questlist already instanced, return it
   local questlist =  (queryname("questlist"))
   if (questlist ~= nil) then
     return questlist
   end
   -- Uses a chromium instance to render and control the dialog (implemented with web technologies)
-  local questlist = WebBrowser:new ("file:///LuaSubSystem/JRPG/UI/quest/quest.html", self.__private.width, self.__private.height, true)
+  local questlist = WebBrowser:new ("file:///scripts/JRPGEngine/UI/quest/quest.html", self.__private.width, self.__private.height, true)
   questlist:setProperty("Name", "questlist")    
   
   questlist.__private = {

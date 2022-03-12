@@ -22,7 +22,7 @@ function minimap_controller:create()
   ---
   -- Uses a chromium instance to render and control the dialog (implemented with web technologies)
   -- @type minimap
-  local minimap = WebBrowser:new ("file:///LuaSubSystem/JRPG/UI/minimap/minimap.html", minimap_controller.__private.width, minimap_controller.__private.height, true)
+  local minimap = WebBrowser:new ("file:///scripts/JRPGEngine/UI/minimap/minimap.html", minimap_controller.__private.width, minimap_controller.__private.height, true)
   minimap:setProperty("Name", "minimap")  
   
   --[[

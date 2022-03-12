@@ -1,3 +1,5 @@
+--Initializes JRPG subsystem
+dofile("scripts/JRPGEngine/JRPGEngine.Lua")
 
 -- Pre Load All Scenes
 dofile("scripts/scenes/1000ad_overworld.lua")
