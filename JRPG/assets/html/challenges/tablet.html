@@ -7,6 +7,11 @@
     <link rel="stylesheet" type="text/css" href="../libs/jquery/css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="../libs/bootstrap/css/bootstrap.min.css">
     <script src="../libs/jquery/jquery.min.js"></script>
+    <script>
+      if (!window.jQuery) {
+        window.$ = window.jQuery = require('../libs/jquery/jquery.min.js');
+      }
+    </script>
     <script src="../libs/jquery/jquery-ui.min.js"></script>
     <script src="../libs/bootstrap/js/bootstrap.min.js"></script>    
     <style>

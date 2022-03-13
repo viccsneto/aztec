@@ -71,7 +71,7 @@ function scene_controller:create (tmx_path, scene_name)
         state.Music:setVolume(0.25)
       end
     -- creates the quest lists window
-    --state:add(quest_controller:create(), 1000000)
+    state:add(quest_controller:create(), 1000000)
     -- Repasses the OnLoad event to an user defined SceneLoad event, if there is one
     if (state.SceneLoad ~= nil) then
       state:SceneLoad(state)

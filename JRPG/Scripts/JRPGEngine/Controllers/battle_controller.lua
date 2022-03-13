@@ -17,7 +17,7 @@ battle_controller = {
 
 function battle_controller.__private:play_music()
   if (self.Music == nil) then  
-    self.Music = Music:new("assets/music/orchestra/battle.mp3")
+    self.Music = Music:new("assets/music/orchestra/battle.ogg")
   end
 
   if(not self.Music:isPlaying()) then

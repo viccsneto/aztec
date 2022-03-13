@@ -165,11 +165,6 @@ end
 ---
 -- Creates the quest and places it at the bottom right side of the screen
 function quest_controller:create()
-  local abort = true
-  if abort then
-	return nil
-  end
-  
   -- if questlist already instanced, return it
   local questlist =  (queryname("questlist"))
   if (questlist ~= nil) then

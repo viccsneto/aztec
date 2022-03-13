@@ -39,12 +39,13 @@ namespace Aztec
     m_width = width;
     m_height = height;
     m_texture_message= nullptr;
-    m_offscreen = offscreen;
+    m_offscreen = offscreen;    
 
-    RESTexture *texture = ResourceManager::createTexture(width, height, NULL);
-    m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
-    m_plane = new Plane(Shader::getDefaultShader(), width, height, m_texture);
-
+    
+    m_texture = nullptr;
+    m_plane = nullptr;
+    m_sensor = nullptr;
+   
     std::string full_parameters =
       " --width " + std::to_string(width) +
       " --height " + std::to_string(height) +
@@ -65,19 +66,45 @@ namespace Aztec
       m_texture_message = message;
     });
 
-    m_browser->SendMessage(std::make_shared<Petunia::Message>("ready", "ready"));
-    m_sensor = new Sensor();
-    m_sensor->setPivot(_pivot.x, _pivot.y);
-    m_sensor->createFixture(width, height);
-    m_sensor->setFilterData(ContactFilter::FilterFlags::Sensor | ContactFilter::FilterFlags::Renderable,
-                            ContactFilter::FilterFlags::Camera | ContactFilter::FilterFlags::Mouse | ContactFilter::FilterFlags::Sensor);
-    addGameObject(m_sensor);
+     m_browser->AddListener("resized", [&](std::shared_ptr<Petunia::Message> message) {
+      std::lock_guard<std::mutex> lock(m_texture_mutex);
+      auto dimensions = nlohmann::json::parse(message->GetData()->begin(),message->GetData()->end());      
+      int width = dimensions["width"];
+      int height = dimensions["height"];
+      WasResized(width, height);        
+    });
+
+    WasResized(width, height);     
   }
 
+  void WebBrowser::WasResized(int width, int height)
+  {     
+      m_painted = false;
+
+      if (m_sensor) {
+        removeGameObject(m_sensor);
+        delete m_sensor;
+      }
+
+      delete m_texture;
+      delete m_plane;
+      RESTexture *texture = ResourceManager::createTexture(width, height, NULL);      
+      m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
+      m_plane = new Plane(Shader::getDefaultShader(), width, height, m_texture);
+
+      m_sensor = new Sensor();
+      m_sensor->setPivot(_pivot.x, _pivot.y);
+      m_sensor->createFixture(width, height);
+      m_sensor->setFilterData(ContactFilter::FilterFlags::Sensor | ContactFilter::FilterFlags::Renderable,
+                            ContactFilter::FilterFlags::Camera | ContactFilter::FilterFlags::Mouse | ContactFilter::FilterFlags::Sensor);
+      addGameObject(m_sensor);
+
+      m_browser->SendMessage(std::make_shared<Petunia::Message>("ready", "ready"));    
+  }
 
   void WebBrowser::Navigate(const char *url)
   {
-    m_browser->Execute((std::string("navigate(") + url + ")").c_str());
+    m_browser->Execute((std::string("mainWindow.loadUrl(`") + url + "`)"));
   }
 
   void WebBrowser::GoBack()
@@ -160,22 +187,12 @@ namespace Aztec
 
   void WebBrowser::HandleKeyboardInputEvents()
   {
-    while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
-      Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
+    if (hasFocus()) {
+      while (GameEngine::getInstance()->getKeyboard()->bufferLength() > 0) {
+        Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
 
-      std::string str_key_event = PressedKeyToJSONInputEvent(pressed_key);
-      std::string script =
-        "mainWindow.webContents.sendInputEvent(" +
-        str_key_event +
-        ");";
-
-      m_browser->Execute(script);
-
-      /************************************************************************/
-      /* Workaround for enter key                                             */
-      /************************************************************************/
-      if (!pressed_key.released &&  (pressed_key.code == GLFW_KEY_ENTER || pressed_key.code == GLFW_KEY_KP_ENTER)) {
-        std::string script = "mainWindow.webContents.sendInputEvent({\"type\":\"char\",\"keyCode\":\"\\u000d\",\"modifiers\": []});";
+        std::string script = PressedKeyToJSONInputEvent(pressed_key);
+        m_browser->SetFocus(true);
         m_browser->Execute(script);
       }
     }
@@ -207,6 +224,7 @@ namespace Aztec
       m_plane->getShader()->SetUniform("texCoordX", 0);
       m_plane->getShader()->SetUniform("texCoordY", 0);
       m_plane->getShader()->SetUniform("time", GameEngine::getInstance()->getCurrentTime());
+
       m_plane->Draw();
     }
     drawChildren();
@@ -395,7 +413,7 @@ namespace Aztec
   void WebBrowser::Focus()
   {
     if (!m_was_previously_focused) {
-      m_browser->Execute("mainWindow.focus();");
+      m_browser->SetFocus(true);
       m_has_focus = true;
       m_was_previously_focused = true;
     }
@@ -461,64 +479,68 @@ namespace Aztec
         key_code = "\\\"";
       }
     }
-    else {
-      switch (code) {
-        case Aztec::Keyboard::KEY_SPACE:
-          key_code = "Space";
-          break;
-        case Aztec::Keyboard::KEY_INSERT:
-          key_code = "Insert";
-          break;
-        case Aztec::Keyboard::KEY_BACKSPACE:
-          key_code = "Backspace";
-          break;
-        case Aztec::Keyboard::KEY_DELETE:
-          key_code = "Delete";
-          break;
-        case Aztec::Keyboard::KEY_UP:
-          key_code = "Up";
-          break;
-        case Aztec::Keyboard::KEY_DOWN:
-          key_code = "Down";
-          break;
-        case Aztec::Keyboard::KEY_LEFT:
-          key_code = "Left";
-          break;
-        case Aztec::Keyboard::KEY_RIGHT:
-          key_code = "Right";
-          break;        
-        case Aztec::Keyboard::KEY_ENTER:
-        case Aztec::Keyboard::KEY_KP_ENTER:
-          key_code = "Enter";
-          break;
-        case Aztec::Keyboard::KEY_PAGEUP:
-          key_code = "PageUp";
-          break;
-        case Aztec::Keyboard::KEY_PAGEDOWN:
-          key_code = "PageDown";
-          break;
-        case Aztec::Keyboard::KEY_HOME:
-          key_code = "Home";
-          break;
-        case Aztec::Keyboard::KEY_END:
-          key_code = "End";
-          break;
-        case Aztec::Keyboard::KEY_ESCAPE:
-          key_code = "Esc";
-          break;
-        case Aztec::Keyboard::KEY_TAB:
-          key_code = "Tab";
-          break;
-        case Aztec::Keyboard::KEY_LSHIFT:
-          key_code = "ShiftLeft";
-          break;
-        case Aztec::Keyboard::KEY_LCTRL:
-          key_code = "ControlLeft";
-          break;
-        case Aztec::Keyboard::KEY_LALT:
-          key_code = "AltLeft";
-          break;
-      }
+    
+    
+    switch (code) {
+      case Aztec::Keyboard::KEY_SPACE:
+        key_code = "Space";
+        break;
+      case Aztec::Keyboard::KEY_INSERT:
+        key_code = "Insert";
+        break;
+      case Aztec::Keyboard::KEY_BACKSPACE:
+        key_code = "Backspace";
+        break;
+      case Aztec::Keyboard::KEY_DELETE:
+        key_code = "Delete";
+        break;
+      case Aztec::Keyboard::KEY_UP:
+        key_code = "Up";
+        break;
+      case Aztec::Keyboard::KEY_DOWN:
+        key_code = "Down";
+        break;
+      case Aztec::Keyboard::KEY_LEFT:
+        key_code = "Left";
+        break;
+      case Aztec::Keyboard::KEY_RIGHT:
+        key_code = "Right";
+        break;        
+      case Aztec::Keyboard::KEY_ENTER:
+      case Aztec::Keyboard::KEY_KP_ENTER:
+        key_code = "Enter";
+        break;
+      case Aztec::Keyboard::KEY_PAGEUP:
+        key_code = "PageUp";
+        break;
+      case Aztec::Keyboard::KEY_PAGEDOWN:
+        key_code = "PageDown";
+        break;
+      case Aztec::Keyboard::KEY_HOME:
+        key_code = "Home";
+        break;
+      case Aztec::Keyboard::KEY_END:
+        key_code = "End";
+        break;
+      case Aztec::Keyboard::KEY_ESCAPE:
+        key_code = "Esc";
+        break;
+      case Aztec::Keyboard::KEY_TAB:
+        key_code = "Tab";
+        break;
+      case Aztec::Keyboard::KEY_LSHIFT:
+      case Aztec::Keyboard::KEY_RSHIFT:
+        key_code = "Shift";
+        break;
+      case Aztec::Keyboard::KEY_LCTRL:
+        key_code = "Control";
+        break;
+      case Aztec::Keyboard::KEY_LALT:
+        key_code = "Alt";
+        break;
+      case Aztec::Keyboard::KEY_RALT:
+        key_code = "AltGr";
+        break;
     }
 
     return key_code;
@@ -526,7 +548,38 @@ namespace Aztec
 
   std::string WebBrowser::PressedKeyToJSONInputEvent(Aztec::Keyboard::Key pressed_key)
   {
+
+    std::string str_key_event = PressedKeyToJSON(pressed_key);
+    std::string script =
+      "mainWindow.webContents.sendInputEvent(" +
+       str_key_event +
+    ");";
+
+    // generates a keyDown event before sending char 
+    if (pressed_key.is_character) {      
+      pressed_key.is_character = false;
+      str_key_event = PressedKeyToJSON(pressed_key);
+
+      script = "mainWindow.webContents.sendInputEvent(" +
+       str_key_event +
+      ");" + script;
+    }
+    else {
+      /************************************************************************/
+      /* Workaround for enter key                                             */
+      /************************************************************************/
+      if (!pressed_key.released &&  (pressed_key.code == GLFW_KEY_ENTER || pressed_key.code == GLFW_KEY_KP_ENTER)) {
+        script += "mainWindow.webContents.sendInputEvent({\"type\":\"char\",\"keyCode\":\"\\u000d\",\"modifiers\": []});";
+      }
+    }
+
+    return script;   
+  }
+
+  std::string WebBrowser::PressedKeyToJSON(Aztec::Keyboard::Key pressed_key)
+  {
     std::string event_type;
+    
     if (pressed_key.released) {
       event_type = "keyUp";
     }
@@ -535,7 +588,14 @@ namespace Aztec
         event_type = "char";
       }
       else {
-        event_type = "keyDown";
+        event_type = "keyDown";        
+      }
+    }
+
+    if (event_type != "char") {
+      bool is_printable = pressed_key.code >= 0 && pressed_key.code <= 255 && !std::iscntrl(pressed_key.code);
+      if (is_printable) {
+        pressed_key.code = toupper(pressed_key.code);
       }
     }
 
@@ -563,9 +623,22 @@ namespace Aztec
       modifiers.push_back("alt");
     }
 
+    std::string str_key = "";
+    
+    bool is_printable = pressed_key.is_character && pressed_key.code >= 0 && pressed_key.code <= 255 && !std::iscntrl(pressed_key.code);
+    if (is_printable) {
+      char key = (char)pressed_key.code;
+      str_key += key;
+    }
+    else {
+      str_key = key_code;
+    }
+
+     
+
     std::string json_result = std::string("{") +
       "\"type\":\"" + event_type + "\"," +
-      "\"keyCode\":\"" + key_code + "\"," +
+      "\"keyCode\":\"" + str_key + "\"," +
       "\"isAutoRepeat\":" + repeating + "," +
       "\"modifiers\": [";
 

@@ -200,7 +200,9 @@ namespace Aztec {
     */
     Plane *getPlane();
 
+
   private:
+    void WasResized(int width, int height);
     void UpdateTexture();
     void ExecuteReceivedScript();
     void Initialize(const char *url, int width, int height, bool transparent, bool offscreen);
@@ -233,6 +235,7 @@ namespace Aztec {
     bool   m_always_focused;
     bool   m_has_focus;
     bool   m_offscreen;
+    std::string PressedKeyToJSON(Aztec::Keyboard::Key pressed_key);
     std::string PressedKeyToJSONInputEvent(Aztec::Keyboard::Key pressed_key);
   };
 } // namespace Aztec

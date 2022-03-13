@@ -36,9 +36,9 @@ void ElectronBrowser::Execute(const char *script)
 void ElectronBrowser::WindowExecute(const char *script)
 {
   
-  std::string window_script = "mainWindow.webContents.executeJavaScript(\""
+  std::string window_script = "mainWindow.webContents.executeJavaScript(`"
     + std::string(script)
-    + "\");";
+    + "`);";
   
      
   SendMessage(std::make_shared<Petunia::Message>("execute", std::make_shared<std::string>(window_script)));
@@ -47,10 +47,10 @@ void ElectronBrowser::WindowExecute(const char *script)
 void ElectronBrowser::SetFocus(bool value)
 {
   if (value) {
-    WindowExecute("window.focus()");
+    Execute("mainWindow.webContents.focus()");
   }
   else {
-    WindowExecute("window.blur()");
+    Execute("mainWindow.webContents.blur()");
   }
 }
 

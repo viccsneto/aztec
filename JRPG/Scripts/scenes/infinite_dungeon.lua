@@ -98,7 +98,7 @@ function fade_maincharacter()
     function tablet:OnUpdate(sender)
       if (sender.question_id ~= nil) then
         if (not sender:isLoading()) then
-          sender:ExecuteScript('embed("'..sender.question_id..'","'..sender.answer_id..'")')
+          sender:WindowExecuteScript('embed("'..sender.question_id..'","'..sender.answer_id..'")')
           sender.question_id = nil
         end
       end
@@ -259,11 +259,11 @@ function tmxScene:SceneLoad(state)
     if (not sender:isLoading()) then
       if (sender.video_url ~= nil) then      
         print("embedding video: "..sender.video_url)
-        sender:ExecuteScript('embed("'..sender.video_url..'")')
+        sender:WindowExecuteScript('embed("'..sender.video_url..'")')
         sender.video_url = nil            
       elseif (sender.youtube_id ~= nil) then      
         print("embedding video from youtube: "..sender.youtube_id)
-        sender:ExecuteScript('embed_youtube("'..sender.youtube_id..'")')
+        sender:WindowExecuteScript('embed_youtube("'..sender.youtube_id..'")')
         sender.youtube_id = nil
       end
     end
