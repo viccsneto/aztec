@@ -3,6 +3,7 @@ project (electronbind CXX)
 add_subdirectory (third_party)
 
 add_library(electronbindlib
+  "include/json.hpp"
   "include/electron_bind.h"
   "include/electron_instance.h"
   "include/electron_osutils.h"

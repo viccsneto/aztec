@@ -9,6 +9,12 @@ public:
   void WindowExecute(const char *script);
   void SetLuaState(lua_State *state);
   void SetFocus(bool value);
+  void Focus();
+  void Blur();
+  void SendMouseDown(int x, int y, const char *button, int click_count);
+  void SendMouseMove(int x, int y);
+  void SendMouseUp(int x, int y, const char *button);
+  void SendMouseWheel(int deltaX, int deltaY);
   ~ElectronBrowser();
 private:
   lua_State *m_luastate;

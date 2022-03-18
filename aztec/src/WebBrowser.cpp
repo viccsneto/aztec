@@ -36,6 +36,7 @@ namespace Aztec
     m_always_focused = false;
     m_has_focus = false;
     m_painted = false;
+    m_was_resized = false;
     m_width = width;
     m_height = height;
     m_texture_message= nullptr;
@@ -66,40 +67,41 @@ namespace Aztec
       m_texture_message = message;
     });
 
-     m_browser->AddListener("resized", [&](std::shared_ptr<Petunia::Message> message) {
+     m_browser->AddListener("resized", [&](std::shared_ptr<Petunia::Message> message) {      
       std::lock_guard<std::mutex> lock(m_texture_mutex);
       auto dimensions = nlohmann::json::parse(message->GetData()->begin(),message->GetData()->end());      
       int width = dimensions["width"];
       int height = dimensions["height"];
-      WasResized(width, height);        
+      m_width = width;
+      m_height = height;
+      m_was_resized = true;
     });
-
-    WasResized(width, height);     
+    m_was_resized = true;
   }
 
-  void WebBrowser::WasResized(int width, int height)
+  void WebBrowser::WasResized()
   {     
       m_painted = false;
 
-      if (m_sensor) {
-        removeGameObject(m_sensor);
-        delete m_sensor;
+      if (!m_sensor) {
+        m_sensor = new Sensor();
+        addGameObject(m_sensor);
       }
 
       delete m_texture;
       delete m_plane;
-      RESTexture *texture = ResourceManager::createTexture(width, height, NULL);      
+      RESTexture *texture = ResourceManager::createTexture(m_width, m_height, NULL);      
       m_texture = new Texture(texture, GL_RGBA, GL_BGRA);
-      m_plane = new Plane(Shader::getDefaultShader(), width, height, m_texture);
+      m_plane = new Plane(Shader::getDefaultShader(), m_width, m_height, m_texture);
 
-      m_sensor = new Sensor();
+      
       m_sensor->setPivot(_pivot.x, _pivot.y);
-      m_sensor->createFixture(width, height);
+      m_sensor->createFixture(m_width, m_height);
       m_sensor->setFilterData(ContactFilter::FilterFlags::Sensor | ContactFilter::FilterFlags::Renderable,
                             ContactFilter::FilterFlags::Camera | ContactFilter::FilterFlags::Mouse | ContactFilter::FilterFlags::Sensor);
-      addGameObject(m_sensor);
+      
 
-      m_browser->SendMessage(std::make_shared<Petunia::Message>("ready", "ready"));    
+      m_was_resized = false;
   }
 
   void WebBrowser::Navigate(const char *url)
@@ -175,7 +177,6 @@ namespace Aztec
       return;
     }
 
-    UpdateTexture();
     ExecuteReceivedScript();
 
     HandleInputEvents();
@@ -192,22 +193,28 @@ namespace Aztec
         Keyboard::Key pressed_key = GameEngine::getInstance()->getKeyboard()->readVKBuffer();
 
         std::string script = PressedKeyToJSONInputEvent(pressed_key);
-        m_browser->SetFocus(true);
+        m_browser->Focus();
         m_browser->Execute(script);
       }
     }
   }
 
   void WebBrowser::draw()
-  {
-    std::lock_guard<std::mutex> lock(m_texture_mutex);
+  {    
     if (!Visible) {
       return;
     }
+    
+    if (m_was_resized) {
+      WasResized();
+    }
+
+    UpdateTexture();
 
     beginClipRect();
 
     if (m_painted) {
+      std::lock_guard<std::mutex> lock(m_texture_mutex);
       int xPivotInverter = 1;
       int yPivotInverter = 1;
       float xRotation = 0;
@@ -230,7 +237,6 @@ namespace Aztec
     drawChildren();
     endClipRect();
     auto message = std::make_shared<Petunia::Message>("ready", "ready");
-    //message->SetOverwriteMode(true);
     m_browser->SendMessage(message);
   }
 
@@ -326,86 +332,29 @@ namespace Aztec
         click_count++;
       }
 
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseDown"},
-          {"button", "left"},
-          {"x", x},
-          {"y", y},
-          {"clickCount", click_count},
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseDown(x, y, "left", click_count);
     }
 
     if (GameEngine::getInstance()->getMouse()->LeftButtonJustReleased()) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseUp"},
-          {"button", "left"},
-          {"x", x},
-          {"y", y}
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseUp(x, y, "left");
       m_last_click_time = GameEngine::getInstance()->getCurrentTime();
     }
 
-    if (GameEngine::getInstance()->getMouse()->RightButtonJustPressed()) {      
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseDown"},
-          {"button", "right"},
-          {"x", x},
-          {"y", y},
-          
-        }.dump() +
-        ");"
-      );
+    if (GameEngine::getInstance()->getMouse()->RightButtonJustPressed()) {
+      m_browser->SendMouseDown(x, y, "right", 1);
     }
 
     if (GameEngine::getInstance()->getMouse()->RightButtonJustReleased()) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseUp"},
-          {"button", "right"},
-          {"x", x},
-          {"y", y}
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseUp(x, y, "right");
       m_last_click_time = GameEngine::getInstance()->getCurrentTime();
     }
 
     if (GameEngine::getInstance()->getMouse()->MiddleButtonJustPressed()) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseDown"},
-          {"button", "middle"},
-          {"x", x},
-          {"y", y},
-          {"clickCount", 1},
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseDown(x, y, "middle", 1);
     }
 
-    if (GameEngine::getInstance()->getMouse()->MiddleButtonJustReleased()) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseUp"},
-          {"button", "middle"},
-          {"x", x},
-          {"y", y}
-        }.dump() +
-        ");"
-      );
+    if (GameEngine::getInstance()->getMouse()->MiddleButtonJustReleased()) {      
+      m_browser->SendMouseUp(x, y, "middle");
       m_last_click_time = GameEngine::getInstance()->getCurrentTime();
     }
   }
@@ -427,40 +376,22 @@ namespace Aztec
   void WebBrowser::HandleMouseMovement(int x, int y)
   {
     if (GameEngine::getInstance()->getMouse()->hasMovement) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseMove"},
-          {"x", x},
-          {"y", y}
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseMove(x, y);
     }
   }
 
   void WebBrowser::HandleMouseWheel()
   {
     if (GameEngine::getInstance()->getMouse()->hasWheel) {
-      m_browser->Execute(
-        "mainWindow.webContents.sendInputEvent(" +
-        nlohmann::json{
-          {"type", "mouseWheel"},
-          {"x", 0},
-          {"y", 0},
-          {"deltaX", GameEngine::getInstance()->getMouse()->getScrolledX()},
-          {"deltaY", GameEngine::getInstance()->getMouse()->getScrolledY()}
-        }.dump() +
-        ");"
-      );
+      m_browser->SendMouseWheel(GameEngine::getInstance()->getMouse()->getScrolledX(), GameEngine::getInstance()->getMouse()->getScrolledY());
     }
   }
 
   void WebBrowser::Blur()
-  {
+  {    
     if (m_has_focus) {
       if (!m_always_focused) {
-        m_browser->Execute("mainWindow.blur();");
+        m_browser->Blur();
         m_was_previously_focused = false;
         m_has_focus = false;
       }

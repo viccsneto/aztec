@@ -1,4 +1,5 @@
 #include "luaelectron_browser.h"
+#include "json.hpp"
 #include <tolua.h>
 #include <iostream>
 
@@ -47,11 +48,80 @@ void ElectronBrowser::WindowExecute(const char *script)
 void ElectronBrowser::SetFocus(bool value)
 {
   if (value) {
-    Execute("mainWindow.webContents.focus()");
+    Focus();
   }
   else {
-    Execute("mainWindow.webContents.blur()");
+    Blur();
   }
+}
+
+void ElectronBrowser::Focus()
+{
+  this->Execute("mainWindow.focus();");
+}
+
+void ElectronBrowser::Blur()
+{
+  this->Execute("mainWindow.blur();");
+}
+
+void ElectronBrowser::SendMouseDown(int x, int y, const char *button, int click_count)
+{
+  std::cout << "v\n";
+  this->Execute(
+    "mainWindow.webContents.sendInputEvent(" +
+    nlohmann::json{
+      {"type", "mouseDown"},
+      {"button", button},
+      {"x", x},
+      {"y", y},
+      {"clickCount", click_count},
+    }.dump() +
+    ");"
+  );
+}
+
+void ElectronBrowser::SendMouseMove(int x, int y)
+{
+  this->Execute(
+    "mainWindow.webContents.sendInputEvent(" +
+    nlohmann::json{
+      {"type", "mouseMove"},
+      {"x", x},
+      {"y", y},
+    }.dump() +
+    ");"
+  );
+}
+
+void ElectronBrowser::SendMouseWheel(int deltaX, int deltaY)
+{      
+  this->Execute(
+    "mainWindow.webContents.sendInputEvent(" +
+    nlohmann::json{
+      {"type", "mouseWheel"},
+      {"x", 0},
+      {"y", 0},
+      {"deltaX", deltaX},
+      {"deltaY", deltaY},
+    }.dump() +
+    ");"
+  );
+}
+
+void ElectronBrowser::SendMouseUp(int x, int y, const char *button)
+{
+  std::cout << "^\n";
+  this->Execute(
+    "mainWindow.webContents.sendInputEvent(" +
+    nlohmann::json{
+      {"type", "mouseUp"},
+      {"button", button},
+      {"x", x},
+      {"y", y},
+    }.dump() +
+    ");"
+  );
 }
 
 void ElectronBrowser::SetLuaState(lua_State *state)

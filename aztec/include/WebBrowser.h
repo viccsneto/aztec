@@ -202,7 +202,7 @@ namespace Aztec {
 
 
   private:
-    void WasResized(int width, int height);
+    void WasResized();
     void UpdateTexture();
     void ExecuteReceivedScript();
     void Initialize(const char *url, int width, int height, bool transparent, bool offscreen);
@@ -229,6 +229,7 @@ namespace Aztec {
     std::mutex m_received_script_mutex;
     std::shared_ptr<Petunia::Message> m_texture_message;    
     std::shared_ptr<Petunia::Message> m_received_script_message;
+    bool m_was_resized;
 
     double m_last_click_time;
     bool   m_was_previously_focused;

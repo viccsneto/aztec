@@ -103,19 +103,19 @@ namespace Aztec {
   {
     switch (buttonCode) {
       case GLFW_MOUSE_BUTTON_LEFT:
+        _leftButtonJustPressed = !_leftButtonPressed;
         _leftButtonPressed     = true;
-        _leftButtonJustPressed = true;
         break;
 
       case GLFW_MOUSE_BUTTON_MIDDLE:
 
+        _middleButtonJustPressed = !_middleButtonPressed;
         _middleButtonPressed     = true;
-        _middleButtonJustPressed = true;
         break;
 
       case GLFW_MOUSE_BUTTON_RIGHT:
+        _rightButtonJustPressed = !_rightButtonPressed;
         _rightButtonPressed     = true;
-        _rightButtonJustPressed = true;
         break;
     }
 
@@ -126,18 +126,18 @@ namespace Aztec {
   {
     switch (buttonCode) {
       case GLFW_MOUSE_BUTTON_LEFT:
+        _leftButtonJustReleased = _leftButtonPressed;
         _leftButtonPressed      = false;
-        _leftButtonJustReleased = true;
         break;
 
       case GLFW_MOUSE_BUTTON_MIDDLE:
+        _middleButtonJustReleased = _middleButtonPressed;
         _middleButtonPressed      = false;
-        _middleButtonJustReleased = true;
         break;
 
       case GLFW_MOUSE_BUTTON_RIGHT:
+        _rightButtonJustReleased = _rightButtonPressed;
         _rightButtonPressed      = false;
-        _rightButtonJustReleased = true;
         break;
     }
     hasReleased = true;
@@ -151,7 +151,7 @@ namespace Aztec {
   void Mouse::Reset()
   {
     double currentTime = GameEngine::getInstance()->getCurrentTime();
-    if (currentTime - _lastTime > 0.05L) {
+    if (currentTime - _lastTime >= 0.05L) {
       Mouse::hasClick          = false;
       Mouse::hasMovement       = false;
       Mouse::hasReleased       = false;
